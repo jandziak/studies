@@ -31,12 +31,8 @@ setwd(wd.tmp)
 # Source script with functions to make preprocessing
 source("./R/data_preprocessing_UTILS.R")
 
-
-
 # Read raw data 
 gcredit <- read.table("./data/german_data.txt")
-
-# Source script with functions to make preprocessing
 
 # # Dataset overview  
 # str(gcredit)
@@ -66,15 +62,6 @@ for(col.sgn in rec.col.sgns){
 #   gcredit.cpy[, col.sgn] <- gcredit.convert.to.factor(col.sgn, col.tmp)  
   message(paste0("Column: ", col.sgn, " values recoded."))
 }
-
-
-
-# # Convert from integer to numeric 
-# num.col.sgns <- c("V2", "V5", "V8", "V11", "V13", "V16", "V18")
-# for(col.sgn in num.col.sgns){
-#   gcredit.cpy[, col.sgn] <- as.numeric(gcredit.cpy[, col.sgn])
-#   message(paste0("Column: ", col.sgn, " converted to numeric."))
-# }
 
 
 
@@ -134,5 +121,3 @@ write.table(x = gcredit.cpy, file = "./data/german_data_processed1.txt",
 # Remove tmp versions of the data 
 rm(gcredit.cpy)
 rm(gcredit)
-
-
