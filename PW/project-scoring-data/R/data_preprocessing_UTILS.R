@@ -9,6 +9,7 @@
 
 
 
+#' -----------------------------------------------------------------------------
 #' Substitute value signatures with their human-readable values. 
 #' 
 #' @param col.sgn - signature of dataset column (from raw dataset)
@@ -146,6 +147,7 @@ gcredit.recode.values <- function(col.sgn, val){
 
 
 
+#' -----------------------------------------------------------------------------
 #' Convert vector to factor, with specified factor levels.   
 #' 
 #' @param col.sgn - signature of dataset column 
@@ -275,12 +277,12 @@ gcredit.convert.to.factor <- function(col.sgn, col.vals){
       "no"         
     )
     
-  # Relevel factor only if its values have been recoded (they are not raw data)
-  } else if(col.sgn == "RES"){
-    lvls <- c(
-      "0", 
-      "1"         
-    )
+#   # Relevel factor only if its values have been recoded (they are not raw data)
+#   } else if(col.sgn == "RES"){
+#     lvls <- c(
+#       0, 
+#       1         
+#     )
 
   } else{
     # Return original values wector 
@@ -292,3 +294,40 @@ gcredit.convert.to.factor <- function(col.sgn, col.vals){
   col.vals.res <- factor(col.vals, levels = lvls, labels = lvls)
   return(col.vals.res)
 }
+
+
+
+#' -----------------------------------------------------------------------------
+#' Performs equal frequency discretization of continuous variable. 
+#' 
+#' x - vector of continuous values to be discretized
+#' n - number of bins 
+#' 
+cutEqual <- function(x, n, include.lowest = TRUE, ...){
+  
+  require(lattice)
+  cut(x, co.intervals(x, n, 0)[c(1, (n+1):(n*2))], 
+      include.lowest = include.lowest, ...)
+}
+
+
+
+
+#' -----------------------------------------------------------------------------
+#' Performs discretization of continuous variable with the use of 
+#' rpart tree with default settings. 
+#' 
+#' x - vector of continuous values to be discretized
+#' y - vector of response value aganist which the model is to be built
+#' 
+cutRpart <- function(x, y){
+  
+  require(rpart)
+  fit <- rpart(y ~ x, method="class")
+  fit.cutoffs <- sort(unique(fit$splits[, "index"]))
+  fit.cutoffs.cor <- c(min(x, na.rm = TRUE), fit.cutoffs, max(x, na.rm = TRUE))
+  cut(x, breaks = fit.cutoffs.cor, include.lowest = TRUE)
+}
+
+
+

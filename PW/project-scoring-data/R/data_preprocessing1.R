@@ -58,8 +58,10 @@ for(col.sgn in rec.col.sgns){
   col.tmp <- sapply(gcredit.cpy[, col.sgn], 
                     function(val) 
                       gcredit.recode.values(col.sgn, as.character(val)))
+  gcredit.cpy[, col.sgn] <- col.tmp  
 #   # Convert to factor 
 #   gcredit.cpy[, col.sgn] <- gcredit.convert.to.factor(col.sgn, col.tmp)  
+
   message(paste0("Column: ", col.sgn, " values recoded."))
 }
 
@@ -72,6 +74,7 @@ for(col.sgn in rec.col.sgns){
 #' Gareth James, Daniela Witten, Trevor Hastie, Robert Tibshirani
 #' 
 #' according to which we model probability of client's default. 
+#' (also see: http://stats.stackexchange.com/questions/145538/what-is-the-general-convention-for-coding-the-response-variable-in-credit-scor?noredirect=1#comment278826_145538)
 #' 
 #' This means that we recode the response variable to have value: 
 #'  - 1 for default ("bad") client
@@ -79,7 +82,7 @@ for(col.sgn in rec.col.sgns){
 
 # Recode response variable 
 response.tmp <- sapply(gcredit.cpy[,"V21"], function(val) val-1)
-response.tmp <- factor(response.tmp, levels = c("0", "1"), labels = c("0", "1"))
+#response.tmp <- factor(response.tmp, levels = c(0, 1), labels = c(0, 1))
 gcredit.cpy[,"V21"] <- response.tmp
 
 
@@ -111,8 +114,8 @@ col.names <-
 names(gcredit.cpy) <- col.names
 
 # Reorder columns in data frame to have firsty numeric, then factor variables
-num.cols <- c(2,5,8,11,13,16,18)
-gcredit.cpy <- gcredit.cpy[c(num.cols, setdiff(1:20, num.cols), 21)]
+num.cols <- c(21,2,5,8,11,13,16,18)
+gcredit.cpy <- gcredit.cpy[c(num.cols, setdiff(1:20, num.cols))]
 
 # Save tmp version of the data 
 write.table(x = gcredit.cpy, file = "./data/german_data_processed1.txt", 

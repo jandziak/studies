@@ -31,18 +31,20 @@ with results randomness taken into consideration.
 *When, where, and how was the study done? What materials were used or who was included in the study groups (patients, etc.)?*
 
 
-## Data preprocessing
-
-### Data formattng
+## Data formattng
 
 - recoding selected variables, saving as factor
 - changing variables type from int to num
 - recoding response variable
 - renaming columns
 
-### Dealing with missing, corrupt and invalid data
+## Data pre-processing 
 
-- detecting missing, corrupt and invalid data (basic summaries, graphical tools)
+- search for detecting missing, corrupt and invalid data (basic summaries, graphical tools)
+- creating derived variables
+- binning countinuous variables
+- [@TODO] joining levels of categorical variables if reasonable
+- [@TODO] recode variables to WoE
 
 
 
