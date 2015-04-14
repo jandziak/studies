@@ -16,16 +16,16 @@
 # -----------------------------------------------------------------------------
 # READ DATA 
 
-# Define tmp working direcotry based on computer name 
-computer.name <- Sys.info()["nodename"] 
-if (computer.name == "marta-komputer") 
-  wd.tmp <- "/home/martakarass/my-store/studies/PW/project-scoring-data"
-
-# Set working dir 
-setwd(wd.tmp)
-
-# Source script with functions to make preprocessing
-source("./R/data_preprocessing_UTILS.R")
+# # Define tmp working direcotry based on computer name 
+# computer.name <- Sys.info()["nodename"] 
+# if (computer.name == "marta-komputer") 
+#   wd.tmp <- "/home/martakarass/my-store/studies/PW/project-scoring-data"
+# 
+# # Set working dir 
+# setwd(wd.tmp)
+# 
+# # Source script with functions to make preprocessing
+# source("./R/data_preprocessing_UTILS.R")
 
 
 
@@ -110,8 +110,6 @@ plot(density(gcredit$NUM_OF_MAINTAINED_PEOPLE))
 
 
 # Check the correlations
-#install.packages("corrgram")
-library(corrgram)
 corrgram(gcredit[1:7], order=TRUE, lower.panel=panel.pie,
          upper.panel=NULL, text.panel=panel.txt,
          cex.labels = 0.6, cor.method='pearson')
@@ -181,11 +179,11 @@ for(var.name in var.to.cat.names){
 
 
 
-# Compare information value of those 
-# download woe-master.zip from https://github.com/tomasgreif/woe and unzip it;
-# the install from source: 
-#install.packages("/home/martakarass/Downloads/woe-master", repos = NULL, type="source")
-library(woe)
+# # Compare information value of those 
+# # download woe-master.zip from https://github.com/tomasgreif/woe and unzip it;
+# # the install from source: 
+# #install.packages("/home/martakarass/Downloads/woe-master", repos = NULL, type="source")
+# library(woe)
 iv.df <- iv.mult(gcredit.quan, "RES", TRUE)
 iv.df
 
@@ -213,7 +211,6 @@ for(name in var.to.cat.names){
 
 
 # Plot comparision
-library(ggplot2)
 ggplot(iv.comparision.df, aes(var.name, iv, group = cat.sgn, 
                               colour = cat.sgn)) + geom_line()
 

@@ -18,18 +18,18 @@
 # -----------------------------------------------------------------------------
 # READ DATA 
 
+# # Define tmp working direcotry based on computer name 
+# computer.name <- Sys.info()["nodename"] 
+# if (computer.name == "marta-komputer") 
+#   wd.tmp <- "/home/martakarass/my-store/studies/PW/project-scoring-data"
+# 
+# # Set working dir 
+# setwd(wd.tmp)
+# 
+# # Source script with functions to make preprocessing
+# source("./R/data_preprocessing_UTILS.R")
 
 
-# Define tmp working direcotry based on computer name 
-computer.name <- Sys.info()["nodename"] 
-if (computer.name == "marta-komputer") 
-  wd.tmp <- "/home/martakarass/my-store/studies/PW/project-scoring-data"
-
-# Set working dir 
-setwd(wd.tmp)
-
-# Source script with functions to make preprocessing
-source("./R/data_preprocessing_UTILS.R")
 
 # Read raw data 
 gcredit <- read.table("./data/german_data.txt")
