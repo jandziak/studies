@@ -5,30 +5,29 @@
 #' @description
 #' The script performs preprocessing STEP 2. of German Credit dataset.
 #' 
+#' 
 #' Includes:
 #'  - data formattng
-#'  -
-#'  -  
+#'  - searching for and dealing with missing, corrupt and invalid data
+#'  - creating derived variables
+#'  - binning countinuous variables
+#'  - correcting bins (levels) of categorical variables 
+#'    (combining levels if needed)
+#'  - recoding data to WoE
+#'  
+#'  
+#'  Results in: 
+#'  - "./data/german_data_cat.txt" - categorized (binned) data set 
+#'  - "./data/german_data_woe.txt" - recoded to WoE data set 
+
 
 
 
 
 # -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # READ DATA 
-
-# # Define tmp working direcotry based on computer name 
-# computer.name <- Sys.info()["nodename"] 
-# if (computer.name == "marta-komputer") 
-#   wd.tmp <- "/home/martakarass/my-store/studies/PW/project-scoring-data"
-# 
-# # Set working dir 
-# setwd(wd.tmp)
-# 
-# # Source script with functions to make preprocessing
-# source("./R/data_preprocessing_UTILS.R")
-
-
-
 
 # Read data (numbers - except from response variable - are read as numeric)
 gcredit <- 
@@ -133,7 +132,7 @@ boxplot(gcredit$AMOUNT_TO_DURATION)
 #'     * http://www.rcreditscoring.com/binning-continuous-variables-in-r-the-basics/
 
 # Define subset of numeric variables 
-var.to.cat.names <- c("DURATION", "AMOUNT", "AGE")
+var.to.cat.names <- c("DURATION", "AMOUNT", "AGE", "AMOUNT_TO_DURATION")
 gcredit.quan <- gcredit[c(var.to.cat.names, "RES")]
 
 # # Save subset of numeric variables 
@@ -144,7 +143,8 @@ gcredit.quan <- gcredit[c(var.to.cat.names, "RES")]
 #                            colClasses=rep("numeric", 4))
 # var.to.cat.names <- setdiff(names(gcredit.quan), "RES")
 
-
+# Define min number of bins from smbinning package 
+#min.smbin.bins.num <- 4
 
 # Categorize variables in 3 ways
 for(var.name in var.to.cat.names){
@@ -156,7 +156,16 @@ for(var.name in var.to.cat.names){
   
   # Categorize variable with optimal binning with conditional tree 
   # (smbinning package)
-  binning.res <- smbinning(df=gcredit.quan, y="RES", x=var.name, p=0.05)
+  mincriterion.tmp = 0.95
+  binning.res <- smbinning.custom(df=gcredit.quan, y="RES", x=var.name, 
+                                  mincriterion = mincriterion.tmp)
+  # Check if we got requested num of bins 
+  while(binning.res == "No Bins"){#} || (length(binning.res$bands)-1) < min.smbin.bins.num){
+    mincriterion.tmp = mincriterion.tmp - 0.05
+    print(mincriterion.tmp)
+    binning.res <- smbinning.custom(df=gcredit.quan, y="RES", x=var.name, 
+                                    mincriterion = mincriterion.tmp)
+  }
   binned.var.name <- paste0(var.name, "_bin")
   gcredit.quan <- smbinning.gen(gcredit.quan, binning.res, binned.var.name)
   # Correct new variable to be a factor
@@ -176,6 +185,8 @@ for(var.name in var.to.cat.names){
   gcredit.quan[, paste0(var.name, "_equal1")] <- cutEqual(x, n.bins)
   gcredit.quan[, paste0(var.name, "_equal2")] <- cutEqual(x, n.rparts)
 }
+
+
 
 
 
@@ -213,16 +224,29 @@ for(name in var.to.cat.names){
 # Plot comparision
 ggplot(iv.comparision.df, aes(var.name, iv, group = cat.sgn, 
                               colour = cat.sgn)) + geom_line()
+# 1            DURATION smbinning  0.229296147809057
+# 2            DURATION     rpart  0.159962059432608
+# 3            DURATION     equal  0.168117386826859
+# 4              AMOUNT smbinning  0.225097717170366
+# 5              AMOUNT     rpart  0.178405054081677
+# 6              AMOUNT     equal  0.127268796648851
+# 7                 AGE smbinning  0.123935104168272
+# 8                 AGE     rpart                  0
+# 9                 AGE     equal 0.0680246317476062
+# 10 AMOUNT_TO_DURATION smbinning  0.157504818325578
+# 11 AMOUNT_TO_DURATION     rpart                  0
+# 12 AMOUNT_TO_DURATION     equal 0.0912903888934645
+
 
 #' Observation: 
 #' smbinning does it pretty well and we may include those variables 
 #' as new ones :D 
 
-gcredit$DURATION_cat <- gcredit.quan$DURATION_bin
-gcredit$AGE_cat <- gcredit.quan$AGE_bin
-gcredit$AMOUNT_cat <- gcredit.quan$AMOUNT_bin
-
-
+gcredit.cat <- data.frame(RES = gcredit.quan$RES,
+                          DURATION = gcredit.quan$DURATION_bin,
+                          AGE = gcredit.quan$AGE_bin,
+                          AMOUNT = gcredit.quan$AMOUNT_bin,
+                          AMOUNT_TO_DURATION = gcredit.quan$AMOUNT_TO_DURATION_bin)
 
 
 #' -----------------------------------------
@@ -235,8 +259,281 @@ gcredit$AMOUNT_cat <- gcredit.quan$AMOUNT_bin
 #' it is worth to "join" levels of these variables
 #' in order to reduce "mess" in data. 
 
-# good graphical tool 
-par(las=2) # for labels always perpendicular to the axis,
-mosaicplot(table(gcredit$PURPOSE, gcredit$RES))
-#' e.g. here we may consider joining "domestic appliances"
-#' and "repairs" etc. 
+
+y <- gcredit$RES
+
+
+
+# ---------------
+# gcredit$PURPOSE
+
+x.tmp <- gcredit$PURPOSE
+(res.df.tmp <- infval.comb.levels.effect(y, x.tmp, mosaic.plot = FALSE))
+# interesting: note how much 
+# 25           car (new)          car (used) 0.08741
+# lowe the information value! 
+
+x.tmp <- combine.factor.lvls(x.tmp, c(res.df.tmp[2,1], res.df.tmp[2,2]))
+(res.df.tmp <- infval.comb.levels.effect(y, x.tmp))
+gcredit.cat$PURPOSE <- x.tmp
+
+
+
+# ---------------
+# gcredit$RATE_TO_DISP_INCOME
+
+x.tmp <- gcredit$RATE_TO_DISP_INCOME
+(res.df.tmp <- infval.comb.levels.effect(y, x.tmp))
+# Hopeless variable :P 
+gcredit.cat$RATE_TO_DISP_INCOME <- x.tmp
+
+
+
+# ---------------
+# gcredit$RESIDENCE
+
+x.tmp <- gcredit$RESIDENCE
+(res.df.tmp <- infval.comb.levels.effect(y, x.tmp))
+# Hopeless variable :P
+gcredit.cat$RESIDENCE <- x.tmp
+
+
+
+# ---------------
+# gcredit$NUM_OF_THIS_BANK_CREDITS
+
+x.tmp <- gcredit$NUM_OF_THIS_BANK_CREDITS
+(res.df.tmp <- infval.comb.levels.effect(y, x.tmp))
+# Hopeless variable :P
+gcredit.cat$NUM_OF_THIS_BANK_CREDITS <- x.tmp
+
+
+
+# ---------------
+# gcredit$NUM_OF_MAINTAINED_PEOPLE
+
+x.tmp <- gcredit$NUM_OF_MAINTAINED_PEOPLE
+(res.df.tmp <- infval.comb.levels.effect(y, x.tmp))
+# Hopeless variable :P
+gcredit.cat$NUM_OF_MAINTAINED_PEOPLE <- x.tmp
+
+
+
+# ---------------
+# gcredit$CHK_ACCT
+
+x.tmp <- gcredit$CHK_ACCT
+(res.df.tmp <- infval.comb.levels.effect(y, x.tmp))
+# good variable; we do not change nothing!! :) 
+gcredit.cat$CHK_ACCT <- x.tmp
+
+
+
+# ---------------
+# gcredit$HISTORY
+
+x.tmp <- gcredit$HISTORY
+(res.df.tmp <- infval.comb.levels.effect(y, x.tmp))
+# no logical reason to join anything :P 
+gcredit.cat$HISTORY <- x.tmp
+
+
+
+# ---------------
+# gcredit$SAVINGS_ACCT
+
+x.tmp <- gcredit$SAVINGS_ACCT
+(res.df.tmp <- infval.comb.levels.effect(y, x.tmp))
+# we do not join "<100 DM" AND "100-500 DM" because 
+# "<100 DM" is relatively numerous in comparision to others 
+gcredit.cat$SAVINGS_ACCT <- x.tmp
+
+
+
+# ---------------
+# gcredit$EMLOYMENT
+
+x.tmp <- gcredit$EMLOYMENT
+(res.df.tmp <- infval.comb.levels.effect(y, x.tmp))
+# we do not join e.g. "4-7 years" and ">= 7 years"
+# because we would disorder frequencies in the levels
+gcredit.cat$EMLOYMENT <- x.tmp
+
+
+# ---------------
+# gcredit$STATUS_AND_SEX
+
+x.tmp <- gcredit$STATUS_AND_SEX
+(res.df.tmp <- infval.comb.levels.effect(y, x.tmp))
+
+# SEX
+gcredit$SEX <- sapply(gcredit$STATUS_AND_SEX, function(val){
+  ifelse(grepl("female",val), "female", "male")
+})
+gcredit$SEX <- as.factor(gcredit$SEX)
+x.tmp <- gcredit$SEX
+(res.df.tmp <- infval.comb.levels.effect(y, x.tmp))
+
+gcredit$STATUS <- as.factor(gcredit$STATUS)
+# nope i do not touch this strange not nice variable :P 
+gcredit.cat$STATUS_AND_SEX <- gcredit$STATUS_AND_SEX
+
+
+
+# ---------------
+# gcredit$OTHER_DEBTORS
+
+x.tmp <- gcredit$OTHER_DEBTORS
+(res.df.tmp <- infval.comb.levels.effect(y, x.tmp))
+gcredit.cat$OTHER_DEBTORS <- x.tmp
+
+
+
+# ---------------
+# gcredit$PROPERTY
+
+x.tmp <- gcredit$PROPERTY
+(res.df.tmp <- infval.comb.levels.effect(y, x.tmp))
+gcredit.cat$PROPERTY <- x.tmp
+
+
+
+# ---------------
+# gcredit$OTHER_INSTALLMENT_PLANS
+
+x.tmp <- gcredit$OTHER_INSTALLMENT_PLANS
+(res.df.tmp <- infval.comb.levels.effect(y, x.tmp))
+gcredit.cat$OTHER_INSTALLMENT_PLANS <- x.tmp
+
+
+
+# ---------------
+# gcredit$HOUSING
+
+x.tmp <- gcredit$HOUSING
+(res.df.tmp <- infval.comb.levels.effect(y, x.tmp))
+x.tmp <- combine.factor.lvls(x.tmp, c(res.df.tmp[2,1], res.df.tmp[2,2]))
+(res.df.tmp <- infval.comb.levels.effect(y, x.tmp))
+gcredit.cat$HOUSING <- x.tmp
+
+
+
+# ---------------
+# gcredit$JOB
+
+x.tmp <- gcredit$JOB
+(res.df.tmp <- infval.comb.levels.effect(y, x.tmp))
+x.tmp <- combine.factor.lvls(x.tmp, c(res.df.tmp[4,1], res.df.tmp[4,2]))
+(res.df.tmp <- infval.comb.levels.effect(y, x.tmp))
+gcredit.cat$JOB <- x.tmp
+
+
+
+# ---------------
+# gcredit$TELEPHONE
+
+x.tmp <- gcredit$TELEPHONE
+(res.df.tmp <- infval.comb.levels.effect(y, x.tmp))
+gcredit.cat$TELEPHONE <- x.tmp
+
+
+
+# ---------------
+# gcredit$IS_FOREIGN_WORKER
+
+x.tmp <- gcredit$IS_FOREIGN_WORKER
+(res.df.tmp <- infval.comb.levels.effect(y, x.tmp))
+gcredit.cat$IS_FOREIGN_WORKER <- x.tmp
+
+
+
+
+
+# ------------------------------------------------------------------------------
+# Recode to WoE
+
+# iv.num  - calculate WoE/IV for numeric variables
+# iv.str - calculate WoE/IV for character/factor variables
+# iv.mult - calculate WoE/IV, summary IV for one or more variables
+# iv.plot.summary - plot IV summary
+# iv.plot.woe - plot WoE patterns for one or more variables
+# iv.replace.woe - recode original variables to WoE (adds new columns)
+
+
+(iv.mult.res <- iv.mult(gcredit.cat,"RES", TRUE))
+# Variable InformationValue Bins ZeroBins    Strength
+# 1                  CHK_ACCT      0.666011503    4        0 Very strong
+# 2                   HISTORY      0.293233547    5        0      Strong
+# 3                  DURATION      0.229296148    3        0      Strong
+# 4                    AMOUNT      0.225097717    4        0      Strong
+# 5              SAVINGS_ACCT      0.196009557    5        0     Average
+# 6                   PURPOSE      0.169155274    9        0     Average
+# 7        AMOUNT_TO_DURATION      0.114469395    6        0     Average
+# 8                  PROPERTY      0.112638262    4        0     Average
+# 9                 EMLOYMENT      0.086433631    5        0        Weak
+# 10                  HOUSING      0.082950783    2        0        Weak
+# 11                      AGE      0.073166424    2        0        Weak
+# 12  OTHER_INSTALLMENT_PLANS      0.057614542    3        0        Weak
+# 13           STATUS_AND_SEX      0.044670678    4        0        Weak
+# 14        IS_FOREIGN_WORKER      0.043877412    2        0        Weak
+# 15            OTHER_DEBTORS      0.032019322    3        0        Weak
+# 16      RATE_TO_DISP_INCOME      0.023858552    2        0        Weak
+# 17 NUM_OF_THIS_BANK_CREDITS      0.010083557    2        0   Wery weak
+# 18                      JOB      0.008095050    3        0   Wery weak
+# 19                TELEPHONE      0.006377605    2        0   Wery weak
+# 20 NUM_OF_MAINTAINED_PEOPLE      0.000000000    1        0   Wery weak
+# 21                RESIDENCE      0.000000000    1        0   Wery weak
+
+
+
+#' At this point we REMOVE:
+#' - NUM_OF_MAINTAINED_PEOPLE
+#' - RESIDENCE
+#' variables
+
+col.to.remove.idx <- which(names(gcredit.cat) %in% c("NUM_OF_MAINTAINED_PEOPLE", "RESIDENCE"))
+gcredit.cat <- gcredit.cat[, -col.to.remove.idx]
+(iv.mult.res <- iv.mult(gcredit.cat,"RES", TRUE))
+
+
+
+
+# ------------------------------------------------------------------------------
+# Save categorized data to a file
+
+# Reorder columns in data frame to have firsty numeric, then factor variables
+num.cols <- which(sapply(gcredit.cat, class) == "numeric")
+gcredit.cat <- gcredit.cat[c(num.cols, setdiff(1:ncol(gcredit.cat), num.cols))]
+
+# Save tmp version of the data 
+write.table(x = gcredit.cat, file = "./data/german_data_cat.txt", 
+            sep=",",  col.names=TRUE, row.names = FALSE)
+
+# # Read data  
+# gcredit.cat <- 
+#   read.table("./data/german_data_cat.txt", sep=",", header =TRUE,  
+#              colClasses=c(rep("numeric", 3), rep("character", 17)))
+
+
+
+iv.plot.summary(iv.mult.res) # very nice plot! :) 
+
+
+# WoE patterns for "Very strong" / "Strong" variables
+iv.plot.woe(iv.mult(gcredit.cat,"RES",vars=c("CHK_ACCT"),summary=FALSE))
+iv.plot.woe(iv.mult(gcredit.cat,"RES",vars=c("HISTORY"),summary=FALSE))
+iv.plot.woe(iv.mult(gcredit.cat,"RES",vars=c("DURATION"),summary=FALSE))
+iv.plot.woe(iv.mult(gcredit.cat,"RES",vars=c("AMOUNT"),summary=FALSE))
+iv.plot.woe(iv.mult(gcredit.cat,"RES",vars=c("AMOUNT"),summary=FALSE))
+
+# Replace WoE for all variables
+gcredit.woe <- iv.replace.woe(gcredit.cat, iv.mult(gcredit.cat,"RES"))
+gcredit.woe <- gcredit.woe[, c(which(names(gcredit.woe) == "RES"), 
+                               grep("woe", names(gcredit.woe)))]
+
+
+
+# ------------------------------------------------------------------------------
+# Save recoded to WoE data to a file 
+write.table(x = gcredit.woe, file = "./data/german_data_woe.txt", 
+            sep=",",  col.names=TRUE, row.names = FALSE)

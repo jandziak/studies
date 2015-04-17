@@ -33,11 +33,14 @@ library(ggplot2)
 #' 3. install from source:
 #' install.packages("/home/martakarass/Downloads/woe-master", repos = NULL, type="source")
 library(woe)
-
-
+library(caret)
+library(pROC)
+library(smbinning)
+library(reshape)
+library(dplyr)
 
 
 # ------------------------------------------------------------------------------
 # Source project util scripts 
 
-source("./R/data_preprocessing_UTILS.R")
+source("./R/UTILS_data_preprocessing.R")

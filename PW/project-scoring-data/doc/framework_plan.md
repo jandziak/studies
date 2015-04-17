@@ -38,13 +38,34 @@ with results randomness taken into consideration.
 - recoding response variable
 - renaming columns
 
+
 ## Data pre-processing 
 
 - search for detecting missing, corrupt and invalid data (basic summaries, graphical tools)
 - creating derived variables
 - binning countinuous variables
-- [@TODO] joining levels of categorical variables if reasonable
-- [@TODO] recode variables to WoE
+- correcting bins (levels) of categorical variables (combining levels if needed)
+- recoding variables to WoE
+
+Also:
+
+- visualizations of IV of variables binned in different ways 
+- visualizations of IV of binned variables, WoE of selected binned variables 
+
+
+
+## Models Building 
+
+### Logistic regression (scoring) model 
+
+- [@TODO] feature selection 
+- [@TODO] simple modelling
+- [@TODO] model performance measures  
+- [@TODO] cost-sensitive modelling (comparision of different approaches)
+
+
+
+### [@TODO] others 
 
 
 
