@@ -20,10 +20,10 @@
 # -----------------------------------------------------------------------------
 # READ DATA 
 
-german.cat <- 
+gcredit.cat <- 
   read.table("./data/german_data_cat.txt", sep=",", header =TRUE,  
              colClasses=c(rep("numeric", 3), rep("character", 17)))
 
-german.woe <- 
+gcredit.woe <- 
   read.table("./data/german_data_woe.txt", sep=",", header =TRUE,  
              colClasses=c(rep("numeric", 20)))
