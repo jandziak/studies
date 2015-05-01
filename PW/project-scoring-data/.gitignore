@@ -1,0 +1,6 @@
+# Ignore:
+/doc/report/*
+
+# But do not ignore  these files:
+!/doc/report/psd-report.Rnw
+!/doc/report/psd-report.pdf
