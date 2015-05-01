@@ -1,0 +1,42 @@
+\contentsline {part}{I\hspace {1em}Introduction}{3}{part.1}
+\contentsline {section}{\numberline {1}Data analysis context}{3}{section.1}
+\contentsline {subsection}{\numberline {1.1}Motivation}{3}{subsection.1.1}
+\contentsline {paragraph}{}{3}{section*.2}
+\contentsline {subsection}{\numberline {1.2}Research questions}{3}{subsection.1.2}
+\contentsline {part}{II\hspace {1em}Materials and methods}{4}{part.2}
+\contentsline {paragraph}{}{4}{section*.3}
+\contentsline {section}{\numberline {2}Data set}{4}{section.2}
+\contentsline {subsection}{\numberline {2.1}Data set description}{4}{subsection.2.1}
+\contentsline {section}{\numberline {3}Feature selection}{7}{section.3}
+\contentsline {paragraph}{}{7}{section*.4}
+\contentsline {paragraph}{}{7}{section*.5}
+\contentsline {paragraph}{}{7}{section*.6}
+\contentsline {paragraph}{}{7}{section*.7}
+\contentsline {subsection}{\numberline {3.1}Feature selection algorithms}{8}{subsection.3.1}
+\contentsline {subsubsection}{\numberline {3.1.1}Algorithms for filtering attributes}{8}{subsubsection.3.1.1}
+\contentsline {paragraph}{CFS filter}{8}{section*.8}
+\contentsline {paragraph}{Chi-squared filter}{8}{section*.9}
+\contentsline {paragraph}{Information Gain filter}{8}{section*.10}
+\contentsline {paragraph}{Gain Ratio filter}{8}{section*.11}
+\contentsline {paragraph}{Symmetrical Uncertainty filter}{8}{section*.12}
+\contentsline {paragraph}{Linear Correlation filter}{8}{section*.13}
+\contentsline {paragraph}{Rank Correlation filter}{9}{section*.14}
+\contentsline {paragraph}{OneR algorithm}{9}{section*.15}
+\contentsline {paragraph}{RReliefF filter}{9}{section*.16}
+\contentsline {paragraph}{Consistency-based filter}{9}{section*.17}
+\contentsline {paragraph}{RandomForest filter}{9}{section*.18}
+\contentsline {subsubsection}{\numberline {3.1.2}Algorithms for wrapping classifiers and search attribute subset space}{10}{subsubsection.3.1.2}
+\contentsline {paragraph}{}{10}{section*.19}
+\contentsline {paragraph}{Greedy search}{10}{section*.20}
+\contentsline {paragraph}{Best-first search}{10}{section*.21}
+\contentsline {paragraph}{Hill climbing search}{10}{section*.22}
+\contentsline {paragraph}{Exhaustive search}{10}{section*.23}
+\contentsline {section}{\numberline {4}Classification}{11}{section.4}
+\contentsline {subsection}{\numberline {4.1}Classification algorithms}{11}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.2}Classification performance metrics}{11}{subsection.4.2}
+\contentsline {section}{\numberline {5}Cluster analysis}{12}{section.5}
+\contentsline {subsection}{\numberline {5.1}Dimensionality reduction algorithms}{12}{subsection.5.1}
+\contentsline {subsection}{\numberline {5.2}Cluster analysis algorithms}{12}{subsection.5.2}
+\contentsline {subsection}{\numberline {5.3}Cluster analysis performance metrics}{12}{subsection.5.3}
+\contentsline {part}{III\hspace {1em}Results}{13}{part.3}
+\contentsline {part}{IV\hspace {1em}Discussion}{14}{part.4}

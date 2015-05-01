@@ -8,19 +8,9 @@ Purposes of the research:
 
 1. Find and describe relations in the data (relations bewteen explanatory variables and response variable, relations bewteen explanatory variables). 
 
-2. Build a classification model, with the use of different approaches, e.g.:
+2. Compare different methods / algorithms to perform exploratory data analysis and predictive data analysis. 
 
-  - Logistic Regression Model
-  - Discriminant Analysis (Linear, Quadratic)
-  - Tree-Based Methods (Decision Tree, Conditional Regression Tree, Random Forests)
-
-4. Compare model performance metrics:
-
-  - @TODO: complete 
-
-with results randomness taken into consideration. 
-
-3. Compare model performance in terms of profit, based on cost-matrix values.  
+3. Provide a summary of the analysis, containing suggestions of practical appliance and remarks regarding possible further research.  
 
 
 

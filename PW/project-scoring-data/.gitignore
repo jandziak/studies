@@ -1,6 +1,6 @@
 # Ignore:
-/doc/report/*
+PW/project-scoring-data/doc/report/*
 
 # But do not ignore  these files:
-!/doc/report/psd-report.Rnw
-!/doc/report/psd-report.pdf
+!PW/project-scoring-data/doc/report/psd-report.Rmd
+!PW/project-scoring-data/doc/report/psd-report.pdf

@@ -39,6 +39,15 @@ library(smbinning)
 library(reshape)
 library(dplyr)
 
+# to install under Ubuntu, follow: http://stackoverflow.com/questions/13403268/error-while-loading-rjava
+library(rJava)
+library(RWekajars)
+library(RWeka)
+library(FSelector)
+
+
+
+
 
 # ------------------------------------------------------------------------------
 # Source project util scripts 

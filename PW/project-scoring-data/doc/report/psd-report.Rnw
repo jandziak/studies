@@ -1,0 +1,400 @@
+\documentclass[10pt]{article}
+
+% Add LATEX packges
+\usepackage[sc]{mathpazo}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{indentfirst}
+\usepackage{geometry}
+\usepackage{enumerate}
+\usepackage{float}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{latexsym}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{hyperref}
+
+
+% Preambula
+\begin{document}
+\title{"German Credit" scoring data analysis report}
+\author{Marta Karaś, Jan Idziak}
+\date{\today}
+\maketitle
+
+% Margin settings
+\newgeometry{tmargin=4cm, bmargin=4cm, lmargin=3cm, rmargin=3cm}
+
+% Self-defined commands
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\textnormal{Var}}
+\newcommand{\bias}{\textnormal{bias}}
+\newcommand{\mse}{\textnormal{MSE}}
+\newcommand{\se}{\textnormal{se}}
+
+% Define table of content
+\def\contentsname{Table of content}
+\tableofcontents
+\setcounter{tocdepth}{2}
+
+% R environment global settings (source of 'config.R' file)
+<<echo=F, eval=T, message = F>>=
+
+# Read config file
+computer.name <- Sys.info()["nodename"] 
+if (computer.name == "marta-komputer") 
+  source("/home/martakarass/my-store/studies/PW/project-scoring-data/R/conf.R")
+# # Check working directory
+# getwd()
+
+# Load knitr libary
+library(knitr)
+# Set knitr global settings
+knitr::opts_chunk$set(echo=F, eval=T, message = F, warning=F, cache = TRUE, fig=TRUE)
+@
+
+
+% ==============================================================================
+% ==============================================================================
+% ==============================================================================
+\clearpage
+\part{Introduction}
+
+In this part of the report we provide answers to the following questions about the "German Credit" data analysis we performed. 
+\begin{enumerate}
+\item \textit{Why was the study undertaken?}
+\item \textit{What was the purpose of the research? What research questions were stated?} 
+\end{enumerate}
+
+
+
+\section{Data analysis context}
+
+\subsection{Motivation}
+This report presents results of the "German Credit" scoring data analysis which was performed as a project assignment for the "Pozyskiwanie Wiedzy" course, which we attended at Wroclaw University of Technology, Faculty of Fundamental Problems of Technology (W-11), Mathematics programm (Master) in the 2014/15 summer semester. The lecturer of the course (both lectures and laboratories) is Ph.D. Adam Zagdański.
+
+\paragraph{}
+The main goal of the project is to make use of the variety of data-mining methods we have become familiar with during the course, in order to perform complete data analysis of selected data set. We also aim to pay attention to the practical appliacnces of some parts of our work. 
+
+\subsection{Research questions}
+
+We stated the following research purposes for our analysis. 
+\begin{enumerate}
+\item Find and describe relations in the data (relations bewteen explanatory variables and response variable, relations bewteen explanatory variables). 
+\item Compare different methods / algorithms to perform exploratory data analysis and predictive data analysis. 
+\item Provide a summary of the analysis, containing suggestions of practical appliance and remarks regarding possible further research.  
+\end{enumerate}
+
+
+
+
+
+
+
+% ==============================================================================
+% ==============================================================================
+% ==============================================================================
+\clearpage
+\part{Materials and methods}
+
+In this part of the report we describe the data set we obtained and the methods we use in the analysis. 
+
+\paragraph{}
+This section is rather of the decriptional / theoretical character. For a list of actual analysis steps, the outputs of the methods and more, please refer to the III part of this report.  
+
+
+
+\section{Data set}
+We perform analysis with the use of The (Statlog) German Credit Data we have obtained from the UCI Machine Learning Repository \href{http://archive.ics.uci.edu/ml/datasets/Statlog+(German+Credit+Data)}{site}. 
+
+
+\subsection{Data set description}
+The data set contains data on 20 variables and the classification whether an applicant is considered a Good or a Bad credit risk for 1000 loan applicants. The file provided contains variables with values encoded accoring to the following schema: 
+
+\begin{itemize}
+\item Attribute 1: (qualitative) Status of existing checking account 
+\newline A11 : ... < 0 DM 
+\newline A12 : 0 <= ... < 200 DM 
+\newline A13 : ... >= 200 DM / salary assignments for at least 1 year 
+\newline A14 : no checking account 
+
+\item Attribute 2: (numerical) Duration in month 
+
+\item Attribute 3: (qualitative) Credit history 
+\newline A30 : no credits taken/ all credits paid back duly 
+\newline A31 : all credits at this bank paid back duly 
+\newline A32 : existing credits paid back duly till now 
+\newline A33 : delay in paying off in the past 
+\newline A34 : critical account/ other credits existing (not at this bank) 
+
+\item Attribute 4: (qualitative) Purpose 
+\newline A40 : car (new) 
+\newline A41 : car (used) 
+\newline A42 : furniture/equipment 
+\newline A43 : radio/television 
+\newline A44 : domestic appliances 
+\newline A45 : repairs 
+\newline A46 : education 
+\newline A47 : (vacation - does not exist?) 
+\newline A48 : retraining 
+\newline A49 : business 
+\newline A410 : others 
+
+\item Attribute 5: (numerical) Credit amount 
+
+\item Attribute 6: (qualitative) Savings account/bonds 
+\newline A61 : ... < 100 DM 
+\newline A62 : 100 <= ... < 500 DM 
+\newline A63 : 500 <= ... < 1000 DM 
+\newline A64 : .. >= 1000 DM 
+\newline A65 : unknown/ no savings account 
+
+\item Attribute 7: (qualitative) Present employment since 
+\newline A71 : unemployed 
+\newline A72 : ... < 1 year 
+\newline A73 : 1 <= ... < 4 years 
+\newline A74 : 4 <= ... < 7 years 
+\newline A75 : .. >= 7 years 
+
+\item Attribute 8: (numerical) Installment rate in percentage of disposable income 
+
+\item Attribute 9: (qualitative) Personal status and sex 
+\newline A91 : male : divorced/separated 
+\newline A92 : female : divorced/separated/married 
+\newline A93 : male : single 
+\newline A94 : male : married/widowed 
+\newline A95 : female : single 
+
+\item Attribute 10: (qualitative) Other debtors / guarantors 
+\newline A101 : none 
+\newline A102 : co-applicant 
+\newline A103 : guarantor 
+
+\item Attribute 11: (numerical) Present residence since 
+
+\item Attribute 12: (qualitative) Property 
+\newline A121 : real estate 
+\newline A122 : if not A121 : building society savings agreement/ life insurance 
+\newline A123 : if not A121/A122 : car or other, not in attribute 6 
+\newline A124 : unknown / no property 
+
+\item Attribute 13: (numerical) Age in years 
+
+\item Attribute 14: (qualitative) Other installment plans 
+\newline A141 : bank 
+\newline A142 : stores 
+\newline A143 : none 
+
+\item Attribute 15: (qualitative) Housing 
+\newline A151 : rent 
+\newline A152 : own 
+\newline A153 : for free 
+
+\item Attribute 16: (numerical) Number of existing credits at this bank 
+
+\item Attribute 17: (qualitative) Job 
+\newline A171 : unemployed/ unskilled - non-resident 
+\newline A172 : unskilled - resident 
+\newline A173 : skilled employee / official 
+\newline A174 : management/ self-employed/ highly qualified employee/ officer 
+
+\item Attribute 18: (numerical) Number of people being liable to provide maintenance for 
+
+\item Attribute 19: (qualitative) Telephone 
+\newline A191 : none 
+\newline A192 : yes, registered under the customers name 
+
+\item Attribute 20: (qualitative) foreign worker 
+\newline A201 : yes 
+\newline 202 : no 
+\end{itemize}
+
+
+
+
+
+
+% ==============================================================================
+\clearpage
+\section{Feature selection}
+%In this section we describe methods for feature selection we use in our analysis. In general, we use the \href{http://cran.r-project.org/web/packages/FSelector/index.html}{FSelector} R package exhaustively. We follow [1] and this \href{http://en.wikibooks.org/wiki/Data_Mining_Algorithms_In_R/Dimensionality_Reduction/Feature_Selection}{wiki page} to summarize algorithms from the package mentioned. 
+Following [1], feature selection is essentially a task to remove irrelevant and/or redundant features. \textit{Irrelevant features} cam be removed without affecting learning performance. \textit{Redundant features} are a type of irrelevant feature. The distinction is that redundant feature implies the co-presence of another feature; individually, each feature is relevant, but the removal of one of them will not affect learning performance. 
+
+\paragraph{}
+The selection of features may be achieved in two ways:
+\begin{enumerate}
+\item \textbf{Feature ranking}. The idea is to rank features according to some criterion and select the top $k$ features.
+\item \textbf{Subset selection}. The idea is to select a minimum subset of features without learning performance deterioration.  
+\end{enumerate}
+In other words, subset selection algorithms can automatically determine the number of selected features, while feature ranking algorithms need to rely on some given threshold to select features. 
+
+\paragraph{}
+The tree typical feature selection models are:
+\begin{enumerate}
+\item \textbf{Filter}. In a filter model, one selects the features firstly and then uses this subset to execute a classification algorithm. 
+\item \textbf{Wrapper}. In a wrapper model, one employs a learning algorithm and uses its performance to determine the quality of selected features. 
+\item \textbf{Embedded}. An embedded model of features selection integrates the selection of features in model builidng. An example of such model is a decision tree induction algorithm, in which at each branching node, a feature has to be selected. 
+\end{enumerate}
+
+\paragraph{}
+In literature, various search strategies are proposed, including: forward, backward, floating, branch-and-bound, and randomized. A relevant issue, regarding exhaustive and heuristic searches is whether there is any reason to perform exhaustive searches if time complexity were not a concern. Research shows that exhaustive search can lead to the features that exacerbate data oerfitting, while heuristic search is less prone to data overfitting in feature selection, facing small data samples.
+
+\paragraph{}
+The evaluation of feature selection often entails two tasks: 
+\begin{enumerate}
+\item One is to compare two cases: before and after feature selection. The goal of this task is to observe if feature selection achieves its intended objectives. The aspects of evaluation may include the number of selected features, time, scalability and learning model's performance. 
+\item The second task is to compare two feature selection algorithms to see if one is better than other for a certain task. 
+\end{enumerate}
+
+
+
+\clearpage
+\subsection{Feature selection algorithms}
+In this subsection we describe methods for feature selection we use in our analysis. In general, we use the \href{http://cran.r-project.org/web/packages/FSelector/index.html}{FSelector} R package exhaustively. This package contains both algorithms for filtering attributes and algorithms for wrapping classifiers and search attribute subset space. 
+
+\subsubsection{Algorithms for filtering attributes}
+
+\paragraph{CFS filter}
+CFS is a correlation-based filter method CFS from [2]. It gives high scores to subsets that include features that are highly correlated to the class attribute but have low correlation to each other. Let $Attribute$ be an attribute subset that has $k$ attributes, $rcf$ models the correlation of the attributes to the class attribute, $rff$ - the intercorrelation between attributes. We define $Attribute$ score as:
+$$CfsScore(Attribute) =\frac{k\;  rcf}{ \sqrt{k+k(k-1) rff}}.$$
+The algorithm from FSelector R package makes use of \textit{Best-first search} for searching the attribute subset space. In \textit{Best-first search}, the algorithm chooses the best node from all already evaluated ones and evaluates it. The selection of the best node is repeated approximately $max.brackets$ times in case no better node found.
+
+\paragraph{Chi-squared filter}
+The algorithm evaluates the worth of an attribute by computing the value of the chi-squared statistic with respect to the class.
+
+\paragraph{Information Gain filter}
+One of the entropy-based filters. Algorithm evaluates the worth of an attribute by measuring the information gain with respect to the class.
+$$InfoGain(Class, Attribute)= H(Class) +  H(Attribute) - H(Class|Attribute),$$
+where $H$ is the \href{http://en.wikipedia.org/wiki/Entropy_(information_theory)}{information entropy}. 
+
+\paragraph{Gain Ratio filter}
+One of the entropy-based filters. Algorithm evaluates the worth of an attribute by measuring the gain ratio with respect to the class.
+$$GainR(Class, Attribute) = \frac{H(Class) + H(Attribute) - H(Class | Attribute)}{H(Attribute)},$$
+where $H$ is the information entropy. 
+
+\paragraph{Symmetrical Uncertainty filter}
+One of the entropy-based filters. Algorithm evaluates the worth of a set attributes by measuring the symmetrical uncertainty with respect to another set of attributes. 
+$$SymmU(Class, Attribute)= 2\frac{H(Class) + H(Attribute) - H(Class| Attribute)}{H(Attribute) + H(Class)},$$
+where $H$ is the information entropy. 
+
+\paragraph{Linear Correlation filter}
+The algorithm finds weights of continous attributes basing on their Pearson's correlation with continous class attribute.
+
+\paragraph{Rank Correlation filter}
+The algorithm finds weights of continous attributes basing on their Spearman's correlation with continous class attribute.
+
+\paragraph{OneR algorithm}
+The algorithms find weights of discrete attributes basing on very simple association rules involving only one attribute in condition part. In other words, it uses the minimum-error attribute for prediction, discretizing numeric attributes. For more information, see [4]. 
+
+\paragraph{RReliefF filter}
+The algorithm evaluates the worth of an attribute by repeatedly sampling an instance and considering the value of the given attribute for the nearest instance of the same and different class. Considering that result, it evaluates weights of attributes. Can operate on both discrete and continuous class data. For more information see [5,6,7]. 
+
+\paragraph{Consistency-based filter}
+Evaluates the worth of a subset of attributes by the level of consistency in the class values when the training instances are projected onto the subset of attributes. Consistency of any subset can never be lower than that of the full set of attributes, hence the usual practice is to use this subset evaluator in conjunction with a Random or Exhaustive search which looks for the smallest subset with consistency equal to that of the full set of attributes. The FSelector R package implementation makes use of \textit{Best-first search} for searching the attribute subset space. Works for continuous and discrete data.
+
+\paragraph{RandomForest filter}
+It is a wrapper for variable importance measure produced by randomForest algorithm. The FSelector R package implementation allows for two types of importance measure:
+\begin{enumerate}
+\item mean decrease in accuracy,
+\item mean decrease in node impurity.
+\end{enumerate}
+The first measure is computed from
+permuting OOB (out-of-bound) data: For each tree, the prediction error on the out-of-bag portion of the data is recorded (error rate for classification, MSE for regression). Then the same is done after permuting each predictor variable. The difference between the two are then averaged over all trees, and normalized by the standard deviation of the differences. If the standard deviation of the differences is equal to 0 for a variable, the division is not done (but the average is almost always equal to 0 in that case).
+\newline
+The second measure is the total decrease in node impurities from splitting on the variable, averaged over all trees. For classification, the node impurity is measured by the Gini index. For regression, it is measured by residual sum of squares.
+
+
+\clearpage
+\subsubsection{Algorithms for wrapping classifiers and search attribute subset space}
+In general, the wrapper approach depends on the so called \textit{evaluation function} that is used to return a numeric value (a score) indicating how important a given subset of features is. Typically, one uses the classification-accuracy (usually based on cross-validation) as the score for the subset. 
+
+\paragraph{}
+Below we provide a brief description of the algorithms for searching atrribute subset space. 
+
+\paragraph{Greedy search}
+At first, greedy search algorithms expand starting node, evaluate its children and choose the best one which becomes a new starting node. This process goes only in one direction. \textit{Forward search} starts from an empty and \textit{backward search} from a full set of attributes.
+
+
+\paragraph{Best-first search}
+The algorithm is similar to \textit{Forward search} besides the fact that is chooses the best node from all already evaluated ones and evaluates it. In the FSelector R package implementation, the selection of the best node is repeated approximately $max.brackets$ times in case no better node found. 
+
+\paragraph{Hill climbing search}
+The algorithm starts with a random attribute set. Then it evaluates all its neighbours and chooses the best one. It might be susceptible to local maximum.
+
+\paragraph{Exhaustive search}
+The algorithm searches the whole attribute subset space in breadth-first order. 
+
+
+
+
+
+
+
+% ==============================================================================
+\clearpage
+\section{Classification}
+
+\subsection{Classification algorithms}
+
+\subsection{Classification performance metrics}
+
+
+
+
+
+
+
+% ==============================================================================
+\clearpage
+\section{Cluster analysis}
+
+\subsection{Dimensionality reduction algorithms}
+
+\subsection{Cluster analysis algorithms}
+
+\subsection{Cluster analysis performance metrics}
+
+
+
+
+
+
+% ==============================================================================
+% ==============================================================================
+% ==============================================================================
+\clearpage
+\part{Results}
+
+
+
+
+
+% ==============================================================================
+% ==============================================================================
+% ==============================================================================
+\clearpage
+\part{Discussion}
+
+
+
+
+
+
+% ==============================================================================
+% ==============================================================================
+% ==============================================================================
+\clearpage
+\begin{thebibliography}{99}
+\bibitem{} Computational Methods of Feature Selection (Chapman \& Hall/CRC Data Mining and Knowledge Discovery Series), Huan Liu, Hiroshi Motoda, 2007, ISBN-13: 978-1584888789  
+\bibitem{} Hall, M. A., Smith, L. A. (1998). Practical feature subset selection for machine learning. Australian Computer Science Conference. Springer. 181-191.
+\bibitem{} Liu, H. and Setiono, R., Chi2: Feature selection and discretization of numeric attributes, Proc. IEEE 7th International Conference on Tools with Artificial Intelligence, 338-391, 1995
+\bibitem{} R.C. Holte (1993). Very simple classification rules perform well on most commonly used datasets. Machine Learning. 11:63-91.
+\bibitem{} Kenji Kira, Larry A. Rendell: A Practical Approach to Feature Selection. In: Ninth International Workshop on Machine Learning, 249-256, 1992.
+\bibitem{} Igor Kononenko: Estimating Attributes: Analysis and Extensions of RELIEF. In: European Conference on Machine Learning, 171-182, 1994.
+\bibitem{} Marko Robnik-Sikonja, Igor Kononenko: An adaptation of Relief for attribute estimation in regression. In: Fourteenth International Conference on Machine Learning, 296-304, 1997.
+\end{thebibliography}
+
+\end{document}
