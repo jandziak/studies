@@ -339,6 +339,86 @@ The algorithm searches the whole attribute subset space in breadth-first order.
 
 \subsection{Classification algorithms}
 
+\paragraph{kNN k- nearest neighbours}
+Method is used for modeling in problem of regression or classification. 
+It is simple algorithym using lazy learning. There is no actual model so all the 
+computation is done while classification. 
+In the problem of classification the result for every single observation is 
+a class for which in k closest neighbours from the training set is the most
+popular.
+\paragraph{Decission trees}
+Decission tree is a method that perform recussive partition of the set for every
+predictor. In each step there is chosen split that separates the set between 
+classes the most according to one of the meassures. The most populat measures 
+are Information GAIN or GINI.
+For continous data it is desired to partition variable into categorical 
+(It could cause loss of the information). Result is highly corelatet with the 
+learning set. Nonetheless it is easy to interpret, and attractive visually. 
+Another plus is that decission trees do not have any assumptions about 
+distribution of the data and algorithms works fast. 
+\paragraph{Random forest}
+It is curently one of the most popular method in machine learning. Its popularity 
+grows thanks to good performance and small assumptions. 
+However it performs well, it is hard to interpret the results, as long as model 
+is complicated and consists many decission trees. 
+For this method in each step of decission tree creation there is taken random 
+subset of the features and then one of them is taken for split. This is done 
+untli appropriate settled level. 
+For Random forests the computatio time is much higher than for decission trees. 
+Mostly it is because not only one tree is fitted but usualy much more. 
+One of the biggest disadvantages of this model is hard interpretation of the 
+output. 
+Even though the subset of predictors is only taken it shows much better results
+than other regulat methods for different data sets.
+\paragraph{Logistic regression}
+The most popular method among application in banks, insurance companies and the
+industrie for modeling binary data (It could servs also for prediction 
+multiclass data). It owes popularity to its simplicity, easy open form and
+straight interpretation. It is subject to produce Score Card.
+Method is a particular type of generalized linear model where link function has 
+logit form $logit(p) = log(\frac{p}{1-p})$. It means that probability of 
+occurance particular event, is modeled indirectly, as a appropriate 
+transformation. 
+$$ logit(p_j) = log(\frac{p_j}{1-p_j}) = \Sigma_{i=1}^{n}\beta_i X_{i,j} $$
+  
+Where $p_j$ is estimated probability, $\beta_i$ is factor for $X_{i,j}$ and X
+represents the features of observation. 
+\paragraph{Linear discriminant analysis}
+It is another linear method. Under the assumption of normality and equality of 
+covariance matrices within classes.
+$$
+  Pr(C=k|X=x) = \frac{f_k(x)\pi_k}{\Sigma_{l=1}^K f_l(x)\pi_l}
+$$
+  
+where $C = k$ represents particular class affiliation, $x$ is observation vector 
+and $f_k(x)$, has appropriate Gaussian distribution with the mean $\mu_k$ and 
+covariance matrixvariance $\Sigma$ and $\pi_k$ is a-priori classes probability. 
+It is enough to compare numerator as long as denominator for all classes would 
+be the same.
+ 
+\paragraph{Quadric discriminant analysis}
+It is similar method to the linear dyscriminant analysis. It keeps assumption 
+about normality, but in this case covarance matrices could differ. 
+Aproppriate probability function keep its form: 
+  
+$$
+  Pr(C=k|X=x) = \frac{f_k(x)\pi_k}{\Sigma_{l=1}^K f_l(x)\pi_l}
+$$
+As before it is enough to compare numerators for all classes.
+\paragraph{Naive Bayes}
+Another method that uses Bayesian rule. It is called Naive Bayes as long as it 
+has a naive assumption about loss of correlation between predictors. 
+However this model has easy form, it also perform well in many appliactions. 
+$$
+  P(Y=k|X=x) = \frac{P(X=x|Y=y)}{P(X=x)} = \frac{P(X_1=x_1,\ldots X_n=x_n|Y=y)}{P(X=x)}  
+$$
+  
+In this case probabilities are just taken as an empirical realisation of the 
+data.
+It could also fall into problem of zero class frequencies. To omit this 
+situation it is recommended to use one of the smoothing methods.
+
+\clearpage
 \subsection{Classification performance metrics}
 
 
