@@ -8,17 +8,15 @@
 #'  - sourcing of all util scipts used in project
 
 
-
 # ------------------------------------------------------------------------------
 # Set working directory
 
 computer.name <- Sys.info()["nodename"] 
 if (computer.name == "marta-komputer") 
   wd.tmp <- "/home/martakarass/my-store/studies/PW/project-scoring-data"
-
+if (computer.name == "MATHPASSION") 
+   wd.tmp <- "C:/Users/Math/studia/studies/PW/project-scoring-data"
 setwd(wd.tmp)
-
-
 
 
 # ------------------------------------------------------------------------------
