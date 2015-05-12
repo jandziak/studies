@@ -44,20 +44,30 @@ Also:
 
 
 
-## Models Building 
+## Data modelling 
 
-### Logistic regression (scoring) model 
-
-- [@TODO] feature selection 
-- [@TODO] simple modelling
-- [@TODO] model performance measures  
-- [@TODO] cost-sensitive modelling (comparision of different approaches)
+**Deadline**: 31. maja (kody + analiza + raport)
 
 
+### Klasyfikacja wraz z oceną dokładności [Janek]
 
-### [@TODO] others 
+* regresja logistyczna 
+
+    - podejście standardowe i podejście cost-sensitive (uwzględnienie różnych kosztów różnych błędów, tj. więcej nas kosztuje, jak damy złemu klientowi kredyt niż odwrotnie; hasła: cost-matrix, cost-sensitive learning)
+    - porównanie modeli budowanych z cechami skategoryzowanymi (typu factor) i cechami numerycznymi (cechy skategoryzowane przekodowane do WOE)
+    - porównanie performance modeli
+    
+* drzewo klasyfikacyjne (1 drzewo, random forest)
+
+* LDA, QDA
+
+* zastosowanie wybranej metody redukcji wymiaru w połączeniu z klasyfikacją (np. na metodzie, która da najlepsze wyniki z powyższych)
 
 
+
+### Analiza skupień wraz z oceną poprawności [Marta]
+
+(uzupełnię)
 
 
 

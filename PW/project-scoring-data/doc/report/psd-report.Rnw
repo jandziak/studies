@@ -16,6 +16,7 @@
 \usepackage{amsmath}
 \usepackage{listings}
 \usepackage{hyperref}
+\usepackage{multirow}
 
 
 % Preambula
@@ -421,7 +422,90 @@ situation it is recommended to use one of the smoothing methods.
 \clearpage
 \subsection{Classification performance metrics}
 
-
+\paragraph{Confussion matrix}
+This is one of simple method to grade quality of the classification. It serves 
+to compare acctual class of an observation to one predicted by model. 
+\begin{center}
+\begin{tabular}{p{1cm}c|p{1.5cm}|p{1.5cm}|c}
+\cline{3-4}
+& & \multicolumn{2}{ c| }{Predicted Class} \\ \cline{3-4}
+& & True & False  \\ \cline{1-4}
+\multicolumn{1}{ |c  }{\multirow{2}{*}{Actuall Class} } &
+  \multicolumn{1}{ |c| }{True} & True Positive (TP) & False Negative (FN)  & \\ \cline{2-4}
+\multicolumn{1}{ |c  }{}                        &
+  \multicolumn{1}{ |c| }{False} & False Positive (FP) & True  Negative (TN) &   \\ \cline{1-4}
+\end{tabular}
+\end{center}
+Using confussion matrix it is easier to calculate many of the goodnes of fit 
+measures for the models such as sensitivity, specifity or many more. 
+\paragraph{Sensitivity}
+One of the simple measures called also Recall or True Positive Rate. It 
+measures proportion of predicted as true and actual true. Using 
+confusion matrix it could be given as:
+  
+  $$
+  TPR = \frac{TP}{TP+FN}
+  $$
+\paragraph{Specifity}
+This factor is also called True Negative Rate. It measures proportion predicted 
+corretly as false and actuall number of false observations. It is given by:
+$$
+  SPC = \frac{TN}{TN+FP}
+$$
+  
+  
+\paragraph{Precission}
+Popular measure in information retrival. It repressents fraction of documents
+relevant to retrived. In binary classification it is defined as: 
+$$
+  PPV = \frac{TP}{TP+FP}
+$$
+  
+\paragraph{False discovery rate}
+It is complementary to the Precission measure that is getting more popular thanks 
+to groving dimensionality of data sets. In many applications it is of an interest 
+of scientist to control this factor. The formula for this coefficient is 
+subsequent:
+$$
+  FDR = \frac{FP}{TP+FP} = 1-PPV
+$$
+  
+\paragraph{Accuracy}
+It is simple measure that could be taken as a good indicator for model 
+performance. It takes proportion of all positive clasified to total
+number of observations. For not equaly distributed observations between groups 
+(for example in spam detection where there is many spam files classificator that
+predicts everything as a spam would have high Accuracy)
+$$
+ACC = \frac{TP +TN}{TP+FP+TN+FN}
+$$
+\paragraph{F-measure}
+F-measure is defined as a combination of Precission and Recall. Both of earlier
+described indexes gives some information about model, but using them separtely 
+can effect with falling into missclassification for specific types of data. 
+$$
+  F = \frac{2\cdot precision \cdot recall}{precision + recall}
+$$
+\subsubsection{Separation measures}
+\paragraph{Kolmogorow Smirnov statistics and distributions}
+Kolmogorov Smirnov statistics is the biggest distance between distribution 
+functions of scores (probabilities) for accutal groups of True and False. 
+Distribitions shows just simple cumulative distribution functions for classes.
+\paragraph{ROC curve and GINI, AUROC indexes}
+ROC or Reciver Operating Characteristic is a graphical ilustration that 
+represents preformance of the binary classifier. It is being used in medicine, 
+radiology, biometrics and many more applications It shows proportion of the True
+Positive rate (on the vertical axis) and False Positive rate (on the horisontal 
+axis) at various thresholds. 
+AUC is factor strongly connected with the ROC curve. Abbreviation stands for 
+area under curve. It could be calculated as follows:
+$$
+AUC = \int_{-\infty}^{\infty} TPR(x)FPR(x)dx
+$$
+\paragraph{Histogram Good vs Bad}
+It is just histogram showing distribution of scores (probabilities) within 
+classes. For good models there suppose to be visible difference between hight of 
+the scores for different classes. 
 
 
 
@@ -431,12 +515,18 @@ situation it is recommended to use one of the smoothing methods.
 \clearpage
 \section{Cluster analysis}
 
-\subsection{Dimensionality reduction algorithms}
-
 \subsection{Cluster analysis algorithms}
 
 \subsection{Cluster analysis performance metrics}
 
+
+
+
+% ==============================================================================
+\clearpage
+\section{Dimensionality reduction}
+
+\subsection{Dimensionality reduction algorithms}
 
 
 
@@ -448,7 +538,15 @@ situation it is recommended to use one of the smoothing methods.
 \clearpage
 \part{Results}
 
+\clearpage
+\section{Classification modelling results}
 
+\clearpage
+\section{Cluster analysis results}
+
+
+\clearpage
+\section{Summary}
 
 
 
