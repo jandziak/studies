@@ -71,6 +71,7 @@
 % Preambula
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
+%\SweaveOpts{concordance=TRUE}
 \title{"German Credit" scoring data analysis report}
 \author{Marta Karaś, Jan Idziak}
 \date{\today}
@@ -92,7 +93,13 @@
 \setcounter{tocdepth}{2}
 
 % R environment global settings (source of 'config.R' file)
-
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{verbatim}
+## [1] "/home/martakarass/my-store/studies/PW/project-scoring-data"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 
 
 % ==============================================================================
@@ -245,9 +252,17 @@ The data set contains data on 20 variables and the classification whether an app
 \newline A191 : none 
 \newline A192 : yes, registered under the customers name 
 
-\item Attribute 20: (qualitative) foreign worker 
+\item Attribute 20: (qualitative) Foreign worker 
 \newline A201 : yes 
 \newline 202 : no 
+\end{itemize}
+
+The classification variable states whether there was a default case ('bad' client - failed to pay off the credit) or not ('good' client). 
+
+\begin{itemize}
+\item Classification: (qualitative) Default
+\newline 1 (default)
+\newline 0 (non-default)
 \end{itemize}
 
 
@@ -256,6 +271,33 @@ The data set contains data on 20 variables and the classification whether an app
 
 
 % ==============================================================================
+\section{Binning countinuous variables}
+\paragraph{}
+In credit scoring, Information Value (IV) is frequently used to compare predictive power among variables. When developing new scorecards using logistic regression, variables are often binned and recoded using WoE concept. 
+
+\subsection{Weight of Evidence (WoE)}
+One of our goals when binning variables is to maximize Information Value. Weight of Evidence (WoE) for single bin is defined as:
+$$WoE = \left [ ln\left ( \frac{\text{Relative Frequency of Goods}}{\text{Relative Frequency of Bads}} \right ) \right ]\times 100.$$
+We can see that value of WoE will be 0 if the odds of Relative Frequency of Goods / Relative Frequency Bads is equal to 1. If the Relative Frequency of Bads in a group is greater than the Relative Frequency of Goods, the odds ratio will be less than 1 and the WoE will be a negative number; if the Relative Frequency of Goods is greater than the Relative Frequency of Bads in a group, the WoE value will be a positive number. 
+
+\subsection{Information Value (IV)}
+We define Information Value of the variable as follow: 
+$$IV = \sum_{i=1}^{k}\left [ (\text{Relative Frequency of Goods}_i-\text{Relative Frequency of Bads}_i) \times ln\left ( \frac{\text{Relative Frequency of Goods}}{\text{Relative Frequency of Bads}} \right )  \right ],$$
+\paragraph{}
+By convention the values of the IV statistic can be interpreted as follows. If the IV statistic is:
+\begin{itemize}
+\item Less than 0.02, then the predictor is not useful for modeling (separating the Goods from the Bads),
+\item 0.02 to 0.1, then the predictor has only a weak relationship to the Goods/Bads odds ratio,
+\item 0.1 to 0.3, then the predictor has a medium strength relationship to the Goods/Bads odds ratio,
+\item 0.3 or higher, then the predictor has a strong relationship to the Goods/Bads odds ratio.
+\end{itemize}
+
+\subsection{Motivation}
+The WoE recoding of predictors is particularly well suited for subsequent modeling using Logistic
+Regression. Specifically, logistic regression will fit a linear regression equation of predictors (or WoE-recoded continuous predictors) to predict the logit-transformed binary Goods/Bads variable. Therefore, by using WoE-recoded predictors in logistic regression the predictors are all prepared and coded to the same WoE scale, and the parameters in the linear logistic regression
+equation can be directly compared. ([8])
+
+
 \clearpage
 \section{Feature selection}
 %In this section we describe methods for feature selection we use in our analysis. In general, we use the \href{http://cran.r-project.org/web/packages/FSelector/index.html}{FSelector} R package exhaustively. We follow [1] and this \href{http://en.wikibooks.org/wiki/Data_Mining_Algorithms_In_R/Dimensionality_Reduction/Feature_Selection}{wiki page} to summarize algorithms from the package mentioned. 
@@ -576,6 +618,133 @@ the scores for different classes.
 \part{Results}
 
 \clearpage
+\section{Data preprocessing results}
+In this section we present the results of data preprocessing we performed. The important parts of this process are: creating derived variables, binning countinuous variables and correcting bins (factor levels) if it seems reasonable. 
+\paragraph{}
+The procedures and methods used to perform this part of the analysis include:
+\begin{itemize}
+\item visual inspection of density estimator plots and fitting distribution from different distribution families to numeric variables data,
+\item comparision of optimal discretization method ($smbinning$ package) and equal frequency discretization with Information Value as criterion,
+\item using WoE criterion to define factor levels "similarity".
+\end{itemize}
+
+
+\subsection{Searching for missing, corrupt and invalid data}
+\paragraph{}
+We started the preprocessing in searching for missing, corrupt and invalid data. In our dataset most of the varaibles are factor variables ($PURPOSE$, $EMPLOYMENT$ etc.) Some of them are numeric but consist only of a few qunique values and thus may be seen rather like ordered factors ($NUM\_OF\_MAINTAINED\_PEOPLE$, $RESIDENCE$ etc.) We investigated frequency tables and did not notice anything anusual in the values. 
+\paragraph{}
+Three variables in the data set are "truly" numeric: $DURATION$, $AMOUNT$ and $AGE$. We did not find anything particularly unusual in the values of these variables. To satisfy our curiosity, we tried to fit a probabilistic distribution to the values. We used $MASS::fitdistr$ function to perform maximum-likelihood fitting of univariate distribution from selected distribution families. In each case we tried to fit parameters for three distributions families: \textit{Gamma}, \textit{Log-normal} and \textit{Weibull}. 
+\paragraph{}
+On the graphs below we can see kernel density estimates of variable density (black line) and curves representing density of the distribution fitted. We was not able to fit \textit{Gamma} distribution to the $AMOUNT$ variable values (\textit{Error in stats::optim(x = c(1169, 5951, 2096, 7882, 4870, 9055, 2835,  :  non-finite finite-difference value [1]}). It seems that \textit{Log-normal} distribution fits quite well in each three cases. 
+
+
+
+
+\begin{figure}[h!]
+\centering
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=.95\linewidth]{figure/unnamed-chunk-3-1} 
+
+\end{knitrout}
+\caption{Kernel density estimate of $DURATION$ variable density (black line) and curves representing density of the distribution fitted.}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=.95\linewidth]{figure/unnamed-chunk-4-1} 
+
+\end{knitrout}
+\caption{Kernel density estimate of $AMOUNT$ variable density (black line) and curves representing density of the distribution fitted.}
+\end{figure}
+
+
+\begin{figure}[h!]
+\centering
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=.95\linewidth]{figure/unnamed-chunk-5-1} 
+
+\end{knitrout}
+\caption{Kernel density estimate of $AGE$ variable density (black line) and curves representing density of the distribution fitted.}
+\end{figure}
+
+
+\clearpage
+\subsection{Creating derived variables}
+\paragraph{}
+
+We were considering possibilities of creating derived variables. We came up with propositions of the following formulas:
+$$AMOUNT\_TO\_DURATION = AMOUNT / DURATION,$$
+$$DURATION\_TO\_AGE = DURATION / AGE,$$
+$$AMOUNT\_TO\_AGE = AMOUNT / AGE.$$
+
+On the \textit{Figure 4.} we can see boxplots of $DURATION$, $AGE$ and $AMOUNT$ across two levels of response variable $RES$. On the \textit{Figure 5.} we can see boxplots of derived variables. This comparision can give us intuition how well our new variables separate good and bad bank clients.
+
+\begin{figure}[h!]
+\centering
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=.99\linewidth]{figure/unnamed-chunk-6-1} 
+
+\end{knitrout}
+\caption{Boxplots of $AMOUNT$, $DURATION$ and $AGE$ variables across two levels of response variable $RES$.}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=.99\linewidth]{figure/unnamed-chunk-7-1} 
+
+\end{knitrout}
+\caption{Boxplots of derived variables: $AMOUNT\_TO\_DURATION$, $DURATION\_TO\_AGE$ and $AMOUNT\_TO\_AGE$ across two levels of response variable $RES$.}
+\end{figure}
+
+\paragraph{}
+The boxplots on the \textit{Figure 5.} agree with our intuition: we expect higher $DURATION\_TO\_AGE$ and $AMOUNT\_TO\_AGE$ values for those clients who defaulted ($RES=1$). On the other hand, we would expect the same for the $AMOUNT\_TO\_DURATION$ variable whereas the plot shows something slightly opposite. However, the value differences on the $AMOUNT\_TO\_DURATION$ boxplot are so fine that we suppose this variable is going to turn out to be of low information value and will not be consider as important one. 
+
+\subsection{Binning continuous variables}
+\paragraph{}
+In our analysis we compared three approaches of dividing continuous variables into categories: 
+\begin{enumerate}
+\item equal frequency discretization (resulted bins are of equal number of observations),
+\item supervised discretization which utilizes Recursive Partitioning to categorize the numeric characteristic and compute cutpoins based on Conditional Inference Trees algorithm ($smbinning$ package),
+\item categorize variable with simple tree model (from $rpart$ package, with the use of default tree building parameters).
+\end{enumerate}
+
+The IV comparision is presented on the \textit{Figure 6.} below. Note that equal frequency discretization results are presented for:
+\begin{itemize}
+\item the same number of bins as in variable resulted from $smbinning$ method; signature: $equal\_nbins$,
+\item the same number of bins as in variable resulted from $rpart$ method; signature: $equal\_nrparts$.
+\end{itemize}
+
+
+
+\begin{figure}[h!]
+\centering
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=.95\linewidth]{figure/unnamed-chunk-9-1} 
+
+\end{knitrout}
+\caption{Comparision of Information Values of variables resulted from binning performed by means of 3 differend approaches. }
+\end{figure}
+
+We can see a few interesting things from the plot above: 
+\begin{itemize}
+\item The $smbinning$ function from the $smbinning$ seems to beat other methods in terms of IV of resulted binned variable. 
+\item Derived variable $DURATION\_TO\_AGE$ has a strong relationship to the Goods/Bads odds ratio (over 0.33 IV value), whereas two other derived variables ($AMOUNT\_TO\_AGE$, $AMOUNT\_TO\_DURATION$) seem to have not. 
+\end{itemize}
+
+
+
+
+
+
+\clearpage
 \section{Classification modelling results}
 
 \clearpage
@@ -610,6 +779,8 @@ the scores for different classes.
 \bibitem{} Kenji Kira, Larry A. Rendell: A Practical Approach to Feature Selection. In: Ninth International Workshop on Machine Learning, 249-256, 1992.
 \bibitem{} Igor Kononenko: Estimating Attributes: Analysis and Extensions of RELIEF. In: European Conference on Machine Learning, 171-182, 1994.
 \bibitem{} Marko Robnik-Sikonja, Igor Kononenko: An adaptation of Relief for attribute estimation in regression. In: Fourteenth International Conference on Machine Learning, 296-304, 1997.
+\bibitem{} StatSoft, Formula Guide Weight of Evidence Module http://documentation.statsoft.com/portals/0/formula%20guide/Weight%20of%20Evidence%20Formula%20Guide.pdf
 \end{thebibliography}
+
 
 \end{document}

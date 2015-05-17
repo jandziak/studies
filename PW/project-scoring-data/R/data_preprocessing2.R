@@ -64,28 +64,84 @@ names(gcredit)
 
 
 
-# Check unique factor values
-for(name  in names(gcredit)){
-  
-  var.tmp <- gcredit[, name]
-  message(name)
-  
-  if(is.factor(var.tmp)){
-    print(unique(var.tmp))
-  } else{
-    print(summary(var.tmp))
-  }
-}
-#' Observation: 
-#' there's no "NA" values or values we did not notice while converting to factor
-
-
 # We look for any outliers, invalid data etc. among numeric variables 
-summary(gcredit$DURATION)
-plot(density(gcredit$DURATION))
 
-summary(gcredit$AMOUNT)
-plot(density(gcredit$AMOUNT)) # Interesting
+# DURATION
+x.vec <- gcredit$DURATION
+x <- seq(min(x.vec)-1, max(x.vec)+1, length.out = 1000)
+
+par(mfrow=c(1,3))
+plot(density(x.vec), main = "DURATION", lwd=2)
+fit <- fitdistr(x.vec, "Gamma") ## fitting gamma pdf parameters
+lines(x, dgamma(x, rate=fit$estimate["rate"], shape=fit$estimate["shape"]), col = 2, lwd = 2)
+legend("topright", legend = c("estimator", "Gamma"), col = c(1,2), cex = 1, lwd = 3)
+
+plot(density(x.vec), main = "DURATION", lwd=2)
+fit <- fitdistr(x.vec, "log-normal") ## fitting gamma pdf parameters
+lines(x, dlnorm(x, meanlog = fit$estimate["meanlog"], sdlog = fit$estimate["sdlog"]), col = 3, lwd = 2)
+legend("topright", legend = c("estimator", "log normal"), col = c(1,3), cex = 1, lwd = 3)
+
+plot(density(x.vec), main = "DURATION", lwd=2)
+fit <- fitdistr(x.vec, "weibull") ## fitting gamma pdf parameters
+lines(x, dweibull(x, shape =fit$estimate["shape"], scale = fit$estimate["scale"]), col = 4, lwd = 2)
+legend("topright", legend = c("estimator", "Weibull"), col = c(1,4), cex = 1, lwd = 3)
+
+# Print best results
+fitdistr(x.vec, "log-normal")
+
+
+# AMOUNT
+x.vec <- gcredit$AMOUNT
+x <- seq(min(x.vec)-1, max(x.vec)+1, length.out = 1000)
+
+par(mfrow=c(1,3))
+plot(density(x.vec), main = "AMOUNT", lwd=2)
+fit <- fitdistr(x.vec, "Gamma") ## fitting gamma pdf parameters
+lines(x, dgamma(x, rate=fit$estimate["rate"], shape=fit$estimate["shape"]), col = 2, lwd = 2)
+legend("topright", legend = c("estimator", "Gamma"), col = c(1,2), cex = 1, lwd = 3)
+
+#par(mfrow=c(1,2))
+plot(density(x.vec), main = "AMOUNT", lwd=2)
+fit <- fitdistr(x.vec, "log-normal") ## fitting gamma pdf parameters
+lines(x, dlnorm(x, meanlog = fit$estimate["meanlog"], sdlog = fit$estimate["sdlog"]), col = 3, lwd = 2)
+legend("topright", legend = c("estimator", "log normal"), col = c(1,3), cex = 1, lwd = 3)
+
+plot(density(x.vec), main = "AMOUNT", lwd=2)
+fit <- fitdistr(x.vec, "weibull") ## fitting gamma pdf parameters
+lines(x, dweibull(x, shape =fit$estimate["shape"], scale = fit$estimate["scale"]), col = 4, lwd = 2)
+legend("topright", legend = c("estimator", "Weibull"), col = c(1,4), cex = 1, lwd = 3)
+
+# Print best results
+fitdistr(x.vec, "log-normal")
+
+
+
+# AGE
+x.vec <- gcredit$AGE
+x <- seq(min(x.vec)-1, max(x.vec)+1, length.out = 1000)
+
+par(mfrow=c(1,3))
+plot(density(x.vec), main = "AGE", lwd=2)
+fit <- fitdistr(x.vec, "Gamma") ## fitting gamma pdf parameters
+lines(x, dgamma(x, rate=fit$estimate["rate"], shape=fit$estimate["shape"]), col = 2, lwd = 2)
+legend("topright", legend = c("estimator", "Gamma"), col = c(1,2), cex = 1, lwd = 3)
+
+plot(density(x.vec), main = "AGE", lwd=2)
+fit <- fitdistr(x.vec, "log-normal") ## fitting gamma pdf parameters
+lines(x, dlnorm(x, meanlog = fit$estimate["meanlog"], sdlog = fit$estimate["sdlog"]), col = 3, lwd = 2)
+legend("topright", legend = c("estimator", "log normal"), col = c(1,3), cex = 1, lwd = 3)
+
+plot(density(x.vec), main = "AGE", lwd=2)
+fit <- fitdistr(x.vec, "weibull") ## fitting gamma pdf parameters
+lines(x, dweibull(x, shape =fit$estimate["shape"], scale = fit$estimate["scale"]), col = 4, lwd = 2)
+legend("topright", legend = c("estimator", "Weibull"), col = c(1,4), cex = 1, lwd = 3)
+
+# Print best results
+fitdistr(x.vec, "log-normal")
+
+summary(gcredit)
+
+
 
 summary(gcredit$RATE_TO_DISP_INCOME)
 plot(density(gcredit$RATE_TO_DISP_INCOME))
@@ -115,14 +171,26 @@ corrgram(gcredit[1:7], order=TRUE, lower.panel=panel.pie,
 
 # Idea: AMOUNT/DURATION variable? (~ "monthly burden")
 gcredit$AMOUNT_TO_DURATION <- gcredit$AMOUNT/gcredit$DURATION
-summary(gcredit$AMOUNT_TO_DURATION)
-plot(density(gcredit$AMOUNT_TO_DURATION)) # Interesting: very long tail! 
-boxplot(gcredit$AMOUNT_TO_DURATION)
+gcredit$DURATION_TO_AGE <- gcredit$DURATION/gcredit$AGE
+gcredit$AMOUNT_TO_AGE <- gcredit$AMOUNT/gcredit$AGE
+
+ggplot(gcredit, aes(factor(RES), AMOUNT)) + geom_boxplot(aes(fill = factor(RES))) + 
+  scale_fill_discrete(name = "RES") + labs(title = "AMOUNT boxplot", x="RES", y="AMOUNT")
+ggplot(gcredit, aes(factor(RES), DURATION)) + geom_boxplot(aes(fill = factor(RES))) + 
+  scale_fill_discrete(name = "RES") + labs(title = "DURATION boxplot", x="RES", y="DURATION")
+ggplot(gcredit, aes(factor(RES), AGE)) + geom_boxplot(aes(fill = factor(RES))) + 
+  scale_fill_discrete(name = "RES") + labs(title = "AGE boxplot", x="AGE", y="DURATION")
+
+ggplot(gcredit, aes(factor(RES), AMOUNT_TO_DURATION)) + geom_boxplot(aes(fill = factor(RES))) + 
+  scale_fill_discrete(name = "RES") + labs(title = "AMOUNT_TO_DURATION boxplot", x="RES", y="AMOUNT_TO_DURATION")
+ggplot(gcredit, aes(factor(RES), DURATION_TO_AGE)) + geom_boxplot(aes(fill = factor(RES))) + 
+  scale_fill_discrete(name = "RES") + labs(title = "DURATION_TO_AGE boxplot", x="RES", y="DURATION_TO_AGE")
+ggplot(gcredit, aes(factor(RES), AMOUNT_TO_AGE)) + geom_boxplot(aes(fill = factor(RES))) + 
+  scale_fill_discrete(name = "RES") + labs(title = "AMOUNT_TO_AGE boxplot", x="RES", y="AMOUNT_TO_AGE")
 
 
 
-
-#' --------------------------
+#' -----------------------------------------------------------------------------
 #' Binning countinuous variables: 
 #'   - compare Information Value from equal frequency discretization and 
 #'     optimal discretization
@@ -132,21 +200,10 @@ boxplot(gcredit$AMOUNT_TO_DURATION)
 #'     * http://www.rcreditscoring.com/binning-continuous-variables-in-r-the-basics/
 
 # Define subset of numeric variables 
-var.to.cat.names <- c("DURATION", "AMOUNT", "AGE", "AMOUNT_TO_DURATION")
-gcredit.quan <- gcredit[c(var.to.cat.names, "RES")]
+var.to.cat.names <- c("AGE", "AMOUNT_TO_AGE", "AMOUNT_TO_DURATION","AMOUNT", "DURATION", "DURATION_TO_AGE")
+gcredit.quan <- gcredit[,c(var.to.cat.names, "RES")]
 
-# # Save subset of numeric variables 
-# write.table(x = gcredit.quan, file = "./data/german_quan.txt", 
-#             sep=",",  col.names=TRUE, row.names = FALSE)
-# rm(gcredit.quan)
-# gcredit.quan <- read.table("./data/german_quan.txt", sep=",", header =TRUE,  
-#                            colClasses=rep("numeric", 4))
-# var.to.cat.names <- setdiff(names(gcredit.quan), "RES")
-
-# Define min number of bins from smbinning package 
-#min.smbin.bins.num <- 4
-
-# Categorize variables in 3 ways
+# Categorize variables in 3 ways. Keep categorized variable in a data frame
 for(var.name in var.to.cat.names){
   
   print(var.name)
@@ -182,12 +239,9 @@ for(var.name in var.to.cat.names){
   
   # Categorize variable with equal frequency discretization
   # (for defined num of bins we got in 1. optimal binning and 2. rpart binning)
-  gcredit.quan[, paste0(var.name, "_equal1")] <- cutEqual(x, n.bins)
-  gcredit.quan[, paste0(var.name, "_equal2")] <- cutEqual(x, n.rparts)
+  gcredit.quan[, paste0(var.name, "_equal_nbins")] <- cutEqual(x, n.bins)
+  gcredit.quan[, paste0(var.name, "_equal_nrparts")] <- cutEqual(x, n.rparts)
 }
-
-
-
 
 
 # # Compare information value of those 
@@ -199,54 +253,47 @@ iv.df <- iv.mult(gcredit.quan, "RES", TRUE)
 iv.df
 
 # Build data frame to compare information values
-iv.comparision.df <- data.frame(var.name = numeric(0), 
-                                cat.sgn = numeric(0),
-                                iv = numeric(0))
-for(name in var.to.cat.names){
+iv.comp.df <- data.frame(var.name = numeric(0), 
+                         cat.sgn = numeric(0),
+                         iv = numeric(0))
+for(i in 1:(nrow(iv.df))){
+  n.tmp <- nrow(iv.comp.df)
+  var.name.tmp <- iv.df[i, "Variable"]
   
-  # optimal binning
-  idx.tmp <- which(iv.df[, "Variable"] == paste0(name, "_bin"))
-  iv.comparision.df[nrow(iv.comparision.df)+1, ] <- 
-    c(name, "smbinning", iv.df[idx.tmp, "InformationValue"])
-  
-  # rpart binning
-  idx.tmp <- which(iv.df[, "Variable"] == paste0(name, "_rpart"))
-  iv.comparision.df[nrow(iv.comparision.df)+1, ] <- 
-    c(name, "rpart", iv.df[idx.tmp, "InformationValue"])
-  
-  # best cat 
-  idx.tmp <- which(grepl(paste0(name, "_equal"), iv.df[, "Variable"]))
-  iv.comparision.df[nrow(iv.comparision.df)+1, ] <- 
-    c(name, "equal",  max(iv.df[idx.tmp, "InformationValue"]))  
+  if(grepl("_bin", var.name.tmp)){
+    iv.comp.df[n.tmp+1, ] <- c(str_replace(var.name.tmp, "_bin", ""), "smbinning", iv.df[i, "InformationValue"])
+  } else if (grepl("_equal_nbins", var.name.tmp)){
+    iv.comp.df[n.tmp+1, ] <- c(str_replace(var.name.tmp, "_equal_nbins", ""), "equal_nbins", iv.df[i, "InformationValue"])
+  } else if (grepl("_equal_nrparts", var.name.tmp)){
+    iv.comp.df[n.tmp+1, ] <- c(str_replace(var.name.tmp, "_equal_nrparts", ""), "equal_nrparts", iv.df[i, "InformationValue"])
+  } else if (grepl("_rpart", var.name.tmp)){
+    iv.comp.df[n.tmp+1, ] <- c(str_replace(var.name.tmp, "_rpart", ""), "rpart", iv.df[i, "InformationValue"])
+  }   
 }
 
+iv.comp.df$iv <- round(as.numeric(iv.comp.df$iv), 3)
+iv.comp.df$var.name <- factor(iv.comp.df$var.name , levels = var.to.cat.names)
+dput(iv.comp.df, "./data/iv-comparision-df")
+rm(iv.comp.df)
 
-# Plot comparision
-ggplot(iv.comparision.df, aes(var.name, iv, group = cat.sgn, 
-                              colour = cat.sgn)) + geom_line()
-# 1            DURATION smbinning  0.229296147809057
-# 2            DURATION     rpart  0.159962059432608
-# 3            DURATION     equal  0.168117386826859
-# 4              AMOUNT smbinning  0.225097717170366
-# 5              AMOUNT     rpart  0.178405054081677
-# 6              AMOUNT     equal  0.127268796648851
-# 7                 AGE smbinning  0.123935104168272
-# 8                 AGE     rpart                  0
-# 9                 AGE     equal 0.0680246317476062
-# 10 AMOUNT_TO_DURATION smbinning  0.157504818325578
-# 11 AMOUNT_TO_DURATION     rpart                  0
-# 12 AMOUNT_TO_DURATION     equal 0.0912903888934645
+# Plot
+iv.comp.df <- dget("./data/iv-comparision-df")
+ggplot(iv.comp.df, aes(var.name, iv, group = cat.sgn, colour = cat.sgn)) + 
+  geom_line() + theme(axis.text.x = element_text(angle = 10, hjust = 1)) + 
+  scale_fill_discrete(name = "approach sgn") + 
+  labs(title = "AMOUNT_TO_AGE boxplot", x="RES", y="AMOUNT_TO_AGE")
 
 
-#' Observation: 
-#' smbinning does it pretty well and we may include those variables 
-#' as new ones :D 
+
 
 gcredit.cat <- data.frame(RES = gcredit.quan$RES,
                           DURATION = gcredit.quan$DURATION_bin,
                           AGE = gcredit.quan$AGE_bin,
                           AMOUNT = gcredit.quan$AMOUNT_bin,
                           AMOUNT_TO_DURATION = gcredit.quan$AMOUNT_TO_DURATION_bin)
+
+
+
 
 
 #' -----------------------------------------
@@ -261,8 +308,6 @@ gcredit.cat <- data.frame(RES = gcredit.quan$RES,
 
 
 y <- gcredit$RES
-
-
 
 # ---------------
 # gcredit$PURPOSE

@@ -1,64 +1,81 @@
-\contentsline {part}{I\hspace {1em}Introduction}{3}{part.1}
-\contentsline {section}{\numberline {1}Data analysis context}{3}{section.1}
-\contentsline {subsection}{\numberline {1.1}Motivation}{3}{subsection.1.1}
-\contentsline {paragraph}{}{3}{section*.2}
-\contentsline {subsection}{\numberline {1.2}Research questions}{3}{subsection.1.2}
-\contentsline {part}{II\hspace {1em}Materials and methods}{4}{part.2}
-\contentsline {paragraph}{}{4}{section*.3}
-\contentsline {section}{\numberline {2}Data set}{4}{section.2}
-\contentsline {subsection}{\numberline {2.1}Data set description}{4}{subsection.2.1}
-\contentsline {section}{\numberline {3}Feature selection}{7}{section.3}
+\contentsline {part}{I\hspace {1em}Introduction}{4}{part.1}
+\contentsline {section}{\numberline {1}Data analysis context}{4}{section.1}
+\contentsline {subsection}{\numberline {1.1}Motivation}{4}{subsection.1.1}
+\contentsline {paragraph}{}{4}{section*.2}
+\contentsline {subsection}{\numberline {1.2}Research questions}{4}{subsection.1.2}
+\contentsline {part}{II\hspace {1em}Materials and methods}{5}{part.2}
+\contentsline {paragraph}{}{5}{section*.3}
+\contentsline {section}{\numberline {2}Data set}{5}{section.2}
+\contentsline {subsection}{\numberline {2.1}Data set description}{5}{subsection.2.1}
+\contentsline {section}{\numberline {3}Binning countinuous variables}{7}{section.3}
 \contentsline {paragraph}{}{7}{section*.4}
-\contentsline {paragraph}{}{7}{section*.5}
-\contentsline {paragraph}{}{7}{section*.6}
-\contentsline {paragraph}{}{7}{section*.7}
-\contentsline {subsection}{\numberline {3.1}Feature selection algorithms}{8}{subsection.3.1}
-\contentsline {subsubsection}{\numberline {3.1.1}Algorithms for filtering attributes}{8}{subsubsection.3.1.1}
-\contentsline {paragraph}{CFS filter}{8}{section*.8}
-\contentsline {paragraph}{Chi-squared filter}{8}{section*.9}
-\contentsline {paragraph}{Information Gain filter}{8}{section*.10}
-\contentsline {paragraph}{Gain Ratio filter}{8}{section*.11}
-\contentsline {paragraph}{Symmetrical Uncertainty filter}{8}{section*.12}
-\contentsline {paragraph}{Linear Correlation filter}{8}{section*.13}
-\contentsline {paragraph}{Rank Correlation filter}{9}{section*.14}
-\contentsline {paragraph}{OneR algorithm}{9}{section*.15}
-\contentsline {paragraph}{RReliefF filter}{9}{section*.16}
-\contentsline {paragraph}{Consistency-based filter}{9}{section*.17}
-\contentsline {paragraph}{RandomForest filter}{9}{section*.18}
-\contentsline {subsubsection}{\numberline {3.1.2}Algorithms for wrapping classifiers and search attribute subset space}{10}{subsubsection.3.1.2}
-\contentsline {paragraph}{}{10}{section*.19}
-\contentsline {paragraph}{Greedy search}{10}{section*.20}
-\contentsline {paragraph}{Best-first search}{10}{section*.21}
-\contentsline {paragraph}{Hill climbing search}{10}{section*.22}
-\contentsline {paragraph}{Exhaustive search}{10}{section*.23}
-\contentsline {section}{\numberline {4}Classification}{11}{section.4}
-\contentsline {subsection}{\numberline {4.1}Classification algorithms}{11}{subsection.4.1}
-\contentsline {paragraph}{kNN k- nearest neighbours}{11}{section*.24}
-\contentsline {paragraph}{Decission trees}{11}{section*.25}
-\contentsline {paragraph}{Random forest}{11}{section*.26}
-\contentsline {paragraph}{Logistic regression}{11}{section*.27}
-\contentsline {paragraph}{Linear discriminant analysis}{11}{section*.28}
-\contentsline {paragraph}{Quadric discriminant analysis}{12}{section*.29}
-\contentsline {paragraph}{Naive Bayes}{12}{section*.30}
-\contentsline {subsection}{\numberline {4.2}Classification performance metrics}{13}{subsection.4.2}
-\contentsline {paragraph}{Confussion matrix}{13}{section*.31}
-\contentsline {paragraph}{Sensitivity}{13}{section*.32}
-\contentsline {paragraph}{Specifity}{13}{section*.33}
-\contentsline {paragraph}{Precission}{13}{section*.34}
-\contentsline {paragraph}{False discovery rate}{13}{section*.35}
-\contentsline {paragraph}{Accuracy}{13}{section*.36}
-\contentsline {paragraph}{F-measure}{14}{section*.37}
-\contentsline {subsubsection}{\numberline {4.2.1}Separation measures}{14}{subsubsection.4.2.1}
-\contentsline {paragraph}{Kolmogorow Smirnov statistics and distributions}{14}{section*.38}
-\contentsline {paragraph}{ROC curve and GINI, AUROC indexes}{14}{section*.39}
-\contentsline {paragraph}{Histogram Good vs Bad}{14}{section*.40}
-\contentsline {section}{\numberline {5}Cluster analysis}{15}{section.5}
-\contentsline {subsection}{\numberline {5.1}Cluster analysis algorithms}{15}{subsection.5.1}
-\contentsline {subsection}{\numberline {5.2}Cluster analysis performance metrics}{15}{subsection.5.2}
-\contentsline {section}{\numberline {6}Dimensionality reduction}{16}{section.6}
-\contentsline {subsection}{\numberline {6.1}Dimensionality reduction algorithms}{16}{subsection.6.1}
-\contentsline {part}{III\hspace {1em}Results}{17}{part.3}
-\contentsline {section}{\numberline {7}Classification modelling results}{18}{section.7}
-\contentsline {section}{\numberline {8}Cluster analysis results}{19}{section.8}
-\contentsline {section}{\numberline {9}Summary}{20}{section.9}
-\contentsline {part}{IV\hspace {1em}Discussion}{21}{part.4}
+\contentsline {subsection}{\numberline {3.1}Weight of Evidence (WoE)}{7}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Information Value (IV)}{7}{subsection.3.2}
+\contentsline {paragraph}{}{8}{section*.5}
+\contentsline {subsection}{\numberline {3.3}Motivation}{8}{subsection.3.3}
+\contentsline {section}{\numberline {4}Feature selection}{9}{section.4}
+\contentsline {paragraph}{}{9}{section*.6}
+\contentsline {paragraph}{}{9}{section*.7}
+\contentsline {paragraph}{}{9}{section*.8}
+\contentsline {paragraph}{}{9}{section*.9}
+\contentsline {subsection}{\numberline {4.1}Feature selection algorithms}{10}{subsection.4.1}
+\contentsline {subsubsection}{\numberline {4.1.1}Algorithms for filtering attributes}{10}{subsubsection.4.1.1}
+\contentsline {paragraph}{CFS filter}{10}{section*.10}
+\contentsline {paragraph}{Chi-squared filter}{10}{section*.11}
+\contentsline {paragraph}{Information Gain filter}{10}{section*.12}
+\contentsline {paragraph}{Gain Ratio filter}{10}{section*.13}
+\contentsline {paragraph}{Symmetrical Uncertainty filter}{10}{section*.14}
+\contentsline {paragraph}{Linear Correlation filter}{10}{section*.15}
+\contentsline {paragraph}{Rank Correlation filter}{11}{section*.16}
+\contentsline {paragraph}{OneR algorithm}{11}{section*.17}
+\contentsline {paragraph}{RReliefF filter}{11}{section*.18}
+\contentsline {paragraph}{Consistency-based filter}{11}{section*.19}
+\contentsline {paragraph}{RandomForest filter}{11}{section*.20}
+\contentsline {subsubsection}{\numberline {4.1.2}Algorithms for wrapping classifiers and search attribute subset space}{12}{subsubsection.4.1.2}
+\contentsline {paragraph}{}{12}{section*.21}
+\contentsline {paragraph}{Greedy search}{12}{section*.22}
+\contentsline {paragraph}{Best-first search}{12}{section*.23}
+\contentsline {paragraph}{Hill climbing search}{12}{section*.24}
+\contentsline {paragraph}{Exhaustive search}{12}{section*.25}
+\contentsline {section}{\numberline {5}Classification}{13}{section.5}
+\contentsline {subsection}{\numberline {5.1}Classification algorithms}{13}{subsection.5.1}
+\contentsline {paragraph}{kNN k- nearest neighbours}{13}{section*.26}
+\contentsline {paragraph}{Decission trees}{13}{section*.27}
+\contentsline {paragraph}{Random forest}{13}{section*.28}
+\contentsline {paragraph}{Logistic regression}{13}{section*.29}
+\contentsline {paragraph}{Linear discriminant analysis}{13}{section*.30}
+\contentsline {paragraph}{Quadric discriminant analysis}{14}{section*.31}
+\contentsline {paragraph}{Naive Bayes}{14}{section*.32}
+\contentsline {subsection}{\numberline {5.2}Classification performance metrics}{15}{subsection.5.2}
+\contentsline {paragraph}{Confussion matrix}{15}{section*.33}
+\contentsline {paragraph}{Sensitivity}{15}{section*.34}
+\contentsline {paragraph}{Specifity}{15}{section*.35}
+\contentsline {paragraph}{Precission}{15}{section*.36}
+\contentsline {paragraph}{False discovery rate}{15}{section*.37}
+\contentsline {paragraph}{Accuracy}{15}{section*.38}
+\contentsline {paragraph}{F-measure}{16}{section*.39}
+\contentsline {subsubsection}{\numberline {5.2.1}Separation measures}{16}{subsubsection.5.2.1}
+\contentsline {paragraph}{Kolmogorow Smirnov statistics and distributions}{16}{section*.40}
+\contentsline {paragraph}{ROC curve and GINI, AUROC indexes}{16}{section*.41}
+\contentsline {paragraph}{Histogram Good vs Bad}{16}{section*.42}
+\contentsline {section}{\numberline {6}Cluster analysis}{17}{section.6}
+\contentsline {subsection}{\numberline {6.1}Cluster analysis algorithms}{17}{subsection.6.1}
+\contentsline {subsection}{\numberline {6.2}Cluster analysis performance metrics}{17}{subsection.6.2}
+\contentsline {section}{\numberline {7}Dimensionality reduction}{18}{section.7}
+\contentsline {subsection}{\numberline {7.1}Dimensionality reduction algorithms}{18}{subsection.7.1}
+\contentsline {part}{III\hspace {1em}Results}{19}{part.3}
+\contentsline {section}{\numberline {8}Data preprocessing results}{20}{section.8}
+\contentsline {paragraph}{}{20}{section*.43}
+\contentsline {subsection}{\numberline {8.1}Searching for missing, corrupt and invalid data}{20}{subsection.8.1}
+\contentsline {paragraph}{}{20}{section*.44}
+\contentsline {paragraph}{}{20}{section*.45}
+\contentsline {paragraph}{}{20}{section*.46}
+\contentsline {subsection}{\numberline {8.2}Creating derived variables}{23}{subsection.8.2}
+\contentsline {paragraph}{}{23}{section*.47}
+\contentsline {paragraph}{}{24}{section*.48}
+\contentsline {subsection}{\numberline {8.3}Binning continuous variables}{24}{subsection.8.3}
+\contentsline {paragraph}{}{24}{section*.49}
+\contentsline {section}{\numberline {9}Classification modelling results}{26}{section.9}
+\contentsline {section}{\numberline {10}Cluster analysis results}{27}{section.10}
+\contentsline {section}{\numberline {11}Summary}{28}{section.11}
+\contentsline {part}{IV\hspace {1em}Discussion}{29}{part.4}

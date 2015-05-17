@@ -24,6 +24,7 @@ setwd(wd.tmp)
 
 library(corrgram)
 library(ggplot2)
+require(stringr)
 
 #' To load `woe` package: 
 #' 1. download woe-master.zip from https://github.com/tomasgreif/woe 
@@ -36,6 +37,9 @@ library(pROC)
 library(smbinning)
 library(reshape)
 library(dplyr)
+library(MASS)
+library(pander)
+library(stringr)
 
 # to install under Ubuntu, follow: http://stackoverflow.com/questions/13403268/error-while-loading-rjava
 library(rJava)

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2015.4.27)  12 MAY 2015 13:11
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2015.4.27)  18 MAY 2015 00:13
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -768,6 +768,9 @@ LaTeX Warning: Label `' multiply defined.
 
 LaTeX Warning: Label `' multiply defined.
 
+
+LaTeX Warning: Label `' multiply defined.
+
 )
 \openout1 = `psd-report.aux'.
 
@@ -877,49 +880,49 @@ LaTeX Info: Redefining \nameref on input line 73.
 \@outlinefile=\write3
 \openout3 = `psd-report.out'.
 
-LaTeX Font Info:    Try loading font information for OT1+pplx on input line 78.
+LaTeX Font Info:    Try loading font information for OT1+pplx on input line 79.
 
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1pplx.fd
 File: ot1pplx.fd 2004/09/06 font definitions for OT1/pplx.
 )
-LaTeX Font Info:    Try loading font information for OML+zplm on input line 78.
+LaTeX Font Info:    Try loading font information for OML+zplm on input line 79.
 
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/omlzplm.fd
 File: omlzplm.fd 2002/09/08 Fontinst v1.914 font definitions for OML/zplm.
 )
-LaTeX Font Info:    Try loading font information for OMS+zplm on input line 78.
+LaTeX Font Info:    Try loading font information for OMS+zplm on input line 79.
 
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/omszplm.fd
 File: omszplm.fd 2002/09/08 Fontinst v1.914 font definitions for OMS/zplm.
 )
-LaTeX Font Info:    Try loading font information for OMX+zplm on input line 78.
+LaTeX Font Info:    Try loading font information for OMX+zplm on input line 79.
 
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/omxzplm.fd
 File: omxzplm.fd 2002/09/08 Fontinst v1.914 font definitions for OMX/zplm.
 )
-LaTeX Font Info:    Try loading font information for OT1+zplm on input line 78.
+LaTeX Font Info:    Try loading font information for OT1+zplm on input line 79.
 
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1zplm.fd
 File: ot1zplm.fd 2002/09/08 Fontinst v1.914 font definitions for OT1/zplm.
 )
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 12.50409pt on input line 78.
+(Font)              scaled to size 12.50409pt on input line 79.
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 9.37807pt on input line 78.
+(Font)              scaled to size 9.37807pt on input line 79.
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 7.29405pt on input line 78.
+(Font)              scaled to size 7.29405pt on input line 79.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 12.50409pt on input line 78.
+(Font)              scaled to size 12.50409pt on input line 79.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 9.37807pt on input line 78.
+(Font)              scaled to size 9.37807pt on input line 79.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 7.29405pt on input line 78.
-LaTeX Font Info:    Try loading font information for U+lasy on input line 78.
+(Font)              scaled to size 7.29405pt on input line 79.
+LaTeX Font Info:    Try loading font information for U+lasy on input line 79.
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/ulasy.fd
 File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
@@ -959,7 +962,7 @@ File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 LaTeX Font Info:    Font shape `T1/pplx/bx/n' in size <14.4> not available
-(Font)              Font shape `T1/pplx/b/n' tried instead on input line 91.
+(Font)              Font shape `T1/pplx/b/n' tried instead on input line 92.
  (./psd-report.toc
 LaTeX Font Info:    Font shape `T1/pplx/bx/n' in size <12> not available
 (Font)              Font shape `T1/pplx/b/n' tried instead on input line 1.
@@ -977,153 +980,252 @@ LaTeX Font Info:    Font shape `U/msb/m/n' will be
 (Font)              scaled to size 7.91925pt on input line 3.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
 (Font)              scaled to size 6.25204pt on input line 3.
-)
+ [2
+
+])
 \tf@toc=\write4
 \openout4 = `psd-report.toc'.
 
- [2
+Package color Info: Redefining color shadecolor on input line 97.
+LaTeX Font Info:    Try loading font information for T1+cmtt on input line 98.
 
-]
+(/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd
+File: t1cmtt.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+) [3]
 LaTeX Font Info:    Font shape `T1/pplx/bx/n' in size <20.74> not available
-(Font)              Font shape `T1/pplx/b/n' tried instead on input line 102.
- [3
+(Font)              Font shape `T1/pplx/b/n' tried instead on input line 109.
+ [4
 
 ]
-LaTeX Font Info:    Try loading font information for TS1+pplx on input line 156
+LaTeX Font Info:    Try loading font information for TS1+pplx on input line 163
 .
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1pplx.fd
 File: ts1pplx.fd 2004/09/06 font definitions for TS1/pplx.
-) [4
+) [5
 
-] [5] [6]
-[7
+] [6]
+Overfull \hbox (57.01717pt too wide) detected at line 285
+\OML/zplm/m/it/10 IV \OT1/zplm/m/n/10 = [] [] \OT1/pplx/m/n/10 ,
+ []
 
-] [8
+[7] [8] [9
 
-] [9] [10
+] [10
 
-] [11
+] [11] [12
 
-] [12]
-Underfull \hbox (badness 10000) in paragraph at lines 471--471
+] [13
+
+] [14]
+Underfull \hbox (badness 10000) in paragraph at lines 513--513
 []\T1/pplx/m/n/10 False
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 471--471
+Underfull \hbox (badness 10000) in paragraph at lines 513--513
 \T1/pplx/m/n/10 Neg-a-tive
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 473--473
+Underfull \hbox (badness 10000) in paragraph at lines 515--515
 []\T1/pplx/m/n/10 False
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 473--473
+Underfull \hbox (badness 10000) in paragraph at lines 515--515
 \T1/pplx/m/n/10 Pos-i-tive
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 473--473
+Underfull \hbox (badness 10000) in paragraph at lines 515--515
 []\T1/pplx/m/n/10 True
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 473--473
+Underfull \hbox (badness 10000) in paragraph at lines 515--515
 \T1/pplx/m/n/10 Neg-a-tive
  []
 
-[13
+[15
 
-] [14] [15
-
-] [16
-
-] [17
+] [16] [17
 
 ] [18
 
 ] [19
 
-] [20
+]
+Package color Info: Redefining color shadecolor on input line 646.
 
-] [21
+<figure/unnamed-chunk-3-1.pdf, id=310, 578.16pt x 289.08pt>
+File: figure/unnamed-chunk-3-1.pdf Graphic file (type pdf)
+
+<use figure/unnamed-chunk-3-1.pdf>
+Package pdftex.def Info: figure/unnamed-chunk-3-1.pdf used on input line 647.
+(pdftex.def)             Requested size: 421.3982pt x 210.69582pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+Package color Info: Redefining color shadecolor on input line 656.
+<figure/unnamed-chunk-4-1.pdf, id=311, 578.16pt x 289.08pt>
+File: figure/unnamed-chunk-4-1.pdf Graphic file (type pdf)
+
+<use figure/unnamed-chunk-4-1.pdf>
+Package pdftex.def Info: figure/unnamed-chunk-4-1.pdf used on input line 657.
+(pdftex.def)             Requested size: 421.3982pt x 210.69582pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+Package color Info: Redefining color shadecolor on input line 667.
+<figure/unnamed-chunk-5-1.pdf, id=312, 578.16pt x 289.08pt>
+File: figure/unnamed-chunk-5-1.pdf Graphic file (type pdf)
+
+<use figure/unnamed-chunk-5-1.pdf>
+Package pdftex.def Info: figure/unnamed-chunk-5-1.pdf used on input line 668.
+(pdftex.def)             Requested size: 421.3982pt x 210.69582pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[20
+
+] [21 <./figure/unnamed-chunk-3-1.pdf> <./figure/unnamed-chunk-4-1.pdf>]
+[22 <./figure/unnamed-chunk-5-1.pdf>]
+Package color Info: Redefining color shadecolor on input line 689.
+
+<figure/unnamed-chunk-6-1.pdf, id=350, 867.24pt x 289.08pt>
+File: figure/unnamed-chunk-6-1.pdf Graphic file (type pdf)
+
+<use figure/unnamed-chunk-6-1.pdf>
+Package pdftex.def Info: figure/unnamed-chunk-6-1.pdf used on input line 690.
+(pdftex.def)             Requested size: 439.14513pt x 146.38344pt.
+Package color Info: Redefining color shadecolor on input line 699.
+
+<figure/unnamed-chunk-7-1.pdf, id=351, 867.24pt x 289.08pt>
+File: figure/unnamed-chunk-7-1.pdf Graphic file (type pdf)
+
+<use figure/unnamed-chunk-7-1.pdf>
+Package pdftex.def Info: figure/unnamed-chunk-7-1.pdf used on input line 700.
+(pdftex.def)             Requested size: 439.14513pt x 146.38344pt.
+ [23
+
+ <./figure/unnamed-chunk-6-1.pdf> <./figure/unnamed-chunk-7-1.pdf>]
+Overfull \hbox (2.26375pt too wide) in paragraph at lines 720--721
+[]\T1/pplx/m/n/10 the same num-ber of bins as in vari-able re-sulted from $\OML
+/zplm/m/it/10 smbinning$ \T1/pplx/m/n/10 method; sig-na-ture: $\OML/zplm/m/it/1
+0 equal[]nbins$\T1/pplx/m/n/10 , 
+ []
+
+Package color Info: Redefining color shadecolor on input line 729.
+<figure/unnamed-chunk-9-1.pdf, id=371, 578.16pt x 289.08pt>
+File: figure/unnamed-chunk-9-1.pdf Graphic file (type pdf)
+
+<use figure/unnamed-chunk-9-1.pdf>
+Package pdftex.def Info: figure/unnamed-chunk-9-1.pdf used on input line 730.
+(pdftex.def)             Requested size: 421.3982pt x 210.69582pt.
+ [24 <./figure/unnamed-chunk-9-1.pdf>]
+Overfull \hbox (86.23967pt too wide) in paragraph at lines 739--740
+\T1/pplx/m/n/10 tio (over 0.33 IV value), whereas two other de-rived vari-ables
+ ($\OML/zplm/m/it/10 AMOUNT[]TO[]AGE$\T1/pplx/m/n/10 , $\OML/zplm/m/it/10 AMOUN
+T[]TO[]DURATION$\T1/pplx/m/n/10 )
+ []
+
+[25] [26
+
+] [27
+
+] [28
+
+] [29
 
 ]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 615.
- [22
+Overfull \hbox (57.06117pt too wide) in paragraph at lines 782--783
+[]\T1/pplx/m/n/10 StatSoft, For-mula Guide Weight of Ev-i-dence Mod-ule http://
+documentation.statsoft.com/portals/0/formula 
+ []
+
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 786.
+[30
 
 pdfTeX warning (ext4): destination with the same identifier (name{cite.}) has b
 een already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.615 \end{document}
+l.786 \end{document}
                     pdfTeX warning (ext4): destination with the same identifier
  (name{cite.}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.615 \end{document}
+l.786 \end{document}
                     pdfTeX warning (ext4): destination with the same identifier
  (name{cite.}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.615 \end{document}
+l.786 \end{document}
                     pdfTeX warning (ext4): destination with the same identifier
  (name{cite.}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.615 \end{document}
+l.786 \end{document}
                     pdfTeX warning (ext4): destination with the same identifier
  (name{cite.}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.615 \end{document}
+l.786 \end{document}
                     pdfTeX warning (ext4): destination with the same identifier
  (name{cite.}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.615 \end{document}
+l.786 \end{document}
+                    pdfTeX warning (ext4): destination with the same identifier
+ (name{cite.}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.786 \end{document}
                     ]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 615.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 786.
  (./psd-report.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 615.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 615.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 786.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 786.
 Package rerunfilecheck Info: File `psd-report.out' has not changed.
-(rerunfilecheck)             Checksum: 16F913FC398D8592477E5A3FBD27FC4F;1409.
+(rerunfilecheck)             Checksum: FE887523F170C1A687508FA6117203AD;2011.
 
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 615.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 786.
  ) 
 Here is how much of TeX's memory you used:
- 9366 strings out of 494945
- 131737 string characters out of 6179275
+ 9464 strings out of 494945
+ 133769 string characters out of 6179275
  217440 words of memory out of 5000000
- 12284 multiletter control sequences out of 15000+600000
- 45974 words of font info for 103 fonts, out of 8000000 for 9000
+ 12336 multiletter control sequences out of 15000+600000
+ 49715 words of font info for 106 fonts, out of 8000000 for 9000
  56 hyphenation exceptions out of 8191
  29i,8n,32p,654b,392s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
-e/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texm
-f-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/
-fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/
-type1/public/mathpazo/fplmr.pfb></usr/share/texlive/texmf-dist/fonts/type1/publ
-ic/mathpazo/fplmri.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/palatino/
-uplb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb><
-/usr/share/texlive/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on psd-report.pdf (22 pages, 126080 bytes).
+{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc} </home/martakaras
+s/.texmf-var/fonts/pk/ljfour/jknappen/ec/ectt1000.600pk></usr/share/texlive/tex
+mf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dis
+t/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts
+/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1
+/public/mathpazo/fplmr.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/ma
+thpazo/fplmri.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/palatino/uplb8
+a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb></usr/
+share/texlive/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
+Output written on psd-report.pdf (30 pages, 255186 bytes).
 PDF statistics:
- 333 PDF objects out of 1000 (max. 8388607)
- 298 compressed objects within 3 object streams
- 104 named destinations out of 1000 (max. 500000)
- 177 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 505 PDF objects out of 1000 (max. 8388607)
+ 421 compressed objects within 5 object streams
+ 138 named destinations out of 1000 (max. 500000)
+ 271 words of extra memory for PDF output out of 10000 (max. 10000000)
 

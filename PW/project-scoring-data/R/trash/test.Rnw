@@ -1,0 +1,24 @@
+\documentclass{article}
+\usepackage[sc]{mathpazo}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\geometry{verbose,tmargin=2.5cm,bmargin=2.5cm,lmargin=2.5cm,rmargin=2.5cm}
+
+\begin{document}
+<<setup, echo=FALSE, cache=FALSE>>=
+library(knitr)
+knitr::opts_chunk$set(echo=F, eval=T, message = F, warning=F, cache = TRUE, fig=TRUE)
+@
+
+I do not want this to be printed in PDF output: 
+<<chunk1, echo=FALSE, message=FALSE, results = 'hide'>>=
+library(woe)
+iv.mult.res <- iv.mult(german_data,"gb", verbose = FALSE)
+print(iv.mult.res[[1]])
+
+@
+
+And I want this to be printed in PDF output: 
+<<chunk2>>=
+@
+\end{document}
