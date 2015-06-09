@@ -58,24 +58,90 @@
 \contentsline {paragraph}{Kolmogorow Smirnov statistics and distributions}{16}{section*.40}
 \contentsline {paragraph}{ROC curve and GINI, AUROC indexes}{16}{section*.41}
 \contentsline {paragraph}{Histogram Good vs Bad}{16}{section*.42}
-\contentsline {section}{\numberline {6}Cluster analysis}{17}{section.6}
-\contentsline {subsection}{\numberline {6.1}Cluster analysis algorithms}{17}{subsection.6.1}
-\contentsline {subsection}{\numberline {6.2}Cluster analysis performance metrics}{17}{subsection.6.2}
-\contentsline {section}{\numberline {7}Dimensionality reduction}{18}{section.7}
-\contentsline {subsection}{\numberline {7.1}Dimensionality reduction algorithms}{18}{subsection.7.1}
-\contentsline {part}{III\hspace {1em}Results}{19}{part.3}
-\contentsline {section}{\numberline {8}Data preprocessing results}{20}{section.8}
-\contentsline {paragraph}{}{20}{section*.43}
-\contentsline {subsection}{\numberline {8.1}Searching for missing, corrupt and invalid data}{20}{subsection.8.1}
-\contentsline {paragraph}{}{20}{section*.44}
-\contentsline {paragraph}{}{20}{section*.45}
-\contentsline {paragraph}{}{20}{section*.46}
-\contentsline {subsection}{\numberline {8.2}Creating derived variables}{23}{subsection.8.2}
-\contentsline {paragraph}{}{23}{section*.47}
-\contentsline {paragraph}{}{24}{section*.48}
-\contentsline {subsection}{\numberline {8.3}Binning continuous variables}{24}{subsection.8.3}
-\contentsline {paragraph}{}{24}{section*.49}
-\contentsline {section}{\numberline {9}Classification modelling results}{26}{section.9}
-\contentsline {section}{\numberline {10}Cluster analysis results}{27}{section.10}
-\contentsline {section}{\numberline {11}Summary}{28}{section.11}
-\contentsline {part}{IV\hspace {1em}Discussion}{29}{part.4}
+\contentsline {section}{\numberline {6}Principal Components Analysis}{17}{section.6}
+\contentsline {paragraph}{}{17}{section*.43}
+\contentsline {paragraph}{}{17}{section*.44}
+\contentsline {paragraph}{}{17}{section*.45}
+\contentsline {section}{\numberline {7}Cluster analysis}{18}{section.7}
+\contentsline {paragraph}{}{18}{section*.46}
+\contentsline {subsection}{\numberline {7.1}Introduction}{18}{subsection.7.1}
+\contentsline {paragraph}{}{18}{section*.47}
+\contentsline {paragraph}{}{18}{section*.48}
+\contentsline {paragraph}{}{18}{section*.49}
+\contentsline {paragraph}{}{18}{section*.50}
+\contentsline {paragraph}{}{18}{section*.51}
+\contentsline {paragraph}{}{19}{section*.52}
+\contentsline {paragraph}{}{19}{section*.53}
+\contentsline {subsection}{\numberline {7.2}Similarity, Dissimilarity and Distance}{19}{subsection.7.2}
+\contentsline {paragraph}{}{19}{section*.54}
+\contentsline {paragraph}{}{19}{section*.55}
+\contentsline {paragraph}{}{19}{section*.56}
+\contentsline {paragraph}{}{20}{section*.57}
+\contentsline {subsection}{\numberline {7.3}Clustering Algorithms}{20}{subsection.7.3}
+\contentsline {paragraph}{}{20}{section*.58}
+\contentsline {subsubsection}{\numberline {7.3.1}UPGMA}{20}{subsubsection.7.3.1}
+\contentsline {paragraph}{}{20}{section*.59}
+\contentsline {paragraph}{}{20}{section*.60}
+\contentsline {subsubsection}{\numberline {7.3.2}K-means}{20}{subsubsection.7.3.2}
+\contentsline {paragraph}{}{20}{section*.61}
+\contentsline {paragraph}{}{20}{section*.62}
+\contentsline {subsubsection}{\numberline {7.3.3}Diana}{21}{subsubsection.7.3.3}
+\contentsline {paragraph}{}{21}{section*.63}
+\contentsline {paragraph}{}{21}{section*.64}
+\contentsline {subsubsection}{\numberline {7.3.4}PAM}{21}{subsubsection.7.3.4}
+\contentsline {paragraph}{}{21}{section*.65}
+\contentsline {paragraph}{}{21}{section*.66}
+\contentsline {subsubsection}{\numberline {7.3.5}Clara}{21}{subsubsection.7.3.5}
+\contentsline {paragraph}{}{21}{section*.67}
+\contentsline {paragraph}{}{21}{section*.68}
+\contentsline {subsubsection}{\numberline {7.3.6}Fanny}{21}{subsubsection.7.3.6}
+\contentsline {paragraph}{}{21}{section*.69}
+\contentsline {paragraph}{}{21}{section*.70}
+\contentsline {subsubsection}{\numberline {7.3.7}SOM}{21}{subsubsection.7.3.7}
+\contentsline {paragraph}{}{21}{section*.71}
+\contentsline {paragraph}{}{21}{section*.72}
+\contentsline {subsubsection}{\numberline {7.3.8}Model based clustering}{21}{subsubsection.7.3.8}
+\contentsline {paragraph}{}{21}{section*.73}
+\contentsline {paragraph}{}{21}{section*.74}
+\contentsline {subsubsection}{\numberline {7.3.9}SOTA}{22}{subsubsection.7.3.9}
+\contentsline {paragraph}{}{22}{section*.75}
+\contentsline {paragraph}{}{22}{section*.76}
+\contentsline {subsection}{\numberline {7.4}Evaluation of clustering}{22}{subsection.7.4}
+\contentsline {paragraph}{}{22}{section*.77}
+\contentsline {subsubsection}{\numberline {7.4.1}Internal criterion}{22}{subsubsection.7.4.1}
+\contentsline {paragraph}{}{22}{section*.78}
+\contentsline {paragraph}{}{22}{section*.79}
+\contentsline {paragraph}{}{22}{section*.80}
+\contentsline {subsubsection}{\numberline {7.4.2}External criterion}{23}{subsubsection.7.4.2}
+\contentsline {paragraph}{}{23}{section*.81}
+\contentsline {paragraph}{}{23}{section*.82}
+\contentsline {subsubsection}{\numberline {7.4.3}Cluster stability}{24}{subsubsection.7.4.3}
+\contentsline {paragraph}{}{24}{section*.83}
+\contentsline {paragraph}{}{24}{section*.84}
+\contentsline {paragraph}{}{24}{section*.85}
+\contentsline {part}{III\hspace {1em}Results}{25}{part.3}
+\contentsline {section}{\numberline {8}Data preprocessing results}{26}{section.8}
+\contentsline {paragraph}{}{26}{section*.86}
+\contentsline {subsection}{\numberline {8.1}Searching for missing, corrupt and invalid data}{26}{subsection.8.1}
+\contentsline {paragraph}{}{26}{section*.87}
+\contentsline {paragraph}{}{26}{section*.88}
+\contentsline {paragraph}{}{26}{section*.89}
+\contentsline {subsection}{\numberline {8.2}Creating derived variables}{29}{subsection.8.2}
+\contentsline {paragraph}{}{29}{section*.90}
+\contentsline {paragraph}{}{30}{section*.91}
+\contentsline {subsection}{\numberline {8.3}Binning continuous variables}{30}{subsection.8.3}
+\contentsline {paragraph}{}{30}{section*.92}
+\contentsline {subsection}{\numberline {8.4}Correcting bins (levels) of categorical variables}{31}{subsection.8.4}
+\contentsline {paragraph}{}{31}{section*.93}
+\contentsline {paragraph}{}{31}{section*.94}
+\contentsline {paragraph}{}{31}{section*.95}
+\contentsline {subsection}{\numberline {8.5}Removing variables of $0.0$ Information Value}{32}{subsection.8.5}
+\contentsline {paragraph}{}{32}{section*.96}
+\contentsline {subsection}{\numberline {8.6}Recoding variables to WoE}{33}{subsection.8.6}
+\contentsline {paragraph}{}{33}{section*.97}
+\contentsline {subsection}{\numberline {8.7}Data preprocessing summary}{33}{subsection.8.7}
+\contentsline {paragraph}{}{33}{section*.98}
+\contentsline {section}{\numberline {9}Classification modelling results}{35}{section.9}
+\contentsline {section}{\numberline {10}Cluster analysis results}{36}{section.10}
+\contentsline {section}{\numberline {11}Summary}{37}{section.11}
+\contentsline {part}{IV\hspace {1em}Discussion}{38}{part.4}

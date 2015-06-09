@@ -15,7 +15,7 @@ computer.name <- Sys.info()["nodename"]
 if (computer.name == "marta-komputer") 
   wd.tmp <- "/home/martakarass/my-store/studies/PW/project-scoring-data"
 if (computer.name == "MATHPASSION") 
-   wd.tmp <- "C:/Users/Math/studia/studies/PW/project-scoring-data"
+  wd.tmp <- "C:/Users/Math/studia/studies/PW/project-scoring-data"
 setwd(wd.tmp)
 
 
@@ -40,13 +40,12 @@ library(dplyr)
 library(MASS)
 library(pander)
 library(stringr)
-
 # to install under Ubuntu, follow: http://stackoverflow.com/questions/13403268/error-while-loading-rjava
 library(rJava)
 library(RWekajars)
 library(RWeka)
 library(FSelector)
-
+library(fpc)
 
 
 
@@ -54,3 +53,4 @@ library(FSelector)
 # Source project util scripts 
 
 source("./R/UTILS_data_preprocessing.R")
+

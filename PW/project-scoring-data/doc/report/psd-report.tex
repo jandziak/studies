@@ -93,13 +93,7 @@
 \setcounter{tocdepth}{2}
 
 % R environment global settings (source of 'config.R' file)
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{verbatim}
-## [1] "/home/martakarass/my-store/studies/PW/project-scoring-data"
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
+
 
 
 % ==============================================================================
@@ -590,23 +584,391 @@ the scores for different classes.
 
 
 
+
+% ==============================================================================
+\clearpage
+\section{Principal Components Analysis}
+\paragraph{}
+According to \textit{Wikipedia} [10],
+Principal component analysis (PCA) is a statistical procedure that uses an 
+orthogonal transformation to convert a set of observations of (possibly) 
+correlated variables into a set of values of linearly uncorrelated variables 
+called \textit{principal components}. This transformation is defined in such 
+a way that the first principal component is chosen to account for as much 
+variance in plot dispersion from the centroid as possible; the second is chosen 
+by the same criterion but subject to the constraint of being orthogonal the first, 
+and so on. The principal components are the \textit{eigenvectors of the covariance 
+matrix} of distribution of the variables that a set of observations is 
+distributed from. 
+\paragraph{}
+The desired outcome of the principal component analysis is to project a feature 
+space onto a smaller subspace that represents our data "well". Depending on how 
+successful we are at reducing the data set, we can seek patterns among the 
+distribution of plots in ordination space, and explore possible environmental 
+correlates with these. 
+\paragraph{}
+The results of a PCA are complex; we may be interested in knowing: 
+\begin{itemize}
+\item variance explained by each eigenvector,
+\item cumulative variance explained by subsequents eigenvectors,
+\item \textit{loadings} for each column; the loadings are the contribution of 
+the column vector to each of the eigenvectors. A large positive component means 
+that that column is positively correlated with that eigenvector; 
+a large negative values is negative correlation; 
+and small values mean that the species is unrelated to that eigenvector; 
+\item \textit{scores} for each row in the matrix or dataframe. 
+\end{itemize}
+Generally, the vast majority of the variance is described on the first 
+few eigenvectors, 
+and we can save space by only calculating the scores for only the first 
+few eigenvectors. 
+
+
+
+
 % ==============================================================================
 \clearpage
 \section{Cluster analysis}
+\paragraph{}
+Clustering is the unsupervised classification of patterns (observations, data 
+items, or feature vectors) into groups (clusters). In this section we include some
+basic informations about cluster analysis algorithms and cluster analysis 
+performance metrics. The notes below are based mainly on 3 different sources: 
+\begin{itemize}
+\item "Data Clustering: A Review" article [9],
+\item notes from Laboratory for Dynamic Synthetic Vegephenonenology (LabDSV),
+the University of California [11],
+\item \texttt{clValid} (R package for cluster validation) vignette [12].
+\end{itemize}
 
-\subsection{Cluster analysis algorithms}
+\subsection{Introduction}
+\paragraph{}
+Cluster analysis is the organization of a collection of patterns (usually
+represented as a vector of measurements, or a point in a multidimensional
+space) into clusters based on similarity. 
+\paragraph{}
+Typical pattern clustering activity involves the following steps:
+\begin{enumerate}
+\item pattern representation (optionally including feature extraction and/or
+selection),
+\item definition of a pattern proximity measure appropriate to the data domain,
+\item clustering or grouping,
+\item data abstraction (if needed), and
+\item assessment of output (if needed).
+\end{enumerate}
+\paragraph{}
+\textit{Pattern representation} process that one usually performs is to gather facts 
+and conjectures
+about the data, optionally perform feature selection and extraction, and design
+the subsequent elements of the clustering system. A careful investigation
+of the available features and any available transformations (even
+simple ones) can yield significantly improved clustering results. A good pattern
+representation can often yield a simple and easily understood clustering;
+a poor pattern representation may yield a complex clustering whose true structure
+is difficult or impossible to discern.
+\paragraph{}
+Since similarity is fundamental to the definition of a cluster, a \textit{measure of the
+similarity} between two patterns drawn from the same feature space is essential
+to most clustering procedures. Because of the variety of feature types and
+scales, the distance measure (or measures) must be chosen carefully. It is
+most common to calculate the \textit{dissimilarity} between two patterns using a distance
+measure defined on the feature space. 
+\paragraph{}
+The \textit{grouping} step can be performed in a number of ways. For example, we can 
+distinguish between \textit{hard} output clustering (a partition of the data into groups) or
+\textit{fuzzy} (where each pattern has a variable degree of membership in each of
+the output clusters). 
+We may also distinguish between \textit{hierarchical} clustering algorithms that 
+produce a nested series of partitions based on a criterion for
+merging or splitting clusters based on similarity and \textit{partitional} clustering algorithms
+that identify the partition that optimizes (usually locally) a clustering criterion.
+\paragraph{}
+\textit{Data abstraction} is the process of extracting a simple and compact representation
+of a data set. In the clustering context, a typical data abstraction is a
+compact description of each cluster, usually in terms of cluster prototypes or
+representative patterns such as the centroid.
+\paragraph{}
+Eventually, validity assessments are performed to determine
+whether the output is meaningful. A clustering structure is valid if it cannot
+reasonably have occurred by chance or as an artifact of a clustering algorithm.
+There are three types of validation studies. An \textit{external} assessment of 
+validity compares the recovered structure to an a priori structure. 
+An \textit{internal} examination of validity tries to determine if the
+structure is internally appropriate. A \textit{relative} test compares two
+structures and measures their relative merit.
 
-\subsection{Cluster analysis performance metrics}
+\subsection{Similarity, Dissimilarity and Distance}
+\paragraph{}
+\textit{Similarity} is a characterization of the ratio of the number of attributes two 
+objects share in common compared to the total list of attributes between them. 
+Objects which have everything in common are identical, and have a similarity of 
+$1.0$. Objects which have nothing in common have a similarity of $0.0$. 
+There is a large number of similarity indices proposed and employed.
+\paragraph{}
+\textit{Dissimilarity} is the complement of similarity, and is a 
+characterization of the number of attributes two objects have uniquely 
+compared to the total list of attributes between them. 
+In general, dissimilarity can be calculated as \textit{1 - similarity}.
+\paragraph{}
+\textit{Distance} is a geometric conception of the proximity of objects in 
+a high dimensional space defined by measurements on the attributes. \texttt{R} 
+calculates distances with functions from at least a few packages. Among them 
+there are: 
+\begin{itemize}
+\item \texttt{stats::dist} - computes and returns the distance matrix computed 
+by using the specified distance measure to compute the distances between the 
+rows, $x$ and $y$ ($p$-elements vectors), of a data matrix; the distance measure 
+to be used is one of: 
+  \begin{itemize}
+  \item \texttt{"euclidean"}:
+  \newline usual distance between the two vectors ($L_2$ norm): 
+  $\sqrt{\sum_{i}^{p}(x_i - y_i)^2}$,
+  \item \texttt{"maximum"}:
+  \newline maximum distance between two components of $x$ and 
+  $y$ (supremum norm),
+  \item \texttt{"manhattan"}:
+  \newline absolute distance between the two vectors 
+  ($L_1$ norm),
+  \item \texttt{"canberra"}:
+  \newline $\sum_{i}^{p}(|x_i - y_i| / |x_i + y_i|)$; 
+  terms with zero numerator and denominator are omitted from the sum and treated 
+  as if the values were missing,
+  \item \texttt{"binary"}:
+  \newline (\textit{asymmetric binary}) the vectors are regarded 
+  as binary bits, so non-zero elements are "on" and zero elements are 
+  "off"; the distance is the proportion of bits in which only one is on amongst 
+  those in which at least one is on,
+  \item \texttt{"minkowski"}:
+  \newline the $p$ norm, the $p$th root of the sum of the 
+  $p$th powers of the differences of the components,
+  \end{itemize}
+  
+\item \texttt{labdsv::dsvdis} - calculates dissimilarity or distance between rows 
+of a matrix of observations according to a specific index; returns an object of 
+class "dist", equivalent to that from \texttt{stats::dist}.
+\newline \newline Three indices convert the data to presence/absence automatically. 
+In contingency table notation, they are:
+    \begin{itemize}
+    \item \texttt{"steinhaus"}: $1 - a/(a + b + c)$,
+    \item \texttt{"sorensen"}: $1 - 2a/(2a + b + c)$,
+    \item \texttt{"ochiai"}: $1 - a/ \sqrt{(a + b)  (a + c)}$.
+    \end{itemize}
+\end{itemize}
+
+\paragraph{}
+In practice, distances and dissimilarities are sometimes used interchangeably. 
+They have quite distinct properties; e.g., dissimilarities are bounded within 
+$[0,1]$ whereas distances are unbounded on the upper end.
 
 
 
+\subsection{Clustering Algorithms}
+\paragraph{}
+\texttt{R} has wide variety of clustering algorithms available. We make use of 9 
+algorithms from the base distribution (\texttt{stats}) and add-on packages. 
+A brief description of each clustering method and its availability is given below.
 
-% ==============================================================================
-\clearpage
-\section{Dimensionality reduction}
+\subsubsection{UPGMA}
+\paragraph{}
+Unweighted Pair Group Method with Arithmetic Mean is probably the most
+frequently used clustering algorithm. It is
+an agglomerative, hierarchical clustering algorithm that yields a dendogram
+which can be cut at a chosen height to produce the desired number of clusters.
+Each observation is initially placed in its own cluster, and the clusters
+are successively joined together in order of their "closeness". The closeness
+of any two clusters is determined by a dissimilarity matrix, and can be
+based on a variety of agglomeration methods. 
+\paragraph{}
+UPGMA is included with the base distribution of R in function 
+\texttt{hclust()}, and is also implemented in the \texttt{agnes()}
+function in package \texttt{cluster}.
 
-\subsection{Dimensionality reduction algorithms}
 
+\subsubsection{K-means}
+\paragraph{}
+K-means is an iterative method which minimizes the within-class sum of
+squares for a given number of clusters. The
+algorithm starts with an initial guess for the cluster centers, and each 
+observation is placed in the cluster to which it is closest. The cluster centers
+are then updated, and the entire process is repeated until the cluster centers
+no longer move. Often another clustering algorithm (e.g., UPGMA) is
+run initially to determine starting points for the cluster centers. 
+\paragraph{}
+K-means is implemented in the function \texttt{kmeans()}, included with the base 
+distribution of \texttt{R}.
+
+
+\subsubsection{Diana}
+\paragraph{}
+Diana is a divisive hierarchical algorithm that initially starts with all 
+observations in a single cluster, and successively divides the clusters until each
+cluster contains a single observation. Along with SOTA, Diana is one of a
+few representatives of the divisive hierarchical approach to clustering. 
+\paragraph{}
+Diana is available in function \texttt{diana()} in package \texttt{cluster}. 
+
+
+\subsubsection{PAM}
+\paragraph{}
+Partitioning around medoids (PAM) is similar to K-means, but is considered
+more robust because it admits the use of other dissimilarities besides Euclidean
+distance. Like K-means, the number of clusters is fixed in advance,
+and an initial set of cluster centers is required to start the algorithm. 
+\paragraph{}
+PAM is available in the \texttt{cluster} package as function \texttt{pam()}.
+
+
+\subsubsection{Clara}
+\paragraph{}
+Clara is a sampling-based algorithm which implements PAM on a number
+of sub-datasets. This allows for faster
+running times when a number of observations is relatively large. 
+\paragraph{}
+Clara is
+also available in package \texttt{cluster} as function \texttt{clara()}.
+
+
+\subsubsection{Fanny}
+\paragraph{}
+This algorithm performs fuzzy clustering, where each observation can have
+partial membership in each cluster. Thus,
+each observation has a vector which gives the partial membership to each of
+the clusters. A hard cluster can be produced by assigning each observation
+to the cluster where it has the highest membership. 
+\paragraph{}
+Fanny is available in the \texttt{cluster} package (function \texttt{fanny()}).
+
+
+\subsubsection{SOM}
+\paragraph{}
+Self-organizing maps is an unsupervised learning technique
+that is popular among computational biologists and machine learning researchers.
+SOM is based on neural networks, and is highly regarded for its
+ability to map and visualize high-dimensional data in two dimensions.
+\paragraph{}
+SOM is available as the \texttt{som()} function in package \texttt{kohonen}.
+
+
+\subsubsection{Model based clustering}
+\paragraph{}
+Under this approach, a statistical model consisting of a finite mixture of
+Gaussian distributions is fit to the data. Each
+mixture component represents a cluster, and the mixture components and
+group memberships are estimated using maximum likelihood (EM algorithm).
+\paragraph{}
+The function \texttt{Mclust()} in package \texttt{mclust} implements model based
+clustering.
+
+
+\subsubsection{SOTA}
+\paragraph{}
+Self-organizing tree algorithm (SOTA) is an unsupervised network with a
+divisive hierarchical binary tree structure. It was originally proposed by
+Dopazo and Carazo (1997) for phylogenetic reconstruction, and later applied
+to cluster microarray gene expression data in (Herrero et al., 2001). It uses a
+fast algorithm and hence is suitable for clustering a large number of objects.
+\paragraph{}
+SOTA is included with the \texttt{clValid} package as function \texttt{sota()}.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Evaluation of clustering}
+\paragraph{}
+In this analysis we focus on two types of clustering evaluation measurements: \textit{internal} and \textit{external} criterions.
+
+
+\subsubsection{Internal criterion}
+\paragraph{}
+Typical objective functions in clustering formalize the goal of attaining: 
+  \begin{itemize}
+  \item high intra-cluster similarity (objects within a cluster are similar) and
+  \item low inter-cluster similarity (objects from different clusters are dissimilar).
+  \end{itemize}
+This is an \textit{internal criterion} for the quality of a clustering. 
+\paragraph{}
+One drawback of using internal criteria in cluster evaluation is that high scores on an internal measure do not necessarily result in effective information retrieval applications.  Additionally, this evaluation is biased towards algorithms that use the same cluster model. For example k-Means clustering naturally optimizes object distances, and a distance-based internal criterion will likely overrate the resulting clustering. Therefore, the internal evaluation measures are best suited to get some insight into situations where one algorithm performs better than another, but this shall not imply that one algorithm produces more valid results than another.
+\paragraph{}
+The methods that be used to assess the quality of clustering algorithms based on internal criterion include:
+
+\begin{itemize}
+\item \textit{Silhouette coefficient}:
+\newline \newline The silhouette coefficient contrasts the average distance to elements in the same cluster with the average distance to elements in other clusters. Objects with a high silhouette value are considered well clustered, objects with a low value may be outliers. This index works well with k-means clustering, and is also used to determine the optimal number of clusters. 
+\newline \newline
+Implementation of this measurement may be found in the \texttt{fpc} package - it is included 
+in the results of  \texttt{cluster.stats()} function (see: \texttt{clus.avg.silwidths} and \texttt{avg.silwidth} values). 
+
+\item \textit{Dunn index}:
+\newline \newline The Dunn index aims to identify dense and well-separated clusters. 
+It is defined as the ratio between the minimal inter-cluster distance to maximal intra-cluster distance (in other words: minimum separation / maximum diameter). 
+For each cluster partition, the Dunn index can be calculated by the following formula: 
+$$D = \frac{\min_{1 \leq i < j \leq n} d(i,j)}{\max_{1 \leq k \leq n} d^{\prime}(k)} \,$$ 
+where $d(i,j)$ represents the distance between clusters $i$ and $j$, and $d'(k)$ measures the intra-cluster distance of cluster $k$. 
+\newline \newline
+Since internal criterion seek clusters with high intra-cluster similarity and low inter-cluster similarity, algorithms that produce clusters with high Dunn index are more desirable.
+\newline \newline
+Implementation of this measurement may be found in the \texttt{fpc} package - it is included 
+in the results of  \texttt{cluster.stats()} function (see: \texttt{dunn} value). 
+
+
+\item \textit{Davies-Bouldin index}:
+\newline \newline The Davies–Bouldin index can be calculated by the following formula:
+$$DB = \frac {1} {n} \sum_{i=1}^{n} \max_{j\neq i}\left(\frac{\sigma_i + \sigma_j} {d(c_i,c_j)}\right),$$
+where $n$ is the number of clusters, $c_x$ is the centroid of cluster $x$, $\sigma_x$ is the average distance of all elements in cluster $x$ to centroid $c_x$, and $d(c_i,c_j)$ is the distance between centroids $c_i$ and $c_j$. 
+\newline \newline
+Since algorithms that produce clusters with low intra-cluster distances (high intra-cluster similarity) and high inter-cluster distances (low inter-cluster similarity) will have a low Davies–Bouldin index, the clustering algorithm that produces a collection of clusters with the smallest Davies–Bouldin index is considered the best algorithm based on this criterion.
+\newline \newline
+The function \texttt{index.DB()} in package \texttt{clusterSim} implements Davies-Bouldin index.
+\end{itemize}
+
+
+
+\subsubsection{External criterion}
+\paragraph{}
+An alternative to internal criteria is direct evaluation in the application of interest. In external evaluation, clustering results are evaluated based on data that was not used for clustering, such as known class labels. These types of evaluation methods measure how close the clustering is to the predetermined classes. 
+\paragraph{}
+Some of the measures of quality of a cluster algorithm using external criterion include:
+
+\begin{itemize}
+\item \textit{Rand index}:
+\newline \newline
+Given a set of $n$ elements $S = \{o_1, \ldots, o_n\}$ and two partitions of $S$
+to compare, $X = \{X_1, \ldots, X_r\}$ which is a partition of $S$ into $r$ subsets, 
+and $Y = \{Y_1, \ldots, Y_s\}$ which is a partition of $S$ into $s$ subsets, define the following:
+\begin{itemize}
+\item $a$, the number of pairs of elements in $S$ that are in the same set in $X$ and in the same set in $Y$,
+\item $b$, the number of pairs of elements in $S$ that are in different sets in $X$ and in different sets in $Y$,
+\item $c$, the number of pairs of elements in $S$ that are in the same set in $X$ and in different sets in $Y$
+\item $d$, the number of pairs of elements in $S$ that are in different sets in $X$ and in the same set in $Y$
+\end{itemize}
+The Rand index, R, is:
+$$R = \frac{a+b}{a+b+c+d} = \frac{a+b}{{n \choose 2 }}.$$
+Intuitively, $a + b$ can be considered as the number of agreements between $X$ and $Y$ and $c + d$ as the number of disagreements between $X$ and $Y$.
+\newline \newline
+The Rand index has a value between 0 and 1, with 0 indicating that the two data clusters do not agree on any pair of points and 1 indicating that the data clusters are exactly the same.
+\newline \newline
+The function \texttt{RRand()} in package \texttt{phyclust} implements this index.
+\end{itemize}
+
+
+\subsubsection{Cluster stability}
+\paragraph{}
+Studies of cluster stability may be considered as another type of cluster result 
+validation. Method to perform this study is readily available in the \texttt{fpc R} package as \texttt{clusterboot()}.
+\paragraph{}
+\texttt{clusterboot()} function allows for the assessment of the clusterwise stability of a clustering of data. The data is resampled using several schemes (bootstrap, subsetting, jittering, replacement of points by noise) and the Jaccard similarities of the original clusters to the most similar clusters in the resampled data are computed. The mean over these similarities is used as an index of the stability of a cluster (other statistics can be computed as well). 
+\paragraph{}
+The \texttt{fpc} package documentation provides some guidelines for the interpretation
+when bootstrap resampled scheme is used: 
+\begin{itemize}
+\item There is some theoretical justification to consider a Jaccard similarity value smaller or equal to 0.5 as an indication of a "dissolved cluster", see Hennig (Hennig, C. (2008) Dissolution point and isolation robustness: robustness criteria for general cluster
+analysis methods. Journal of Multivariate Analysis 99, 1154-1176). 
+\item Generally, a valid, stable cluster should yield a mean Jaccard similarity value of 0.75 or more. 
+\item Between 0.6 and 0.75, clusters may be considered as indicating patterns in the data, but
+which points exactly should belong to these clusters is highly doubtful. 
+\item Below average Jaccard values of 0.6, clusters should not be trusted. 
+\item "Highly stable" clusters should yield average Jaccard similarities of 0.85 and above. 
+\end{itemize}
 
 
 
@@ -740,10 +1102,190 @@ We can see a few interesting things from the plot above:
 \end{itemize}
 
 
+\subsection{Correcting bins (levels) of categorical variables}
+\paragraph{}
+The last element of data pre-processing we performet os correcting bins (levels) of categorical variables. In the domain of particular variable's levels, we searched for levels which: 
+\begin{itemize}
+\item reasonalby similar in terms of their meaning (e.g. for $PURPOSE$ variable we have logically similar levels: \textit{car (new)} and \textit{car (old)},
+\item do not vary in terms of $GOOD$ / $BAD$ observations fraction.
+\end{itemize}
+\paragraph{}
+To assess whether or not levels vary in terms of $GOOD$ / $BAD$ observations fraction we wrote a function which compute Information Value for non-changed variable and the same variable with a par of levels joined, for all possible pair of levels. Below we present the head table output of this function and WoE plot for each of the levels for a particular variable.
+\paragraph{}
+We include results for the two variables in case of which we decided to perform bin correcting. 
+
+\begin{enumerate}
+\item $PURPOSE$
+
+
+
+Below we can see what is the $PURPOSE$ variable IV ($3^{rd}$ column) after joining a pair of levels ($1^{st}$ and $2^{nd}$ column). 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\begin{tabular}{l|l|l|r}
+\hline
+  & lvl1 & lvl2 & iv\\
+\hline
+46 & NONE & NONE & 0.1692\\
+\hline
+21 & furniture/equipment & domestic appliances & 0.1692\\
+\hline
+37 & business & repairs & 0.1691\\
+\hline
+36 & business & domestic appliances & 0.1691\\
+\hline
+16 & education & others & 0.1691\\
+\hline
+28 & car (new) & repairs & 0.1691\\
+\hline
+\end{tabular}
+
+
+\end{knitrout}
+
+We can also investigate the WoE values plot: 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=.65\linewidth]{figure/unnamed-chunk-12-1} 
+
+\end{knitrout}
+
+Judging from the above study we concluded that it is reasonable to join $furniture/equipment$ and $domestic appliances$ levels and we performed it. 
+
+\item $HOUSING$
+
+
+
+Below we can see what is the $HOUSING$ variable IV ($3^{rd}$ column) after joining a pair of levels ($1^{st}$ and $2^{nd}$ column). 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\begin{tabular}{l|l|l|r}
+\hline
+  & lvl1 & lvl2 & iv\\
+\hline
+4 & NONE & NONE & 0.0833\\
+\hline
+3 & for free & rent & 0.0830\\
+\hline
+1 & own & for free & 0.0389\\
+\hline
+2 & own & rent & 0.0296\\
+\hline
+\end{tabular}
+
+
+\end{knitrout}
+
+We can also investigate the WoE values plot: 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=.65\linewidth]{figure/unnamed-chunk-15-1} 
+
+\end{knitrout}
+
+Judging from the above study we concluded that it is reasonable to join $for free$ and $rent$ levels and we performed it. 
+\end{enumerate}
+
+
+\subsection{Removing variables of $0.0$ Information Value}
+\paragraph{}
+After the transformations described above, we chcecked what are IV for each of the resulting variable. The values are presented below.
 
 
 
 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\begin{tabular}{l|r|r|r|l}
+\hline
+Variable & InformationValue & Bins & ZeroBins & Strength\\
+\hline
+CHK\_ACCT & 0.6660 & 4 & 0 & Very strong\\
+\hline
+DURATION\_TO\_AGE & 0.3338 & 3 & 0 & Strong\\
+\hline
+HISTORY & 0.2932 & 5 & 0 & Strong\\
+\hline
+DURATION & 0.2293 & 3 & 0 & Strong\\
+\hline
+AMOUNT & 0.2251 & 4 & 0 & Strong\\
+\hline
+SAVINGS\_ACCT & 0.1960 & 5 & 0 & Average\\
+\hline
+PURPOSE & 0.1692 & 9 & 0 & Average\\
+\hline
+AMOUNT\_TO\_DURATION & 0.1575 & 5 & 0 & Average\\
+\hline
+PROPERTY & 0.1126 & 4 & 0 & Average\\
+\hline
+AMOUNT\_TO\_AGE & 0.1082 & 2 & 0 & Average\\
+\hline
+EMLOYMENT & 0.0864 & 5 & 0 & Weak\\
+\hline
+HOUSING & 0.0830 & 2 & 0 & Weak\\
+\hline
+AGE & 0.0732 & 2 & 0 & Weak\\
+\hline
+OTHER\_INSTALLMENT\_PLANS & 0.0576 & 3 & 0 & Weak\\
+\hline
+STATUS\_AND\_SEX & 0.0447 & 4 & 0 & Weak\\
+\hline
+IS\_FOREIGN\_WORKER & 0.0439 & 2 & 0 & Weak\\
+\hline
+OTHER\_DEBTORS & 0.0320 & 3 & 0 & Weak\\
+\hline
+RATE\_TO\_DISP\_INCOME & 0.0239 & 2 & 0 & Weak\\
+\hline
+NUM\_OF\_THIS\_BANK\_CREDITS & 0.0101 & 2 & 0 & Wery weak\\
+\hline
+JOB & 0.0081 & 3 & 0 & Wery weak\\
+\hline
+TELEPHONE & 0.0064 & 2 & 0 & Wery weak\\
+\hline
+NUM\_OF\_MAINTAINED\_PEOPLE & 0.0000 & 1 & 0 & Wery weak\\
+\hline
+RESIDENCE & 0.0000 & 1 & 0 & Wery weak\\
+\hline
+\end{tabular}
+
+
+\end{knitrout}
+
+We can see that two variables: $NUM\_OF\_MAINTAINED\_PEOPLE$ and $RESIDENCE$ have $0.0$ information value. We decided to remove them from the data set as we assume they are kind of useless data.
+
+
+\subsection{Recoding variables to WoE}
+\paragraph{}
+After the operations descripted above, we made a copy of our data and converted all of the categorical variables in this copy into their WoE representatives. Since then 
+we have been working on two data sets: 
+\begin{enumerate}
+\item \textit{german\_data\_cat.txt} - categorized data set,
+\item \textit{german\_data\_woe.txt} - categorized and recoded to WoE data set (besides the response variable, this data set contains numeric variables only). 
+\end{enumerate}
+
+
+\subsection{Data preprocessing summary}
+\paragraph{}
+To conclude, the data preprocessing we performed above results in: 
+  \begin{itemize}
+\item creating derived variables and including them into the data set: $AMOUNT\_TO\_DURATION$, $DURATION\_TO\_AGE$ and $AMOUNT\_TO\_AGE$,
+\item binning continuous variables with the use of \textit{smbinning} method and keeping them in those binned form in the data set; related to: $AGE$, $AMOUNT$, $DURATION$, $AMOUNT\_TO\_DURATION$, $DURATION\_TO\_AGE$ and $AMOUNT\_TO\_AGE$,
+\item correcting bins (levels) of categorical variables and keeping them in those transformed form in the data set: $PURPOSE$ and $HOUSING$,
+\item removing variables of $0.0$ information value:  $NUM\_OF\_MAINTAINED\_PEOPLE$ and $RESIDENCE$,
+\item creating separated data set which contains all the categorical variables in the recoded to WoE form. 
+\end{itemize}
+
+
+
+
+
+% ==============================================================================
+% ==============================================================================
+% ==============================================================================
 \clearpage
 \section{Classification modelling results}
 
@@ -780,7 +1322,11 @@ We can see a few interesting things from the plot above:
 \bibitem{} Igor Kononenko: Estimating Attributes: Analysis and Extensions of RELIEF. In: European Conference on Machine Learning, 171-182, 1994.
 \bibitem{} Marko Robnik-Sikonja, Igor Kononenko: An adaptation of Relief for attribute estimation in regression. In: Fourteenth International Conference on Machine Learning, 296-304, 1997.
 \bibitem{} StatSoft, Formula Guide Weight of Evidence Module http://documentation.statsoft.com/portals/0/formula%20guide/Weight%20of%20Evidence%20Formula%20Guide.pdf
+\bibitem{} Data Clustering: A Review, A.K. Jain, M.N. Murty, P.J. Flynn, 1999, https://www.cs.rutgers.edu/~mlittman/courses/lightai03/jain99data.pdf
+\bibitem{} Principal component analysis From Wikipedia, the free encyclopedia, http://en.wikipedia.org/wiki/Principal\_component\_analysis
+\bibitem{} notes from Laboratory for Dynamic Synthetic Vegephenonenology (LabDSV),
+the University of California, http://ecology.msu.montana.edu/labdsv/R/labs/
+\bibitem{} clValid, an R package for cluster validation, Guy Brock, Vasyl Pihur, Susmita Datta, and Somnath Datta, Department of Bioinformatics and Biostatistics, University of Louisville, http://cran.r-project.org/web/packages/clValid/vignettes/clValid.pdf
 \end{thebibliography}
-
 
 \end{document}

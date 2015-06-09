@@ -290,10 +290,9 @@ gcredit.cat <- data.frame(RES = gcredit.quan$RES,
                           DURATION = gcredit.quan$DURATION_bin,
                           AGE = gcredit.quan$AGE_bin,
                           AMOUNT = gcredit.quan$AMOUNT_bin,
-                          AMOUNT_TO_DURATION = gcredit.quan$AMOUNT_TO_DURATION_bin)
-
-
-
+                          AMOUNT_TO_DURATION = gcredit.quan$AMOUNT_TO_DURATION_bin,
+                          DURATION_TO_AGE = gcredit.quan$DURATION_TO_AGE_bin,
+                          AMOUNT_TO_AGE = gcredit.quan$AMOUNT_TO_AGE_bin)
 
 
 #' -----------------------------------------
@@ -310,16 +309,14 @@ gcredit.cat <- data.frame(RES = gcredit.quan$RES,
 y <- gcredit$RES
 
 # ---------------
-# gcredit$PURPOSE
+# gcredit$PURPOSE ******************
 
 x.tmp <- gcredit$PURPOSE
-(res.df.tmp <- infval.comb.levels.effect(y, x.tmp, mosaic.plot = FALSE))
-# interesting: note how much 
-# 25           car (new)          car (used) 0.08741
-# lowe the information value! 
-
+res.df.tmp <- infval.comb.levels.effect(y, x.tmp, mosaic.plot = FALSE)
+head(res.df.tmp)
+iv.plot.woe(iv.mult(gcredit,"RES",vars=c("PURPOSE"),summary=FALSE))
+# Połączenie leveli i zapamiętanie zmiennej
 x.tmp <- combine.factor.lvls(x.tmp, c(res.df.tmp[2,1], res.df.tmp[2,2]))
-(res.df.tmp <- infval.comb.levels.effect(y, x.tmp))
 gcredit.cat$PURPOSE <- x.tmp
 
 
@@ -456,10 +453,14 @@ gcredit.cat$OTHER_INSTALLMENT_PLANS <- x.tmp
 # gcredit$HOUSING
 
 x.tmp <- gcredit$HOUSING
-(res.df.tmp <- infval.comb.levels.effect(y, x.tmp))
+res.df.tmp <- infval.comb.levels.effect(y, x.tmp)
+head(res.df.tmp)
+iv.plot.woe(iv.mult(gcredit,"RES",vars=c("HOUSING"),summary=FALSE))
+
+# Połączenie leveli i zapamiętanie zmiennej
 x.tmp <- combine.factor.lvls(x.tmp, c(res.df.tmp[2,1], res.df.tmp[2,2]))
-(res.df.tmp <- infval.comb.levels.effect(y, x.tmp))
 gcredit.cat$HOUSING <- x.tmp
+
 
 
 
@@ -467,10 +468,15 @@ gcredit.cat$HOUSING <- x.tmp
 # gcredit$JOB
 
 x.tmp <- gcredit$JOB
-(res.df.tmp <- infval.comb.levels.effect(y, x.tmp))
+res.df.tmp <- infval.comb.levels.effect(y, x.tmp)
+head(res.df.tmp)
+iv.plot.woe(iv.mult(gcredit,"RES",vars=c("JOB"),summary=FALSE))
+
 x.tmp <- combine.factor.lvls(x.tmp, c(res.df.tmp[4,1], res.df.tmp[4,2]))
 (res.df.tmp <- infval.comb.levels.effect(y, x.tmp))
 gcredit.cat$JOB <- x.tmp
+
+
 
 
 
@@ -505,7 +511,9 @@ gcredit.cat$IS_FOREIGN_WORKER <- x.tmp
 # iv.replace.woe - recode original variables to WoE (adds new columns)
 
 
-(iv.mult.res <- iv.mult(gcredit.cat,"RES", TRUE))
+(iv.mult.res <- iv.mult(gcredit.cat, "RES", TRUE))
+
+
 # Variable InformationValue Bins ZeroBins    Strength
 # 1                  CHK_ACCT      0.666011503    4        0 Very strong
 # 2                   HISTORY      0.293233547    5        0      Strong
@@ -535,6 +543,14 @@ gcredit.cat$IS_FOREIGN_WORKER <- x.tmp
 #' - NUM_OF_MAINTAINED_PEOPLE
 #' - RESIDENCE
 #' variables
+#' 
+#' 
+
+#dput(gcredit.cat, file = "./data/german_data_cat-before-removal.txt" )
+gcredit.cat.before.removal <- dget("./data/german_data_cat-before-removal.txt")
+iv.mult.res <- iv.mult(gcredit.cat.before.removal,"RES", TRUE)
+print(gcredit.cat.before.removal)
+
 
 col.to.remove.idx <- which(names(gcredit.cat) %in% c("NUM_OF_MAINTAINED_PEOPLE", "RESIDENCE"))
 gcredit.cat <- gcredit.cat[, -col.to.remove.idx]

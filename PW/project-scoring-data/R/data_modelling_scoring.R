@@ -22,14 +22,14 @@
 
 gcredit.cat <- 
   read.table("./data/german_data_cat.txt", sep=",", header =TRUE,  
-             colClasses=c(rep("numeric", 3), rep("character", 17)))
+             colClasses=c(rep("numeric", 1), rep("character", 21)))
+
 
 gcredit.woe <- 
   read.table("./data/german_data_woe.txt", sep=",", header =TRUE,  
-             colClasses=c(rep("numeric", 20)))
+             colClasses=c(rep("numeric", 22)))
 
-# Define full formula
-gcredit.cat.f.full <- as.formula("RES ~ .")
+
 
 
 
