@@ -127,21 +127,35 @@
 \contentsline {paragraph}{}{26}{section*.88}
 \contentsline {paragraph}{}{26}{section*.89}
 \contentsline {subsection}{\numberline {8.2}Creating derived variables}{29}{subsection.8.2}
-\contentsline {paragraph}{}{29}{section*.90}
-\contentsline {paragraph}{}{30}{section*.91}
+\contentsline {paragraph}{}{29}{section*.93}
+\contentsline {paragraph}{}{30}{section*.96}
 \contentsline {subsection}{\numberline {8.3}Binning continuous variables}{30}{subsection.8.3}
-\contentsline {paragraph}{}{30}{section*.92}
+\contentsline {paragraph}{}{30}{section*.97}
 \contentsline {subsection}{\numberline {8.4}Correcting bins (levels) of categorical variables}{31}{subsection.8.4}
-\contentsline {paragraph}{}{31}{section*.93}
-\contentsline {paragraph}{}{31}{section*.94}
-\contentsline {paragraph}{}{31}{section*.95}
+\contentsline {paragraph}{}{31}{section*.99}
+\contentsline {paragraph}{}{31}{section*.100}
+\contentsline {paragraph}{}{31}{section*.101}
 \contentsline {subsection}{\numberline {8.5}Removing variables of $0.0$ Information Value}{32}{subsection.8.5}
-\contentsline {paragraph}{}{32}{section*.96}
+\contentsline {paragraph}{}{32}{section*.102}
 \contentsline {subsection}{\numberline {8.6}Recoding variables to WoE}{33}{subsection.8.6}
-\contentsline {paragraph}{}{33}{section*.97}
+\contentsline {paragraph}{}{33}{section*.103}
 \contentsline {subsection}{\numberline {8.7}Data preprocessing summary}{33}{subsection.8.7}
-\contentsline {paragraph}{}{33}{section*.98}
-\contentsline {section}{\numberline {9}Classification modelling results}{35}{section.9}
-\contentsline {section}{\numberline {10}Cluster analysis results}{36}{section.10}
-\contentsline {section}{\numberline {11}Summary}{37}{section.11}
-\contentsline {part}{IV\hspace {1em}Discussion}{38}{part.4}
+\contentsline {paragraph}{}{33}{section*.104}
+\contentsline {section}{\numberline {9}Feature Selection}{35}{section.9}
+\contentsline {subsection}{\numberline {9.1}Filter comparison}{35}{subsection.9.1}
+\contentsline {subsection}{\numberline {9.2}Models without features selection}{36}{subsection.9.2}
+\contentsline {subsection}{\numberline {9.3}CSF method}{36}{subsection.9.3}
+\contentsline {subsection}{\numberline {9.4}Consistency method}{37}{subsection.9.4}
+\contentsline {subsection}{\numberline {9.5}Best subset method}{37}{subsection.9.5}
+\contentsline {section}{\numberline {10}Classification modelling results}{38}{section.10}
+\contentsline {subsection}{\numberline {10.1}Analysis of fitted models}{38}{subsection.10.1}
+\contentsline {subsection}{\numberline {10.2}Logistic Regression}{40}{subsection.10.2}
+\contentsline {subsection}{\numberline {10.3}Scorecard for Logistic Regression}{41}{subsection.10.3}
+\contentsline {subsection}{\numberline {10.4}Linear Dyscryminant Analysis}{42}{subsection.10.4}
+\contentsline {subsection}{\numberline {10.5}KNN Method}{43}{subsection.10.5}
+\contentsline {subsection}{\numberline {10.6}Random Forest}{44}{subsection.10.6}
+\contentsline {section}{\numberline {11}Boosting}{46}{section.11}
+\contentsline {subsection}{\numberline {11.1}Summary of Modeling and Feature Selection}{48}{subsection.11.1}
+\contentsline {section}{\numberline {12}Cluster analysis results}{49}{section.12}
+\contentsline {section}{\numberline {13}Summary}{50}{section.13}
+\contentsline {part}{IV\hspace {1em}Discussion}{51}{part.4}
