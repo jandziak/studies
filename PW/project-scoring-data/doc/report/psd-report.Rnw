@@ -5,7 +5,6 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{graphicx}
-\usepackage{subfigure}
 \usepackage{indentfirst}
 \usepackage{geometry}
 \usepackage{enumerate}
@@ -17,10 +16,12 @@
 \usepackage{listings}
 \usepackage{hyperref}
 \usepackage{multirow}
-
+\usepackage{caption}
+\usepackage{subcaption}
 
 % Preambula
 \begin{document}
+%\SweaveOpts{concordance=TRUE}
 %\SweaveOpts{concordance=TRUE}
 \title{"German Credit" scoring data analysis report}
 \author{Marta Karaś, Jan Idziak}
@@ -55,11 +56,17 @@ computer.name <- Sys.info()["nodename"]
 if (computer.name == "marta-komputer"){
     wd <- "/home/martakarass/my-store/studies/PW/project-scoring-data"
 }
+if (computer.name == "MATHPASSION") {
+  wd <- "C:/Users/Math/studia/studies/PW/project-scoring-data"}
+if (computer.name == "JIDZIAK-L") {
+  wd <- "C:/Users/jidziak/Desktop/project-scoring-data"
+}
 setwd(wd)
 library(stringr)
  
 # Load scripts 
 source("./R/conf.R")
+print("jan")
 @
 
 
@@ -969,7 +976,7 @@ On the graphs below we can see kernel density estimates of variable density (bla
 << >>=
 # Read data
 gcredit <- 
-  read.table(paste0(wd, "/data/german_data_processed1.txt"), sep=",", header =TRUE, colClasses=c(rep("numeric", 8), rep("character", 13)))
+  read.table(paste0(wd,"/data/german_data_processed1.txt"), sep=",", header =TRUE, colClasses=c(rep("numeric", 8), rep("character", 13)))
 
 # Relevel factors to keep original "order"
 for(col.name in names(gcredit)) 
@@ -996,10 +1003,11 @@ fit <- fitdistr(x.vec, "log-normal") ## fitting gamma pdf parameters
 lines(x, dlnorm(x, meanlog = fit$estimate["meanlog"], sdlog = fit$estimate["sdlog"]), col = 3, lwd = 2)
 legend("topright", legend = c("estimator", "log normal"), col = c(1,3), cex = 1, lwd = 3)
 
-plot(density(x.vec), main = "DURATION", lwd=2)
-fit <- fitdistr(x.vec, "weibull") ## fitting gamma pdf parameters
-lines(x, dweibull(x, shape =fit$estimate["shape"], scale = fit$estimate["scale"]), col = 4, lwd = 2)
-legend("topright", legend = c("estimator", "Weibull"), col = c(1,4), cex = 1, lwd = 3)
+
+ plot(density(x.vec), main = "DURATION", lwd=2)
+ fit <- fitdistr(x.vec, "weibull") ## fitting gamma pdf parameters
+ lines(x, dweibull(x, shape =fit$estimate["shape"], scale = fit$estimate["scale"]), col = 4, lwd = 2)
+ legend("topright", legend = c("estimator", "Weibull"), col = c(1,4), cex = 1, lwd = 3)
 
 
 
@@ -1017,9 +1025,9 @@ x.vec <- gcredit$AMOUNT
 x <- seq(min(x.vec)-1, max(x.vec)+1, length.out = 1000)
 
 par(mfrow=c(1,3))
-plot(density(x.vec), main = "AMOUNT", lwd=2)
-# fit <- fitdistr(x.vec, "Gamma") ## fitting gamma pdf parameters
-# lines(x, dgamma(x, rate=fit$estimate["rate"], shape=fit$estimate["shape"]), col = 2, lwd = 2)
+ plot(density(x.vec), main = "AMOUNT", lwd=2)
+fit <- fitdistr(x.vec, "Gamma") ## fitting gamma pdf parameters
+lines(x, dgamma(x, rate=fit$estimate["rate"], shape=fit$estimate["shape"]), col = 2, lwd = 2)
 legend("topright", legend = c("estimator", "Gamma"), col = c(1,2), cex = 1, lwd = 3)
 
 #par(mfrow=c(1,2))
@@ -1028,10 +1036,11 @@ fit <- fitdistr(x.vec, "log-normal") ## fitting gamma pdf parameters
 lines(x, dlnorm(x, meanlog = fit$estimate["meanlog"], sdlog = fit$estimate["sdlog"]), col = 3, lwd = 2)
 legend("topright", legend = c("estimator", "log normal"), col = c(1,3), cex = 1, lwd = 3)
 
-plot(density(x.vec), main = "AMOUNT", lwd=2)
-fit <- fitdistr(x.vec, "weibull") ## fitting gamma pdf parameters
-lines(x, dweibull(x, shape =fit$estimate["shape"], scale = fit$estimate["scale"]), col = 4, lwd = 2)
-legend("topright", legend = c("estimator", "Weibull"), col = c(1,4), cex = 1, lwd = 3)
+
+ plot(density(x.vec), main = "AMOUNT", lwd=2)
+ fit <- fitdistr(x.vec, "weibull") ## fitting gamma pdf parameters
+ lines(x, dweibull(x, shape =fit$estimate["shape"], scale = fit$estimate["scale"]), col = 4, lwd = 2)
+ legend("topright", legend = c("estimator", "Weibull"), col = c(1,4), cex = 1, lwd = 3)
 
 @
 \caption{Kernel density estimate of $AMOUNT$ variable density (black line) and curves representing density of the distribution fitted.}
@@ -1057,10 +1066,12 @@ fit <- fitdistr(x.vec, "log-normal") ## fitting gamma pdf parameters
 lines(x, dlnorm(x, meanlog = fit$estimate["meanlog"], sdlog = fit$estimate["sdlog"]), col = 3, lwd = 2)
 legend("topright", legend = c("estimator", "log normal"), col = c(1,3), cex = 1, lwd = 3)
 
-plot(density(x.vec), main = "AGE", lwd=2)
-fit <- fitdistr(x.vec, "weibull") ## fitting gamma pdf parameters
-lines(x, dweibull(x, shape =fit$estimate["shape"], scale = fit$estimate["scale"]), col = 4, lwd = 2)
-legend("topright", legend = c("estimator", "Weibull"), col = c(1,4), cex = 1, lwd = 3)
+
+
+ plot(density(x.vec), main = "AGE", lwd=2)
+ fit <- fitdistr(x.vec, "weibull") ## fitting gamma pdf parameters
+ lines(x, dweibull(x, shape =fit$estimate["shape"], scale = fit$estimate["scale"]), col = 4, lwd = 2)
+ legend("topright", legend = c("estimator", "Weibull"), col = c(1,4), cex = 1, lwd = 3)
 
 @
 \caption{Kernel density estimate of $AGE$ variable density (black line) and curves representing density of the distribution fitted.}
@@ -1177,7 +1188,7 @@ The IV comparision is presented on the \textit{Figure 6.} below. Note that equal
 \item the same number of bins as in variable resulted from $rpart$ method; signature: $equal\_nrparts$.
 \end{itemize}
 
-<<results='hide'>>=
+<<results="hide">>=
 # Define subset of numeric variables 
 var.to.cat.names <- c("AGE", "AMOUNT_TO_AGE", "AMOUNT_TO_DURATION","AMOUNT", "DURATION", "DURATION_TO_AGE")
 gcredit.quan <- gcredit[,c(var.to.cat.names, "RES")]
@@ -1285,7 +1296,7 @@ We include results for the two variables in case of which we decided to perform 
 \begin{enumerate}
 \item $PURPOSE$
 
-<<results = 'hide' >>=
+<<results = "hide" >>=
 x.tmp <- gcredit$PURPOSE
 res.df.tmp <- infval.comb.levels.effect(y, x.tmp, mosaic.plot = FALSE)
 p <- iv.plot.woe(iv.mult(gcredit,"RES",vars=c("PURPOSE"),summary=FALSE))
@@ -1308,7 +1319,7 @@ Judging from the above study we concluded that it is reasonable to join $furnitu
 
 \item $HOUSING$
 
-<<results = 'hide' >>=
+<<results = "hide" >>=
 x.tmp <- gcredit$HOUSING
 res.df.tmp <- infval.comb.levels.effect(y, x.tmp, mosaic.plot = FALSE)
 p <- iv.plot.woe(iv.mult(gcredit,"RES",vars=c("HOUSING"),summary=FALSE))
@@ -1335,7 +1346,7 @@ Judging from the above study we concluded that it is reasonable to join $for fre
 \paragraph{}
 After the transformations described above, we chcecked what are IV for each of the resulting variable. The values are presented below.
 
-<<results = 'hide' >>=
+<<results = "hide" >>=
 gcredit.cat.before.removal <- dget(paste0(wd, "/data/german_data_cat-before-removal.txt"))
 iv.mult.res <- iv.mult(gcredit.cat.before.removal,"RES", TRUE)
 @
@@ -1377,9 +1388,480 @@ To conclude, the data preprocessing we performed above results in:
 % ==============================================================================
 % ==============================================================================
 \clearpage
-\section{Classification modelling results}
+\section{Feature Selection}
+
+
+\subsection{Filter comparison}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.9\textwidth]{Plots/Rplot03}
+  \caption[Close up of \textit{Hemidactylus} sp.]
+   {Histogram of the importance of different variables for woe transformation data}
+\end{figure}
+
+There had been involved many measures of the variable importance. Most of them
+are giving similar results. The most important Variable seems to be CHK\_ACCT and the least important variables such as: IS\_FOREIGN\_WORKER (which is for 0.95 cases constant), TELEPHONE or JOB. Linear and Rank corelation methods gave also some idea about correlation WOE transformation of the data with the response variable.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.9\textwidth]{Plots/Rplot04}
+  \caption[Close up of \textit{Hemidactylus} sp.]
+   {Histogram of the importance of different variables for categorical data}
+\end{figure}
+
+However most of the results for the diffenert  methods are similar, some might be interesting. For example high contribution of the variables PURPOSE and PROPERTY difrenciate RF importance and eighbarhood methods from the others. 
+
 
 \clearpage
+
+\subsection{Models without features selection}
+
+
+
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlrrrrrr}
+\hline
+& Label & ACC & TPR & SPC & PPV & F1 & FDR \\ 
+\hline
+1 & Boosting & 0.79 & 0.81 & 0.69 & 0.90 & 0.85 & 0.10 \\ 
+2 & Random Forest & 0.76 & 0.78 & 0.67 & 0.91 & 0.84 & 0.09 \\ 
+3 & AIC Logistic regression & 0.78 & 0.82 & 0.65 & 0.88 & 0.85 & 0.12 \\ 
+4 & Logistic regression & 0.78 & 0.82 & 0.67 & 0.88 & 0.85 & 0.12 \\ 
+5 & K-NN & 0.80 & 0.84 & 0.67 & 0.89 & 0.87 & 0.11 \\ 
+6 & Linear Dyscryminant Analysis & 0.78 & 0.83 & 0.63 & 0.88 & 0.85 & 0.12 \\ 
+7 & Quadric Dyscriminant Analysis & 0.78 & 0.87 & 0.59 & 0.82 & 0.84 & 0.18 \\ 
+\hline
+\end{tabular}
+\caption{Basic statistics for models with all features} 
+\end{table}
+
+First step in the modeling part for this case had been fitting simple models for all features. It had been expected that soe of the methods would perform well under this constraints, as long as they have its own feature selection methodology. One of such methods is Random Forest. Suprisingly it had just 0.76 Accuracy. Method that were supposed to perform not to good (KNN) had extremally good Accuracy of 0.8. 
+
+
+
+\subsection{CSF method}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlrrrrrr}
+\hline
+& Label & ACC & TPR & SPC & PPV & F1 & FDR \\ 
+\hline
+1 & AIC Logistic Regression & 0.76 & 0.82 & 0.60 & 0.83 & 0.83 & 0.17 \\ 
+2 & Logistic Regression & 0.75 & 0.76 & 0.66 & 0.93 & 0.84 & 0.07 \\ 
+3 & K-NN & 0.76 & 0.79 & 0.59 & 0.90 & 0.84 & 0.10 \\ 
+4 & Linear Dyscriminant Analysis & 0.78 & 0.83 & 0.61 & 0.87 & 0.85 & 0.13 \\ 
+5 & Quadric Dyscriminant Analysis & 0.80 & 0.84 & 0.65 & 0.88 & 0.86 & 0.12 \\ 
+\hline
+\end{tabular}
+\caption{Basic statistics for models with features from CFS method} 
+\end{table}
+
+First regular method of subset selection had been CFS. Is gave conservative results of just few features for models:
+\begin{itemize}
+\item DURATION\_TO\_AGE, CHK\_ACCT HISTORY and SAVINGS\_ACCT for WOE transformation of the data
+\item DURATION\_TO\_AGE, CHK\_ACCT and HISTORY categoregorical data
+\end{itemize}
+
+At this place interesting observation is that only 3 or 4 variables could give almost the same Accuracy as 21. According to Razor rule eventhough there is a small diffenence in the performance f the models, preffered would be those with much less predictors. QDA results with the accuracy 0.8 are even similar to those resulted from KNN using all variables.
+
+\clearpage
+
+\subsection{Consistency method}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlrrrrrr}
+\hline
+& Label & ACC & TPR & SPC & PPV & F1 & FDR \\ 
+\hline
+1 & AIC Logistic Regression & 0.81 & 0.83 & 0.72 & 0.90 & 0.87 & 0.10 \\ 
+2 & Logistic Regression & 0.80 & 0.83 & 0.71 & 0.90 & 0.86 & 0.10 \\ 
+3 & K-NN & 0.79 & 0.83 & 0.63 & 0.88 & 0.86 & 0.12 \\ 
+4 & Linear Dyscriminant Analysis & 0.81 & 0.84 & 0.70 & 0.91 & 0.87 & 0.09 \\ 
+5 & Quadric Dyscriminant Analysis & 0.79 & 0.83 & 0.64 & 0.88 & 0.86 & 0.12 \\ 
+\hline
+\end{tabular}
+\caption{Basic statistics for models with features from consistency method} 
+\end{table}
+
+Using consistency method there had been another set obtained. This time more quantitative. 
+
+\begin{itemize}
+
+\item DURATION, AMOUNT, AMOUNT\_TO\_DURATION, DURATION\_TO\_AGE, 
+    AMOUNT\_TO\_AGE, PURPOSE, CHK\_ACCT, HISTORY, 
+    SAVINGS\_ACCT for WOE transformation of the data
+    
+\item RATE\_TO\_DISP\_INCOME, NUM\_OF\_THIS\_BANK\_CREDITS, AGE, 
+    DURATION\_TO\_AGE, PURPOSE, CHK\_ACCT, HISTORY, SAVINGS\_ACCT, 
+    EMLOYMENT,  JOB , OTHER\_DEBTORS, PROPERTY and STATUS\_AND\_SEX for categoregorical data
+\end{itemize}
+
+This time results are better than ever before. It shows the importance of the feature selection during the model fitting process. 
+
+\subsection{Best subset method}
+
+
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\textwidth]{Plots/Rplot}
+  \caption[Close up of \textit{Hemidactylus} sp.]
+   {Comparison of the first n best variables for different methods using GLM model}
+\end{figure}
+
+We developed another method to choice the best and moderately big subset for modeling. Using all filters from the first subsection we went to show how good results would be acheived using just first n best predictors for given measure. 
+Results are interesting. For some algorythms the adequate maximum is achieved for relatively small number of predictors. 
+We choose subset having only 8 predictors based on Information gain. In following paragraphs we would see how does it work for different algorithms.
+
+\clearpage
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlrrrrrr}
+\hline
+& Label & ACC & TPR & SPC & PPV & F1 & FDR \\ 
+\hline
+1 & Logistic Regression & 0.81 & 0.84 & 0.72 & 0.90 & 0.87 & 0.10 \\ 
+2 & K-NN & 0.79 & 0.82 & 0.66 & 0.90 & 0.86 & 0.10 \\ 
+3 & Linear Dyscriminant Analysis & 0.80 & 0.84 & 0.66 & 0.89 & 0.86 & 0.11 \\ 
+4 & Quadric Dyscriminant Analysis & 0.79 & 0.86 & 0.63 & 0.86 & 0.86 & 0.14 \\ 
+\hline
+\end{tabular}
+\caption{Basic statistics for models with features from filtered best method} 
+\end{table}
+
+First important and interesting information is that using consistency rule and best subset for the AIC based Logistic Regression we got the same results. They would be discussed more in next paragraphs.
+
+
+
+
+\section{Classification modelling results}
+\subsection{Analysis of fitted models}
+
+
+At first we would show some comparison analysis between some of the fitted models. In the next sections there would be discussed each model separately. 
+Interesting observation is that Random Forest lost a lot comparing to the Boosting model (GBM). Rest of the algorithms at first looks as tough the results are similar. 
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.9\textwidth]{Plots/STATS_MODEL_COMPARE}
+  \caption[Close up of \textit{Hemidactylus} sp.]
+   {Histogram of the importance of different variables for categorical data}
+\end{figure}
+
+Here are boxplots of the ROC values, Sensitiviti, and Specifity. It had been calculated using 10 times 10-fold classification for all models. It looks like most of the models have similar statistics besides Specifity and Sensitivity for Random Forest. Given good values for Sensitivity it looses some value on the second index.
+
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.9\textwidth]{Plots/STATS_DIF_MODEL_COMPARE}
+  \caption[Close up of \textit{Hemidactylus} sp.]
+   {Comparison of the first n best variables for different methods using GLM model}
+\end{figure}
+
+
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\textwidth]{Plots/SCATTER_MODEL_COMPARE}
+  \caption[Close up of \textit{Hemidactylus} sp.]
+   {Histogram of the importance of different variables for woe transformation data}
+\end{figure}
+
+
+
+
+
+Nonetheless Random Forest looks worse at first sight, the values of the ROC are very simmilar to the Boosting model. The biggest skeewnes is visible for Spec and Sens for those two models. There are differences in the classifications. That could suggest that usage of ensemble method could effect in improvement of the model performance. 
+
+
+\clearpage
+
+\subsection{Logistic Regression}
+
+Logistic regression is the model that is used in industrie the most often. As it had been said before it thanks its popularity to easiness in interpretation of the results. Based oon this approach it is possible to produce scorecard which could be used to clasiffy approprietly cases. 
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.9\textwidth]{Plots/GLM_KS}
+  \caption[Close up of \textit{Hemidactylus} sp.]
+   {Distribution plot for good and Bad class with KS statistic for GLM method}
+\end{figure}
+
+Plot abowe shows distributions for good and bad cases. The KS- statistics is high. That indicates good separation between classes for this particular model. 
+
+\begin{figure}[h!]
+        \centering
+        \begin{subfigure}[b]{0.45\textwidth}
+                \includegraphics[width=\textwidth]{Plots/ROC_GLM}
+                \caption{}
+                \label{fig:ROC_ GLM}
+        \end{subfigure}
+        \begin{subfigure}[b]{0.45\textwidth}
+                \includegraphics[width=\textwidth]{Plots/HIST_GLM}
+                \label{fig:HIST_ GLM}
+        \end{subfigure}
+
+        \caption{Plot of Roc curve and histogram for GLM method}\label{fig:GLM}
+\end{figure}
+
+Another two plots - ROC curve and histogram can give us better understanding of the model performance. AUROC with value 0.83 is said to be really good. Interesting is that most of the bad values having very small score values. 
+
+All simulations in this section had been done for the testing data sets.
+
+\clearpage
+
+
+\subsection{Scorecard for Logistic Regression}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlr}
+\hline
+& Variable & Value \\ 
+\hline
+1 & (Intercept) & 511.93 \\ 
+2 & `CHK\_ACCT$>$=200 DM` & -30.32 \\ 
+3 & `CHK\_ACCT0-200 DM` & -14.95 \\ 
+4 & `CHK\_ACCTno checking account` & -50.64 \\ 
+5 & `DURATION\_TO\_AGE01 DURATION\_TO\_AGE $<$= 1.21875` & 26.56 \\ 
+6 & `DURATION\_TO\_AGE02 DURATION\_TO\_AGE $<$= 3` & 67.92 \\ 
+7 & `HISTORYcritical account/ other credits existing (not at this bank)` & -52.15 \\ 
+8 & `HISTORYdelay in paying off in the past` & -37.21 \\ 
+9 & `HISTORYexisting credits paid back duly till now` & -36.26 \\ 
+10 & `HISTORYno credits taken/ all credits paid back duly` & -6.03 \\ 
+11 & `DURATION01 DURATION $<$= 33` & 12.13 \\ 
+12 & `DURATION02 DURATION $<$= 72` & 2.37 \\ 
+13 & `AMOUNT01 AMOUNT $<$= 3913` & -59.83 \\ 
+14 & `AMOUNT02 AMOUNT $<$= 7824` & 14.85 \\ 
+15 & `AMOUNT03 AMOUNT $<$= 18424` & 47.81 \\ 
+16 & `SAVINGS\_ACCT$>$=1000 DM` & -28.61 \\ 
+17 & `SAVINGS\_ACCT100-500 DM` & -1.22 \\ 
+18 & `SAVINGS\_ACCT500-1000 DM` & -14.45 \\ 
+19 & `SAVINGS\_ACCTunknown/ no savings account` & -30.90 \\ 
+20 & `PURPOSEcar (new)` & 16.19 \\ 
+21 & `PURPOSEcar (used)` & -20.29 \\ 
+22 & PURPOSEeducation & 31.75 \\ 
+23 & `PURPOSEfurniture/equip\_domestic applia` & 11.91 \\ 
+24 & PURPOSEothers & -10.23 \\ 
+25 & `PURPOSEradio/television` & -4.87 \\ 
+26 & PURPOSErepairs & 12.99 \\ 
+27 & PURPOSEretraining & -50.63 \\ 
+28 & `AMOUNT\_TO\_DURATION01 AMOUNT\_TO\_DURATION $<$= 250.944444444444` & -24.12 \\ 
+29 & `AMOUNT\_TO\_DURATION02 AMOUNT\_TO\_DURATION $<$= 291.583333333333` & -48.23 \\ 
+30 & `AMOUNT\_TO\_DURATION03 AMOUNT\_TO\_DURATION $<$= 358.090909090909` & -54.94 \\ 
+31 & `AMOUNT\_TO\_DURATION04 AMOUNT\_TO\_DURATION $<$= 2482.66666666667` & 3.82 \\ 
+\hline
+\end{tabular}
+\caption{Scorecard table} 
+\end{table} 
+ 
+ 
+ Scorecard gives us some information about contribution of single variables in the model. The bigger value off the score the bigger chance of client to be good. The calibration for this scorecard is standard wich means that for point value of 500 chance for being good is 0.5.
+ 
+ Big contribution in this scorecard has for example AMOUNT. However interesting is that middle Amount gets the most points and oth smaller and bigger are worse. 
+ 
+Here is important to note that for models in this section excluding Random Forest and Boosting the same variablees set had been used as for Logistic Regression.  
+ \clearpage
+
+\subsection{Linear Dyscryminant Analysis}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.9\textwidth]{Plots/LDA_KS}
+  \caption[Close up of \textit{Hemidactylus} sp.]
+   {Distribution plot for good and Bad class with KS statistic for LDA method}
+\end{figure}
+
+ It is also important to be addressed that the data for this model had been transformated into the WOE. It is also assumed that appropriate assumptions are fulfilled. With the value of KS styatistics 0.5545, LDA gives much better results than Logistic Regression. 
+
+\begin{figure}[h!]
+        \centering
+        \begin{subfigure}[b]{0.45\textwidth}
+                \includegraphics[width=\textwidth]{Plots/ROC_LDA}
+                \caption{}
+                \label{fig:ROC_ LDA}
+        \end{subfigure}
+        \begin{subfigure}[b]{0.45\textwidth}
+                \includegraphics[width=\textwidth]{Plots/HIST_LDA}
+                \label{fig:HIST_ LDA}
+        \end{subfigure}
+
+        \caption{Plot of Roc curve and histogram for LDA method}\label{fig:LDA}
+\end{figure}
+
+
+ROC curve also gives better results. AUROC statistic is equal 0.8583 which is very high. For the histogram interestting is that for two smallest classes there is no good observation in the bands. The same there is no bad observations for very large scores.
+
+
+
+\clearpage
+
+\subsection{KNN Method}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.9\textwidth]{Plots/KNN_KS}
+  \caption[Close up of \textit{Hemidactylus} sp.]
+   {Distribution plot for good and Bad class with KS statistic for KNN method}
+\end{figure}
+
+Similarily to the LDA method, KNN had been produced using WOE transformation of the data. The set of features is choosen to be the best for this task. nonethelss, estimation for the all predictor variables included gave better results. This could have effected in long time of computation for bigger data sets. 
+
+\begin{figure}[h!]
+        \centering
+        \begin{subfigure}[b]{0.45\textwidth}
+                \includegraphics[width=\textwidth]{Plots/ROC_KNN}
+                \caption{}
+                \label{fig:ROC_ KNN}
+        \end{subfigure}
+        \begin{subfigure}[b]{0.45\textwidth}
+                \includegraphics[width=\textwidth]{Plots/HIST_KNN}
+                \label{fig:HIST_ KNN}
+        \end{subfigure}
+
+        \caption{Plot of Roc curve and histogram for KNN method}\label{fig:KNN}
+\end{figure}
+
+On the histogram we could observe sparse bins. It is caused by small number of different possible differences between distances for different observations. AUROC value is moderatelly good. 
+
+
+
+It is important to say that tuning of the number of neighbours used in this model had been performed using 10 times repeated 10-k fold crossvalidation. The best model had been one with 19 neighbours. 
+
+\clearpage
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.9\textwidth]{Plots/TUNE_KNN}
+  \caption
+   {Tuning of the nieghbours number ROC results}
+\end{figure}
+
+Trend for different number of neighbours is visible upsising. We can expect that for bigger number, algorithm could have even better results, However for 700 observations in the training set, bigger number of observations could lead to overfitting of the model. Differences in the models performance are visible but not extrime. 
+
+\subsection{Random Forest}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.9\textwidth]{Plots/RF_KS}
+  \caption[Close up of \textit{Hemidactylus} sp.]
+   {Distribution plot for good and Bad class with KS statistic for RF method}
+\end{figure}
+
+Suprising fact is that random forest model is behaving not to good. Separation based on the KS statistic is very weak and much worse than simple logistic regression. It could be caused also by over fitting for this model. 
+Even though it is overfitted it performs moderately well. 
+
+\clearpage
+
+\begin{figure}[h!]
+        \centering
+        \begin{subfigure}[b]{0.45\textwidth}
+                \includegraphics[width=\textwidth]{Plots/ROC_RF}
+                \caption{}
+                \label{fig:ROC_ RF}
+        \end{subfigure}
+        \begin{subfigure}[b]{0.45\textwidth}
+                \includegraphics[width=\textwidth]{Plots/HIST_RF}
+                \label{fig:HIST_ RF}
+        \end{subfigure}
+
+        \caption{Plot of Roc curve and histogram for RF method}\label{fig:RF}
+\end{figure}
+
+For this figure we see aggain that comparing to the other models, RF gives bad results. On the histogrm, even for small score bands there is a lot of the Good observations. 
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.9\textwidth]{Plots/TUNE_RF}
+  \caption
+   {Tuning of the trees number ROC results}
+\end{figure}
+
+Tuning is done similarily to the KNN model. There had been performed 10 times repeated 10 fold crossvalidation. This figure shows that for the bigger number of the trees for single step the power of the model is falling. It shows also that the best model and at the same time final model had been one with the 4 features sampeled at each time. 
+
+\clearpage
+
+\section{Boosting}
+
+Boosting is another benchmark method. It had not been considered at beggining but as a extremaly good considered method it would serve as benchmark to compare with the other methods improved with the feature selection. For this method ther was no step of feature selection. Model had been tuned and calculated for the full data set. 
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.9\textwidth]{Plots/GBM_KS}
+  \caption[Close up of \textit{Hemidactylus} sp.]
+   {Distribution plot for good and Bad class with KS statistic for GBM method}
+\end{figure}
+
+
+Similarily with the Random Forestt method in this case results are not too good comparing with other methods. Although the KS Value is better than for the RF, it is still smaller than any other method with performed feature selection. 
+
+\begin{figure}[h!]
+        \centering
+        \begin{subfigure}[b]{0.45\textwidth}
+                \includegraphics[width=\textwidth]{Plots/ROC_GBM}
+                \caption{}
+                \label{fig:ROC_ GBM}
+        \end{subfigure}
+        \begin{subfigure}[b]{0.45\textwidth}
+                \includegraphics[width=\textwidth]{Plots/HIST_GBM}
+                \label{fig:HIST_ GBM}
+        \end{subfigure}
+
+        \caption{Plot of Roc curve and histogram for GBM method}\label{fig:GBM}
+\end{figure}
+
+
+The histogram for this model is even worse than for the Random Forest. For first four scorebands number of Good observations is very high.  Value of AUROC is good.
+
+\clearpage 
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.9\textwidth]{Plots/TUNE_GBM}
+  \caption
+   {Tuning of the tree depth ROC results}
+\end{figure}
+
+For the boosting method there are two tuning parameters. Number of iterations in the algorithm and depth of the tree. We could see that for the deepth equal just one the results are the best. What is more, there is no significant improvement for bigger  iteration number than 500 for any algorithm. 
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.9\textwidth]{Plots/TUNE_GBM_1}
+  \caption
+   {Tuning of the tree depth ROC results}
+\end{figure}
+  
+What is more all of the algorithms are getting worse at some point. It could mean that for such values we start to overfit (the extrime observatioins are tried to be fitted better what results in drop of power of the algorithm.)
+Best tune had been achieved for the 250 iterations with depth just 1. ROC for this setup is being estimated as around 0.8. oFor Bigger depths of the trees we expect big overfit. 
+
+\clearpage
+
+\subsection{Summary of Modeling and Feature Selection}
+
+In last two sections there had been many interesting patterns discovered. The most interestting results sre that:
+
+\begin{itemize}
+
+\item Ofen including not relevant predictors in the data set could effect in the loss of the power for the model.
+
+\item Even for very small predictors set, results could be very optimistic as it had been shown for CFS set of features. 
+
+\item Proper feature selection can boost Logistic Regressioin to be better than methods with automatic feature selection and parameter tuning. 
+
+\item Using Scorecard interesting relations within the data can be discovered. It also sometime can be used to manipulate with the score. For example what happened if I am Married , would I get higher or lower credit offer. 
+
+\end{itemize}
+
+
+\clearpage
+
+\clearpage
+ 
 \section{Cluster analysis results}
 
 
