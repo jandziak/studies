@@ -16,6 +16,9 @@ if (computer.name == "marta-komputer")
   wd.tmp <- "/home/martakarass/my-store/studies/PW/project-scoring-data"
 if (computer.name == "MATHPASSION") 
   wd.tmp <- "C:/Users/Math/studia/studies/PW/project-scoring-data"
+if (computer.name == "JIDZIAK-L") {
+  wd.tmp <- "C:/Users/jidziak/Desktop/project-scoring-data"
+}
 setwd(wd.tmp)
 
 
