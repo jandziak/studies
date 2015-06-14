@@ -1,0 +1,6 @@
+structure(list(cluster = c("default", "no default"), DURATION_TO_AGE_woe = c(0.0119806201675091, 
+0.136228874854985), CHK_ACCT_woe = c(-0.606075164080424, 1.07439563063518
+), HISTORY_woe = c(-0.0539539848973258, 0.176658931192992), SAVINGS_ACCT_woe = c(-0.0406959311881034, 
+0.154865556708632)), row.names = c(NA, -2L), class = "data.frame", .Names = c("cluster", 
+"DURATION_TO_AGE_woe", "CHK_ACCT_woe", "HISTORY_woe", "SAVINGS_ACCT_woe"
+))
