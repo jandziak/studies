@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2015.4.27)  14 JUN 2015 23:06
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2015.4.27)  14 JUN 2015 23:16
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1777,7 +1777,7 @@ c/mathpazo/fplmr.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/mathpazo
 /fplmri.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb>
 </usr/share/texlive/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb></usr/share/
 texlive/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on psd-report.pdf (64 pages, 1315308 bytes).
+Output written on psd-report.pdf (64 pages, 1315310 bytes).
 PDF statistics:
  1351 PDF objects out of 1440 (max. 8388607)
  1095 compressed objects within 11 object streams

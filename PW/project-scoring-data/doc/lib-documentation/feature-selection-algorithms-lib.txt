@@ -1,3 +1,0 @@
-
-* MC1 
-    - http://cran.r-project.org/web/packages/TopKLists/TopKLists.pdf
