@@ -24,7 +24,7 @@
 %\SweaveOpts{concordance=TRUE}
 %\SweaveOpts{concordance=TRUE}
 \title{"German Credit" scoring data analysis report}
-\author{Marta Karas�, Jan Idziak}
+\author{Marta Karaś, Jan Idziak}
 \date{\today}
 \maketitle
 
@@ -66,6 +66,7 @@ library(stringr)
  
 # Load scripts 
 source("./R/conf.R")
+print("jan")
 @
 
 
@@ -86,7 +87,7 @@ In this part of the report we provide answers to the following questions about t
 \section{Data analysis context}
 
 \subsection{Motivation}
-This report presents results of the "German Credit" scoring data analysis which was performed as a project assignment for the "Pozyskiwanie Wiedzy" course, which we attended at Wroclaw University of Technology, Faculty of Fundamental Problems of Technology (W-11), Mathematics programm (Master) in the 2014/15 summer semester. The lecturer of the course (both lectures and laboratories) is Ph.D. Adam Zagda�ski.
+This report presents results of the "German Credit" scoring data analysis which was performed as a project assignment for the "Pozyskiwanie Wiedzy" course, which we attended at Wroclaw University of Technology, Faculty of Fundamental Problems of Technology (W-11), Mathematics programm (Master) in the 2014/15 summer semester. The lecturer of the course (both lectures and laboratories) is Ph.D. Adam Zagdański.
 
 \paragraph{}
 The main goal of the project is to make use of the variety of data-mining methods we have become familiar with during the course, in order to perform complete data analysis of selected data set. We also aim to pay attention to the practical appliacnces of some parts of our work. 
@@ -667,7 +668,8 @@ reasonably have occurred by chance or as an artifact of a clustering algorithm.
 There are three types of validation studies. An \textit{external} assessment of 
 validity compares the recovered structure to an a priori structure. 
 An \textit{internal} examination of validity tries to determine if the
-structure is internally appropriate. 
+structure is internally appropriate. A \textit{relative} test compares two
+structures and measures their relative merit.
 
 \subsection{Similarity, Dissimilarity and Distance}
 \paragraph{}
@@ -715,6 +717,16 @@ to be used is one of:
   $p$th powers of the differences of the components,
   \end{itemize}
   
+\item \texttt{labdsv::dsvdis} - calculates dissimilarity or distance between rows 
+of a matrix of observations according to a specific index; returns an object of 
+class "dist", equivalent to that from \texttt{stats::dist}.
+\newline \newline Three indices convert the data to presence/absence automatically. 
+In contingency table notation, they are:
+    \begin{itemize}
+    \item \texttt{"steinhaus"}: $1 - a/(a + b + c)$,
+    \item \texttt{"sorensen"}: $1 - 2a/(2a + b + c)$,
+    \item \texttt{"ochiai"}: $1 - a/ \sqrt{(a + b)  (a + c)}$.
+    \end{itemize}
 \end{itemize}
 
 \paragraph{}
@@ -726,7 +738,7 @@ $[0,1]$ whereas distances are unbounded on the upper end.
 
 \subsection{Clustering Algorithms}
 \paragraph{}
-\texttt{R} has wide variety of clustering algorithms available. We make use of different 
+\texttt{R} has wide variety of clustering algorithms available. We make use of 9 
 algorithms from the base distribution (\texttt{stats}) and add-on packages. 
 A brief description of each clustering method and its availability is given below.
 
@@ -811,6 +823,17 @@ ability to map and visualize high-dimensional data in two dimensions.
 SOM is available as the \texttt{som()} function in package \texttt{kohonen}.
 
 
+\subsubsection{Model based clustering}
+\paragraph{}
+Under this approach, a statistical model consisting of a finite mixture of
+Gaussian distributions is fit to the data. Each
+mixture component represents a cluster, and the mixture components and
+group memberships are estimated using maximum likelihood (EM algorithm).
+\paragraph{}
+The function \texttt{Mclust()} in package \texttt{mclust} implements model based
+clustering.
+
+
 \subsubsection{SOTA}
 \paragraph{}
 Self-organizing tree algorithm (SOTA) is an unsupervised network with a
@@ -829,49 +852,25 @@ SOTA is included with the \texttt{clValid} package as function \texttt{sota()}.
 In this analysis we focus on two types of clustering evaluation measurements: \textit{internal} and \textit{external} criterions.
 
 
-
 \subsubsection{Internal criterion}
 \paragraph{}
-For internal validation, we use measures that reflect:
-\begin{itemize}
-\item compactness,
-\item connectedness,
-\item separation
-\end{itemize}
-of the cluster partitions.
+Typical objective functions in clustering formalize the goal of attaining: 
+  \begin{itemize}
+  \item high intra-cluster similarity (objects within a cluster are similar) and
+  \item low inter-cluster similarity (objects from different clusters are dissimilar).
+  \end{itemize}
+This is an \textit{internal criterion} for the quality of a clustering. 
 \paragraph{}
-\textit{Connectedness} relates to what extent observations
-are placed in the same cluster as their nearest neighbors in the data space, and is here
-measured by the \textit{connectivity}. 
-\begin{itemize}
-\item \textit{Connectivity}:
-\newline \newline 
-Define $nn_{i(j)}$ as the $j$th nearest neighbor of observation $i$, and let $x_{i,nn_{i(j)}}$ be zero 
-if $i$ and$nn_{i(j)}$ are in the same cluster and $1/j$ otherwise. Then, for a particular clustering partition
-$C = {C_1,..., C_K}$ of the $N$ observations into $K$ disjoint clusters, the connectivity is defined
-as
-$$Conn(C)=\sum_{i=1}^{N}\sum_{j=1}^{L}x_{i, nn_{i(j)}},$$
-where $L$ is a parameter that determines the number of neighbors that contribute to the
-connectivity measure. The connectivity has a value between zero and $\infty$ and should be
-minimized.
-\end{itemize}
+One drawback of using internal criteria in cluster evaluation is that high scores on an internal measure do not necessarily result in effective information retrieval applications.  Additionally, this evaluation is biased towards algorithms that use the same cluster model. For example k-Means clustering naturally optimizes object distances, and a distance-based internal criterion will likely overrate the resulting clustering. Therefore, the internal evaluation measures are best suited to get some insight into situations where one algorithm performs better than another, but this shall not imply that one algorithm produces more valid results than another.
+\paragraph{}
+The methods that be used to assess the quality of clustering algorithms based on internal criterion include:
 
-\paragraph{}
-\textit{Compactness} assesses cluster homogeneity,
-usually by looking at the intra-cluster variance, while \textit{separation} quantifies the degree of
-separation between clusters (by measuring the distance between cluster centroids).
-Since compactness and separation demonstrate opposing trends (compactness increases with
-the number of clusters but separation decreases), popular methods combine the two measures
-into a single score. The Dunn index and silhouette width are
-both examples of non-linear combinations of the compactness and separation, and with the
-connectivity comprise the three internal measures available in clValid. The details of each
-measure are given below. 
 \begin{itemize}
 \item \textit{Silhouette coefficient}:
 \newline \newline The silhouette coefficient contrasts the average distance to elements in the same cluster with the average distance to elements in other clusters. Objects with a high silhouette value are considered well clustered, objects with a low value may be outliers. This index works well with k-means clustering, and is also used to determine the optimal number of clusters. 
-%\newline \newline
-%Implementation of this measurement may be found in the \texttt{fpc} package - it is included 
-%in the results of  \texttt{cluster.stats()} function (see: \texttt{clus.avg.silwidths} and \texttt{avg%.silwidth} values). 
+\newline \newline
+Implementation of this measurement may be found in the \texttt{fpc} package - it is included 
+in the results of  \texttt{cluster.stats()} function (see: \texttt{clus.avg.silwidths} and \texttt{avg.silwidth} values). 
 
 \item \textit{Dunn index}:
 \newline \newline The Dunn index aims to identify dense and well-separated clusters. 
@@ -881,9 +880,19 @@ $$D = \frac{\min_{1 \leq i < j \leq n} d(i,j)}{\max_{1 \leq k \leq n} d^{\prime}
 where $d(i,j)$ represents the distance between clusters $i$ and $j$, and $d'(k)$ measures the intra-cluster distance of cluster $k$. 
 \newline \newline
 Since internal criterion seek clusters with high intra-cluster similarity and low inter-cluster similarity, algorithms that produce clusters with high Dunn index are more desirable.
-%\newline \newline
-%Implementation of this measurement may be found in the \texttt{fpc} package - it is included 
-%in the results of  \texttt{cluster.stats()} function (see: \texttt{dunn} value). 
+\newline \newline
+Implementation of this measurement may be found in the \texttt{fpc} package - it is included 
+in the results of  \texttt{cluster.stats()} function (see: \texttt{dunn} value). 
+
+
+\item \textit{Davies-Bouldin index}:
+\newline \newline The Davies–Bouldin index can be calculated by the following formula:
+$$DB = \frac {1} {n} \sum_{i=1}^{n} \max_{j\neq i}\left(\frac{\sigma_i + \sigma_j} {d(c_i,c_j)}\right),$$
+where $n$ is the number of clusters, $c_x$ is the centroid of cluster $x$, $\sigma_x$ is the average distance of all elements in cluster $x$ to centroid $c_x$, and $d(c_i,c_j)$ is the distance between centroids $c_i$ and $c_j$. 
+\newline \newline
+Since algorithms that produce clusters with low intra-cluster distances (high intra-cluster similarity) and high inter-cluster distances (low inter-cluster similarity) will have a low Davies–Bouldin index, the clustering algorithm that produces a collection of clusters with the smallest Davies–Bouldin index is considered the best algorithm based on this criterion.
+\newline \newline
+The function \texttt{index.DB()} in package \texttt{clusterSim} implements Davies-Bouldin index.
 \end{itemize}
 
 
@@ -918,79 +927,22 @@ The function \texttt{RRand()} in package \texttt{phyclust} implements this index
 
 \subsubsection{Cluster stability}
 \paragraph{}
-Let N denote the total number of observations (rows) in a dataset and M denote the total
-number of columns, which are assumed to be numeric (e.g., a collection of samples, time
-points, etc.). 
+Studies of cluster stability may be considered as another type of cluster result 
+validation. Method to perform this study is readily available in the \texttt{fpc R} package as \texttt{clusterboot()}.
 \paragraph{}
-The stability measures compare the results from clustering based on the full
-data to clustering based on removing each column, one at a time. (These measures 
-work especially well if the data are highly correlated,
-which is often the case in high-throughput genomic data.) 
+\texttt{clusterboot()} function allows for the assessment of the clusterwise stability of a clustering of data. The data is resampled using several schemes (bootstrap, subsetting, jittering, replacement of points by noise) and the Jaccard similarities of the original clusters to the most similar clusters in the resampled data are computed. The mean over these similarities is used as an index of the stability of a cluster (other statistics can be computed as well). 
 \paragraph{}
-The measures we used are:
+The \texttt{fpc} package documentation provides some guidelines for the interpretation
+when bootstrap resampled scheme is used: 
 \begin{itemize}
-\item the average proportion of non-overlap (APN), 
-\item the average distance (AD), 
-\item the average distance between means (ADM),
-\item and the figure of merit (FOM). 
+\item There is some theoretical justification to consider a Jaccard similarity value smaller or equal to 0.5 as an indication of a "dissolved cluster", see Hennig (Hennig, C. (2008) Dissolution point and isolation robustness: robustness criteria for general cluster
+analysis methods. Journal of Multivariate Analysis 99, 1154-1176). 
+\item Generally, a valid, stable cluster should yield a mean Jaccard similarity value of 0.75 or more. 
+\item Between 0.6 and 0.75, clusters may be considered as indicating patterns in the data, but
+which points exactly should belong to these clusters is highly doubtful. 
+\item Below average Jaccard values of 0.6, clusters should not be trusted. 
+\item "Highly stable" clusters should yield average Jaccard similarities of 0.85 and above. 
 \end{itemize}
-In all cases the average is taken over all the deleted columns, and all measures should be minimized.
-Below we present the description of the measures listed above.
-
-\begin{itemize}
-\item \textit{Average proportion of non-overlap (APN)}:
-\newline \newline
-The APN measures the average proportion of observations not placed in the same cluster
-by clustering based on the full data and clustering based on the data with a single column
-removed. Let $C^{i,0}$ represent the cluster containing observation $i$ using the original clustering
-(based on all available data), and $C^{i,l}$ represent the cluster containing observation $i$ where
-the clustering is based on the dataset with column $l$ removed. Then, the APN measure is
-defined as
-$$APN(C)=\frac{1}{MN}\sum_{i=1}^{N}\sum_{l=1}^{M}\left ( 1-\frac{n(C^{i,l}\cap C^{i,0})}{n(C^{i,0})} \right ).$$
-The APN is in the interval $[0, 1]$, with values close to zero corresponding with highly consistent
-clustering results.
-
-\item \textit{Average distance (AD)}:
-\newline \newline
-The AD measure computes the average distance between observations placed in the same
-cluster by clustering based on the full data and clustering based on the data with a single
-column removed. It is defined as
-$$AD(C)=\frac{1}{MN}\sum_{i=1}^{N}\sum_{l=1}^{M}\frac{1}{n(C^{i,l})n(C^{i,0})}\left [ \sum_{i \in n(C^{i,0}), j \in C^{i,l} } dist(i,j) \right ].$$
-The AD has a value between zero and $\infty$, and smaller values are preferred.
-
-\item \textit{Average distance between means (ADM)}:
-\newline \newline
-The ADM measure computes the average distance between cluster centers for observations
-placed in the same cluster by clustering based on the full data and clustering based on the
-data with a single column removed. It is defined as
-$$ADM(C)=\frac{1}{MN}\sum_{i=1}^{N}\sum_{l=1}^{M}dist(\overline{x}_{C^{i,l}}, \overline{x}_{C^{i,0}})
-,$$
-where $\overline{x}_{C^{i,0}}$ is the mean of the observations in the cluster which contain observation $i$, when clustering is based on the full data, and $\overline{x}_{C^{i,l}}$ is similarly defined.
-\newline \newline
-In the \texttt{clValid} package implementation, ADM uses the Euclidean distance. 
-It also has a value between zero and $\infty$, and again smaller values are
-prefered.
-
-\item \textit{Figure of merit (FOM)}:
-\newline \newline
-The FOM measures the average intra-cluster variance of the observations in the deleted column,
-where the clustering is based on the remaining (undeleted) samples. This estimates the
-mean error using predictions based on the cluster averages. For a particular left-out column $l$
-the FOM is
-$$FOM(l, C)=\sqrt{\frac{1}{N}\sum_{k=1}^{K}\sum_{i \in C_k(l)}}dist(x_{i,l}, \overline{x}_{C_k(l)}),$$
-where $x_{i,l}$ is the value of the $i$th observation in the $l$th column, and $\overline{x}_{C_k(l)}$
-is the average of cluster $C_k(l)$. 
-\newline \newline
-In the \texttt{clValid} package implementation,  the only distance available for FOM is Euclidean. The FOM is multiplied by an adjustment factor $\sqrt{\frac{N}{N-K}}$ to alleviate the tendency to decrease as the number of clusters increases. The final score is averaged over all the removed columns, and
-has a value between zero and $\infty$, with smaller values equaling better performance.
-\end{itemize}
-
-
-
-
-
-
-
 
 
 
@@ -1001,6 +953,7 @@ has a value between zero and $\infty$, with smaller values equaling better perfo
 \clearpage
 \part{Results}
 
+\clearpage
 \section{Data preprocessing results}
 In this section we present the results of data preprocessing we performed. The important parts of this process are: creating derived variables, binning countinuous variables and correcting bins (factor levels) if it seems reasonable. 
 \paragraph{}
@@ -1073,8 +1026,8 @@ x <- seq(min(x.vec)-1, max(x.vec)+1, length.out = 1000)
 
 par(mfrow=c(1,3))
  plot(density(x.vec), main = "AMOUNT", lwd=2)
-#fit <- fitdistr(x.vec, "Gamma") ## fitting gamma pdf parameters
-#lines(x, dgamma(x, rate=fit$estimate["rate"], shape=fit$estimate["shape"]), col = 2, lwd = 2)
+fit <- fitdistr(x.vec, "Gamma") ## fitting gamma pdf parameters
+lines(x, dgamma(x, rate=fit$estimate["rate"], shape=fit$estimate["shape"]), col = 2, lwd = 2)
 legend("topright", legend = c("estimator", "Gamma"), col = c(1,2), cex = 1, lwd = 3)
 
 #par(mfrow=c(1,2))
@@ -1229,15 +1182,96 @@ In our analysis we compared three approaches of dividing continuous variables in
 \item categorize variable with simple tree model (from $rpart$ package, with the use of default tree building parameters).
 \end{enumerate}
 
-The IV comparision is presented on the figure below. Note that equal frequency discretization results are presented for:
+The IV comparision is presented on the \textit{Figure 6.} below. Note that equal frequency discretization results are presented for:
 \begin{itemize}
 \item the same number of bins as in variable resulted from $smbinning$ method; signature: $equal\_nbins$,
 \item the same number of bins as in variable resulted from $rpart$ method; signature: $equal\_nrparts$.
 \end{itemize}
 
+<<results="hide">>=
+# Define subset of numeric variables 
+var.to.cat.names <- c("AGE", "AMOUNT_TO_AGE", "AMOUNT_TO_DURATION","AMOUNT", "DURATION", "DURATION_TO_AGE")
+gcredit.quan <- gcredit[,c(var.to.cat.names, "RES")]
+
+# Categorize variables in 3 ways. Keep categorized variable in a data frame
+for(var.name in var.to.cat.names){
+  
+  print(var.name)
+  
+  x <- gcredit.quan[, var.name]
+  y <- gcredit.quan[, "RES"]
+  
+  # Categorize variable with optimal binning with conditional tree 
+  # (smbinning package)
+  mincriterion.tmp = 0.95
+  binning.res <- smbinning.custom(df=gcredit.quan, y="RES", x=var.name, 
+                                  mincriterion = mincriterion.tmp)
+  # Check if we got requested num of bins 
+  while(binning.res == "No Bins"){#} || (length(binning.res$bands)-1) < min.smbin.bins.num){
+    mincriterion.tmp = mincriterion.tmp - 0.05
+    print(mincriterion.tmp)
+    binning.res <- smbinning.custom(df=gcredit.quan, y="RES", x=var.name, 
+                                    mincriterion = mincriterion.tmp)
+  }
+  binned.var.name <- paste0(var.name, "_bin")
+  gcredit.quan <- smbinning.gen(gcredit.quan, binning.res, binned.var.name)
+  # Correct new variable to be a factor
+  binned.var.levels <- sort(unique(gcredit.quan[, binned.var.name]))
+  gcredit.quan[, binned.var.name] <- factor(gcredit.quan[, binned.var.name], 
+                                            levels = binned.var.levels, 
+                                            labels = binned.var.levels)
+  n.bins <- length(binning.res$bands)-1
+  
+  # Categorize variable with simple tree model (rpart package)
+  rparted.var <- cutRpart(x, y)
+  gcredit.quan[, paste0(var.name, "_rpart")] <- rparted.var
+  n.rparts <- length(levels(rparted.var))
+  
+  # Categorize variable with equal frequency discretization
+  # (for defined num of bins we got in 1. optimal binning and 2. rpart binning)
+  gcredit.quan[, paste0(var.name, "_equal_nbins")] <- cutEqual(x, n.bins)
+  gcredit.quan[, paste0(var.name, "_equal_nrparts")] <- cutEqual(x, n.rparts)
+}
+
+
+# # Compare information value of those 
+# # download woe-master.zip from https://github.com/tomasgreif/woe and unzip it;
+# # the install from source: 
+# #install.packages("/home/martakarass/Downloads/woe-master", repos = NULL, type="source")
+# library(woe)
+iv.df <- iv.mult(gcredit.quan, "RES", TRUE)
+iv.df
+
+# Build data frame to compare information values
+iv.comp.df <- data.frame(var.name = numeric(0), 
+                         cat.sgn = numeric(0),
+                         iv = numeric(0))
+for(i in 1:(nrow(iv.df))){
+  n.tmp <- nrow(iv.comp.df)
+  var.name.tmp <- iv.df[i, "Variable"]
+  
+  if(grepl("_bin", var.name.tmp)){
+    iv.comp.df[n.tmp+1, ] <- c(str_replace(var.name.tmp, "_bin", ""), "smbinning", iv.df[i, "InformationValue"])
+  } else if (grepl("_equal_nbins", var.name.tmp)){
+    iv.comp.df[n.tmp+1, ] <- c(str_replace(var.name.tmp, "_equal_nbins", ""), "equal_nbins", iv.df[i, "InformationValue"])
+  } else if (grepl("_equal_nrparts", var.name.tmp)){
+    iv.comp.df[n.tmp+1, ] <- c(str_replace(var.name.tmp, "_equal_nrparts", ""), "equal_nrparts", iv.df[i, "InformationValue"])
+  } else if (grepl("_rpart", var.name.tmp)){
+    iv.comp.df[n.tmp+1, ] <- c(str_replace(var.name.tmp, "_rpart", ""), "rpart", iv.df[i, "InformationValue"])
+  }   
+}
+
+iv.comp.df$iv <- round(as.numeric(iv.comp.df$iv), 3)
+iv.comp.df$var.name <- factor(iv.comp.df$var.name , levels = var.to.cat.names)
+@
+
 \begin{figure}[h!]
 \centering
-\includegraphics[width=0.9\textwidth]{Plots2/snbinning.png}
+<<fig.width=8, fig.height=4, out.width='.95\\linewidth'>>=
+ggplot(iv.comp.df, aes(var.name, iv, group = cat.sgn, colour = cat.sgn)) + 
+  geom_line() + theme(axis.text.x = element_text(angle = 10, hjust = 1))
+@
+\caption{Comparision of Information Values of variables resulted from binning performed by means of 3 differend approaches. }
 \end{figure}
 
 We can see a few interesting things from the plot above: 
@@ -1263,7 +1297,6 @@ We include results for the two variables in case of which we decided to perform 
 \item $PURPOSE$
 
 <<results = "hide" >>=
-y <- gcredit$RES
 x.tmp <- gcredit$PURPOSE
 res.df.tmp <- infval.comb.levels.effect(y, x.tmp, mosaic.plot = FALSE)
 p <- iv.plot.woe(iv.mult(gcredit,"RES",vars=c("PURPOSE"),summary=FALSE))
@@ -1808,77 +1841,6 @@ Best tune had been achieved for the 250 iterations with depth just 1. ROC for th
 
 \clearpage
 
-
-\subsection{Modeling using PCA transformation}
-
-As last method to be analysed it had been choosen feature subset selection after PCA analysis. 
-There are analysed few options with different numbers of principal components and various proportion of described variance. We choosed 4 different setups. 
-
-
-\begin{table}[ht]
-\centering
-\begin{tabular}{rlrrrrrr}
-\hline
-& Label & ACC & TPR & SPC & PPV & F1 & FDR \\ 
-\hline
-1 & 45\% of explained variance & 0.79 & 0.83 & 0.66 & 0.90 & 0.86 & 0.10 \\ 
-2 & 50\% of explained variance & 0.80 & 0.83 & 0.68 & 0.90 & 0.87 & 0.10 \\ 
-4 & 90\% of explained variance & 0.79 & 0.83 & 0.65 & 0.89 & 0.86 & 0.11 \\ 
-\hline
-\end{tabular}
-\caption{Basic statistics for models after PCA method} 
-\end{table}
-
-Results from analysis on testing set are preseted in table above. 
-
-\begin{figure}[h!]
-  \centering
-  \includegraphics[width=0.9\textwidth]{Plots/PCA_KS}
-  \caption[Close up of \textit{Hemidactylus} sp.]
-   {Distribution plot for good and Bad class with KS statistic for PCA method}
-\end{figure}
-
-The ROC curve and statistis are compareable with other methods. There are some pluses and minuses. 
-It alows us to reduce dimension to only 6 predictors. 
-
-\begin{figure}[h!]
-        \centering
-        \begin{subfigure}[b]{0.45\textwidth}
-                \includegraphics[width=\textwidth]{Plots/ROC_PCA}
-                \caption{}
-                \label{fig:ROC_ RF}
-        \end{subfigure}
-        \begin{subfigure}[b]{0.45\textwidth}
-                \includegraphics[width=\textwidth]{Plots/HIST_PCA}
-                \label{fig:HIST_ RF}
-        \end{subfigure}
-
-        \caption{Plot of Roc curve and histogram for PCA method}\label{fig:RF}
-\end{figure}
-
-Plots above shows results for the best estimator 50\% of variance decribed. Value of KS statistics is on high level similaryli as AUROC value. 
-
-
-\begin{table}[ht]
-\centering
-\begin{tabular}{rlrrrrrr}
-\hline
-& labels\_pca & ROC & Sens & Spec & ROCSD & SensSD & SpecSD \\ 
-\hline
-1 & 45\% of explained variance & 0.83 & 0.89 & 0.53 & 0.05 & 0.04 & 0.11 \\ 
-2 & 50\% of explained variance & 0.83 & 0.89 & 0.55 & 0.05 & 0.04 & 0.11 \\ 
-3 & 80\% of explained variance & 0.82 & 0.88 & 0.54 & 0.05 & 0.04 & 0.10 \\ 
-4 & 90\% of explained variance & 0.82 & 0.88 & 0.55 & 0.05 & 0.04 & 0.10 \\ 
-\hline
-\end{tabular}
-\caption{Basic statistics for models after PCA method for repeated creoss validation} 
-\end{table}
-
-
-Using 10 times repeated crossvalidation subsequent statistics had been estimated
-Suprisingly ROC value is bigger than it was expected and for two variables sets (with 6 and 7 predictors), it has 83\%. 
-
-
 \subsection{Summary of Modeling and Feature Selection}
 
 In last two sections there had been many interesting patterns discovered. The most interestting results sre that:
@@ -1893,348 +1855,18 @@ In last two sections there had been many interesting patterns discovered. The mo
 
 \item Using Scorecard interesting relations within the data can be discovered. It also sometime can be used to manipulate with the score. For example what happened if I am Married , would I get higher or lower credit offer. 
 
-\item PCA mathod alows reduction of dimension, and the results are moderatly good, nonetheless 
-other palgorithms perform better. 
-
 \end{itemize}
 
 
+\clearpage
 
-
-
-% ==============================================================================
-% ==============================================================================
-% ==============================================================================
-\clearpage 
+\clearpage
+ 
 \section{Cluster analysis results}
-\paragraph{}
-In this section we present our data clustering analysis results. In analysis, we assume
-a priori knowledge about the number of expected clusters (which equals 2) and 
-we want to investigate:
-\begin{itemize}
-\item How cluster compactness, connectedness, separation and stability depend on
-feature selection performed before data clustering and how they depend on clustering method choice?
-\item Whether or not employing dimensionality reduction PCA method improves the above
-measures?
-\item How accurate is the clustering result in terms of separating BAD and GOOD
-observations (default and no default clients)?
-\end{itemize}
-\paragraph{}
-In general, we follow the believe that first of all
-we want clustering schema to be of high stability - we would  not trust even some 
-'beautiful' results if they come from the method which has turned out to be unstable
-in the analysis. Moreover, we decided to narrow down the analysis 
-to the data set with variables transformed to WOE, as we believe it
-brings more information about variable levels (normalized, numerical relation)
-than factor variables (where something either is or is not of the same level for a given variable).  
-
-
-\subsection{Cluster validation}
-\paragraph{}
-We performed the comparision of: 
-\begin{itemize}
-\item clustering different data subsets that were created with the use of 
-feature selection results from the previous section:
-\begin{itemize}
-\item \textit{CFS} method for WOE recoded data (variables included in the data set: 
-DURATION\_TO\_AGE, CHK\_ACCT, HISTORY and SAVINGS\_ACCT),
-\item \textit{Consistency} method for WOE recoded data (variables included in the data set: 
-DURATION, AMOUNT, AMOUNT\_TO\_DURATION, DURATION\_TO\_AGE, AMOUNT\_TO\_AGE,
-PURPOSE, CHK\_ACCT, HISTORY, SAVINGS\_ACCT),
-\item \textit{all} variables from the data set,
-\end{itemize}
-\item clustering with the use of different algorithms.
-\end{itemize}
-\paragraph{}
-In analysis, we assume the default \texttt{clValid::clValid} method parameters except from
-the fact that we use \texttt{method = "ward"} as the 
- agglomeration method used for hierarchical clustering (\texttt{hclust} and \texttt{agnes}). The metrics used for computing dissimilarity matrix is \texttt{"euclidean"}.
-
-
-\subsubsection{Stablility validation}
-\paragraph{}
-Below we can see 4 plots presenting stablility validation comparision results for clustering algorithms, across 3 different subsets of data set ($CFS$-based selection, $Consistency$-based selection, $all$ variables (full data set)).
-
-\clearpage
-\paragraph{Average proportion of non-overlap (APN)} 
-\begin{figure}[h!]
-\centering
-\includegraphics[width=0.8\textwidth]{Plots2/comp1-APN.png}
-\end{figure}
-\paragraph{}
-We can see that:
-\begin{itemize}
-\item In general, average proportion of non-overlap is decreasing as the 
-number of variables in the data set is growing - when we use $all$ variables in
-the data set, we obtain highly consistent clustering results for the majority 
-of algirithms. However, for majority of algorithms those differences depending on
-feature selection are not striking. 
-\item $kmenas$ method provides us with distinctively high values for the cases
-when not all variables are used. The same situation appears with $agnes$ when 
-clusters are built on a few variables ($CFS$ features selection origin.)
-\end{itemize}
-
-\paragraph{Average distance (AD)} 
-\begin{figure}[h!]
-\centering
-\includegraphics[width=0.8\textwidth]{Plots2/comp1-ad.png}
-\end{figure}
-\paragraph{} 
-We observe that:
-\begin{itemize}
-\item The average distance between observations placed in the same
-cluster is growing with the growth of number of variables in the data set (which is quite intuitive). 
-\item We can also see like two groups of algorithms with similar performance. "Worse" group is the group with $kmeans$, $diana$ and $agnes$ algorithms (higher AD values).
-\end{itemize}
-
-\paragraph{Average distance between means (ADM)} 
-\begin{figure}[h!]
-\centering
-\includegraphics[width=0.8\textwidth]{Plots2/comp1-adm.png}
-\end{figure}
-\paragraph{} 
-We see that:
-\begin{itemize}
-\item ADM measure gives results very similar to those of APN measure. Similarly, as 
-smaller measure values are prefered, we see that  $kmenas$ and $agnes$ methods provide us with relatively high values in case when clusters are built on a few variables.
-\end{itemize}
-
-\paragraph{Figure of merit (FOM)} 
-\begin{figure}[h!]
-\centering
-\includegraphics[width=0.8\textwidth]{Plots2/comp1-fom.png}
-\end{figure}
-\paragraph{} 
-We see that:
-\begin{itemize}
-\item FOM measure results depend not really much on algorithm selection; they depend 
-rather on the number of variables taken into clustering analysis.
-\item We observe that with the growth of the number of variables in the data set,
-FOM measure is decreasing. We quess that it may be the result of incorporating
-the scaling factor (mentioned in the measure description).
-\end{itemize}
-
-\paragraph{}
-To sum up, whereas it is hard to conclude whether or not more or less variables
-should be used in the clustering (without any suggested threshold for the measure values), we can make an observation that $kmeans$, $agnes$ and $diana$ are the algorithms
-that performed worse than the others in terms of at least one measure.
-
-
-
-\subsubsection{Internal validation}
-\paragraph{}
-We continue the clustering validation with the use of internal measures.
-Below we can see 3 plots presenting internal validation comparision results 
-for clustering algorithms, across 3 different subsets of data set. 
-
-\paragraph{Connectivity} 
-\begin{figure}[h!]
-\centering
-\includegraphics[width=0.8\textwidth]{Plots2/comp1-connectivity.png}
-\end{figure}
-\paragraph{} 
-We want to minimize the value of Connectivity - when minimized, it suggests 
-that observations are placed in the same cluster as their nearest
-neighbors in the data space quite frequently.
-\paragraph{}
-We observe that:
-\begin{itemize}
-\item We can distinguish about 3 groups of algorithms with similar Connectivity values tendency. We can see that $clara$ and $diana$ have higher Connectivity values, and 
-$agnes$, $hierarchical$ (they are overlaping) and $kmenas$ have relatively lower Connectivity values.
-\end{itemize}
-
-\clearpage
-\paragraph{Silhouette} 
-\begin{figure}[h!]
-\centering
-\includegraphics[width=0.8\textwidth]{Plots2/comp1-silhouette.png}
-\end{figure}
-\paragraph{} 
-As objects with a high silhouette value are
-considered well clustered, we can conclude that:
-\begin{itemize}
-\item silhouette value is the lowest for all algorithms in the case 
-where $all$ varaibles are in the data set, 
-\item $som$, $sota$, $pam$ and $clara$ have relatively high silhouette values. 
-\end{itemize}
-
-
-\paragraph{Dunn Index} 
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.8\textwidth]{Plots2/comp1-dunn.png}
-\end{figure}
-\paragraph{} 
-As we remember, since internal criteria seek clusters with high intra-cluster similarity and low inter-cluster similarity, algorithms that produce clusters with high Dunn index are more desirable. From the plot presented above we may conclude that: 
-\begin{itemize}
-\item What is interesting, the number of variables (in the data set subset) seems to have much lower impact on Dunn index than the clustering algorithm choice. 
-\item $kmenas$, $hierarchical$ and $agnes$ have relatively high  Dunn Index values.
-\end{itemize}
-
-\paragraph{}
-It is hard to conclude that one / a few algorithms give better validation results
-that others \textit{in general} - in some cases some methods performs better 
-and in other cases the same methods seem to be among the worst. 
-We find it difficult to put up with some straightforward suggestions and 
-see this situation as an argument in favour of the opinion that clustering is difficult in 
-its plurality of possible approaches and interpretations.
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Incorporating the dimensiality reduction PCA algorithm}
-\paragraph{}
-In this subsection we present results of our attempt to incorporate the dimensionality reduction 
-PCA algorithm into clustering analysis. Our primary goal is to observe how the number of principal components 
-kept in the data set affects the cluster validation results. 
-\paragraph{}
-We performed dimensionality reduction on data set with variables recoded to WOE with the use of 
-\texttt{stats::prcomp} method.  As before, we investigate only the cases 
-that results in 2 clusters output. 
-
-\paragraph{}
-Below we can see a plot presenting cumulative proportion
-of variance explained, for subsequent numbers of PCA output components included.
-We can observe that we need $5$ first components (out of all $21$) to explain 50\% variance after
-the transformation and  $12$ first components to explain 75\% variance. It may suggest 
-that we can have different patterns in our data to explain which we may need 
-relatively large part of all varaibles avaliable. 
-
-\begin{figure}[h!]
-\centering
-\includegraphics[width=0.8\textwidth]{Plots2/pca-result.png}
-\end{figure}
-
-
-\paragraph{}
-Below we can see a plot presenting stability measure results for clusters built with the 
-use of $kmenas$ algorithm, for different numbers of components included in the input data set.
-\clearpage
-\paragraph{Stability measures comparision} 
-\begin{figure}[h!]
-\centering
-\includegraphics[width=0.8\textwidth]{Plots2/pca-stability.png}
-\end{figure}
-\paragraph{}
-From the above plot we can observe that:
-\begin{itemize}
-\item With the increase of number of components included in the data set the AD values tends to increase (bad thing) and
-FOM values tends to decrease (good thing), both in a "regular" way. APN values decrease (good thing) with the number of components increasing, but the plot behaves "irregularly" for the large number of components (note "peak" around the 19 value on OX axis). ADM values does not seem to depict any pattern in this comparision.
-\end{itemize}
 
 
 \clearpage
-\clearpage
-\paragraph{Internal measures comparision} 
-\begin{figure}[h!]
-\centering
-\includegraphics[width=0.8\textwidth]{Plots2/pca-internal.png}
-\end{figure}
-\paragraph{}
-
-From the above plot we can observe that:
-\begin{itemize}
-\item There is an interesting plots "pattern regularity" decline: in each 
-of three cases we can see regular increase / decrease of the measure values
-with the number of components increasing, but this regularity goes down 
-from $19$ value on the OX axis on.
-\item Before the "pattern regularity" decline mentioned above, we can see that
-Connectivity values increase (bad thing) with the number of components. Dunn Index is sightly
-increasing (good thing) whereas Silhouette values are decreasing (bad values). 
-\item After  "pattern regularity" decline, all of the 3 compared values 
-are moving very quickly in the desired direction (they increase in case of Dunn Index
-and Silhouette measure and they decrease in case of Cinnectivity). It may
-suggest that the data is really complex (as the cumulative proportion
-of variance explained plot suggested) and we receive good unternal measures 
-results when we include relatively large number of components.
-\end{itemize}
-
-\paragraph{}
-Once again, we find it difficult to conclude the results from the above comparision.
-Nevertheless, the "pattern regularity" decline noticed on the 
-internal measures comparision plot makes us inclined to make use of 
-PCA output with 19 components in further analysis. 
-
-
-\subsubsection{External validation}
-\paragraph{}
-In this point of our analysis we planned to employ an algorithm with 
-best stability and internal measure performance so as to build clusters 
-and investigate their practical properties (by which we mean 
-external validation with the use of Rand Index and other measures).
-\paragraph{}
-However, we were not sure to decide on the "best" algorithm; eventually,
-we decided to perform comparision with the use of $kmeans$ algorithm,
-as it presented good properties in some cases in the previous comparision
-and because of the fact it is quite commonly used algorithm, in general. 
-\paragraph{}
-The plots below present Rand Index values and Sensitivity values for 
-$kmeans$ clustering performed on data subsets of different origin (see OX axis labels).
-\begin{itemize}
-\item Cluster labes and real response variable labels are matched in self-written function
-which checks which of two resulted clusters has greater \textit{fraction} of BAD observations
-(defaulted clients). This cluster is assumed to be the cluster that gathers BAD observations
-and it is assigned a label equal with the label of real response variables BAD value 
-(here: $RES=1$). Respectively, the other cluster is assumed to be the cluster with GOOD observations
- and it is assigned a label equal with the label of real response variable GOOD value 
-(here: $RES=0$).
-\item Sensitivity is computed as the fraction: (\# True Positives)/(\# True Positives + 
-\# False Negatives). 
-\end{itemize}
-
-\begin{figure}[h!]
-\centering
-\includegraphics[width=0.8\textwidth]{Plots2/external-measures.png}
-\end{figure}
-We can see from the plot above that Rand Index values do not vary that much across different 
-methods of subset feature selection. When it comes to Sensitivity, we have similar (quite high)
-results except from clusters obtained from $PCA$ transformation with 19 components included in the
-input data set.
-
-\clearpage
-\subsection{Cluster representative patterns}
-\paragraph{}
-In this section we give an example of data abstraction - extracting a simple and compact representation of a data set. We present a centroids of each of two clusters resulted from $kmeans$ algorithm performed
-on data set recoded to WOE, with feature selection based on the $CFS$ method result. Set of 
-selected variables includes: DURATION\_TO\_AGE\_woe, CHK\_ACCT\_woe, HISTORY\_woe and SAVINGS\_ACCT\_woe. The centroids are summarized in the table below.
-\newline \newline 
-
-<< >>=
-df.centroids <- dget(paste0(wd.tmp, "/doc/report/Plots2/cluster-centroids"))
-kable(df.centroids[, c(1,2,3,4)], format = "latex", digits = 3)
-kable(df.centroids[, c(1,5)], format = "latex", digits = 3)
-@
-
-\paragraph{}
-We can obtain more "human-redable" interpretation of these centroids with the use of relation between WOE 
-and levels of categirized variables - by investigating the plot above. 
-\paragraph{}
-We can see that the differences in WOE values for particular varaibles between centroids of the two clusters do not differ that much, which is quite disappointing. 
-
-
-\begin{figure}[h!]
-\centering
-\includegraphics[width=0.90\textwidth]{Plots2/vars-woe.png}
-\end{figure}
-
-
-\clearpage
-\subsection{Cluster analysis summary}
-\paragraph{}
-Cluster analysis appears to be quite difficult to perform as there are a lot of
-\textit{different} measures indicating cluster "quality", which are
-not easy to interpret. Moreover, we can see that among 8 different clustering
-algorithms that we have compared, there is no one approach that "beats" others
-in each of the validation comparision. 
-\paragraph{}
-External validation of the $kmeans$ algorithm performance shows about 0.8 
-Sensitivity score for some data subsets (with out approach of matching
-real and cluster labels), which is rather satysfying.  
-However, in our opinion the whole procedure requires to much of arbitrary 
-assessments to employ it as a "serious" source of information in 
-credit scoring decision process. 
-
-
+\section{Summary}
 
 
 
@@ -2243,24 +1875,6 @@ credit scoring decision process.
 % ==============================================================================
 \clearpage
 \part{Discussion}
-
-\paragraph{} 
-There are a lot of different areas that might be investigated further when it comes
-to clustering analysis results. 
-\begin{itemize}
-\item Other methods of dimension reduction such as MDS could be used. 
-\item Possible application of Lasso and Elastic Net algorithms for classification.
-\item Application of Woe transformed data to Regression or other models. 
-\item One of the major issues is the cluster algorithms parameter 
-tunning. We expect the methods to perform better in terms of both internal and external 
-measures after more careful arguments selection.
-\item One may find it interesting to investigate how the results are affected by the
-metrics choice in computing similarity / dissimilarity objects describing the data.
-\item Another interesting thing to compare would be the results of clutering 
-without the restriction to the 2-cluster results. Maybe there are better (in terms
-of quality) outputs, containing 3 or more clusters? 
-\item Results from clustering output could be used as a predictors in classification.
-\end{itemize}
 
 
 
